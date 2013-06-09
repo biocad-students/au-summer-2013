@@ -33,9 +33,11 @@ au-summer-2013
 Языки разработки:
 
 > Python 2.7 (3.3?) + Cython
+
 > C/C++
 
 Контактная информация:
 
 > e-mail - zhmactep@gmail.com
+
 > GitHub - zmactep
