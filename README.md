@@ -2,6 +2,8 @@ au-summer-2013
 ==============
 
 
+[![Build Status](https://travis-ci.org/biocad/au-summer-2013.png?branch=master)](https://travis-ci.org/biocad/au-summer-2013)
+
 Летняя практика студентов в ЗАО "Биокад".
 
 Начало практики: 1 июля 2013 г.
@@ -31,9 +33,11 @@ au-summer-2013
 Языки разработки:
 
 > Python 2.7 (3.3?) + Cython
+
 > C/C++
 
 Контактная информация:
 
 > e-mail - zhmactep@gmail.com
+
 > GitHub - zmactep
