@@ -1,4 +1,6 @@
-Cython
+#numpy
+#scipy
+#Cython
 matplotlib
 biopython
 ./external/pyahocorasick
