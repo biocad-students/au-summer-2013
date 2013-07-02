@@ -1,37 +1,33 @@
 __author__ = 'Aspart'
 
 import os
-import property
-import trie
+from property import Property
+from trie import Trie
 import kstat
+
 from Bio import SeqIO
 
-class Gene:
+class Gene(object):
     def create(self,path):
-        self.property = property.Property()
+        self.property = Property()
         self.property.load(path)
-        for key, value in self.property.data.items():
-            if key == "names":
-                for id in range(len(self.property.data[key])):
-                    self.create_from_file(path, self.property.data[key][id])
+        [self.create_from_file(path, content) for key, value in self.property.data.items()
+         for content in value if key == "names"]
 
     def create_from_file(self, path, filename):
         file = os.path.join(path, filename+'.fasta')
         handle = open(file, "rU")
-        patterns = []
+        patterns = [record.seq for record in SeqIO.parse(handle, "fasta")]
         ## TODO: add kstat handling
-        for record in SeqIO.parse(handle, "fasta") :
-            patterns.append(record.seq)
         handle.close()
-
-        setattr(self, filename, trie.Trie())
+        setattr(self, filename, Trie())
         worktrie = getattr(self, filename)
         worktrie.create(patterns)
 
     def find(self, seq):
         for key, value in self.property.data.items():
             if key == "names":
-                for id in range(len(value)):
+                for id, _ in enumerate(value):
                     worktrie = getattr(self, value[id])
                     hash = worktrie.m_kstat.get_hash(seq)
                     return worktrie.m_kstat.hashtable[hash]
