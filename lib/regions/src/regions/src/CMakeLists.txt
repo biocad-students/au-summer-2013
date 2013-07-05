@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 2.6)
+
+project(regions)
+#find_package(TBB REQUIRED)
+#find_package(Log4cxx REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
+set(CMAKE_CURRENT_BINARY_DIR "../bin")
+set(CMAKE_INSTALL_PREFIX "./")
+
+add_subdirectory(algorithm)
+add_subdirectory(data_structures)
+add_subdirectory(ssw)
+add_subdirectory(tests)
+add_subdirectory(misc)
+
+include_directories(${Boost_INCLUDE_DIRS})
+include_directories(/opt/local/include)
+include_directories(../include)
+include_directories(../include/ssw)
+include_directories(../include/misc)
+include_directories(../include/algorithm)
+
+link_directories(${CMAKE_SOURCE_DIR}/ssw)
+link_directories(${CMAKE_SOURCE_DIR}/misc)
+link_directories(${CMAKE_SOURCE_DIR}/algorithm)
+link_directories(${Boost_LIBRARY_DIRS})
+
+add_executable(regions
+	main.cpp)
+
+target_link_libraries(regions ssw algorithm misc log4cxx ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+
+install(TARGETS regions DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+install(DIRECTORY "./config"
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+        FILES_MATCHING 
+        PATTERN "*.ini"
+        PATTERN "*.properties")
+
+        
