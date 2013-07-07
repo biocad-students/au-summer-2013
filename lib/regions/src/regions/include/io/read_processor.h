@@ -8,7 +8,7 @@ public:
 	template<typename Reader, typename Handler>
 	void read_and_process(const Reader& reader, const Handler& handler) const {
 		//TODO TBB concurrent_queue here
-		throw new GenericException("Not implemented yet");
+		throw GenericException("Not implemented yet");
 	}
 };
 

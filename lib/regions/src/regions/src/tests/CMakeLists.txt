@@ -9,12 +9,16 @@ set(CMAKE_CURRENT_BINARY_DIR "../bin")
 find_package (Threads)
 
 include_directories(/opt/local/include)
+include_directories(../../include/utils)
+
 link_directories(/opt/local/lib)
+link_directories(${CMAKE_SOURCE_DIR}/utils)
+link_directories(${CMAKE_SOURCE_DIR}/misc)
 
 add_executable(tests
   tests.cpp)
   
-target_link_libraries(tests gtest gtest_main)
+target_link_libraries(tests log4cxx gtest gtest_main misc utils)
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT})
 
 add_test(NAME tests COMMAND tests)
