@@ -1,6 +1,6 @@
 __author__ = 'Aspart'
 
-import kstat
+from kstat import KStat
 
 class AhoNode(object):
     def __init__(self):
@@ -11,11 +11,10 @@ class AhoNode(object):
 class Trie(object):
     def aho_create_forest(self, patterns):
         self.root = AhoNode()
-        self.m_kstat = kstat.KStat()
+        self.m_kstat = KStat()
         for path in patterns:
             node = self.root
             for i in range(len(path)):
-                self.m_kstat.add(path, i, node)
                 node = node.goto.setdefault(path[i], AhoNode())
             node.out.append(path)
 
