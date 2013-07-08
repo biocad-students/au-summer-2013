@@ -8,11 +8,16 @@ template<typename T, typename ID_TYPE> class trie
 public:
   typedef trie<T, ID_TYPE> _Myt;
   class const_iterator;
+  class iterator;
   //friend class const_iterator;
 protected:
   template<int> struct _Node;
   //friend struct _Node;
   typedef typename T value_type;
+  typedef typename T* _Tptr;
+	typedef typename const T* _Ctptr;
+  typedef typename T& _Reft;
+	typedef typename const T& const_reference;
 
   template<int n> struct _Node
   {
@@ -50,6 +55,16 @@ protected:
       return _Queue.back()->_Key;
     }
 
+		const_reference operator*() const
+	  {
+			return _Queue.back()->_value;
+		}
+
+		_Ctptr operator->() const
+		{
+			return (&**this);
+		}
+
     bool operator == (const _Myt_iter& _Right) const
     {
       if(_Queue.size() == 0 && _Queue.size() == _Right._Queue.size())
@@ -83,13 +98,47 @@ protected:
     std::vector<_Node<256>*> _Queue;
   };
 
+  class iterator : public const_iterator
+  {
+  public:
+		typedef const_iterator _Mybase_iter;
+    typedef _Tptr pointer;
+		typedef _Reft reference;
+
+    iterator() {}
+    iterator(_Node<256> *_pNode, const _Myt *_pTrie) : _Mybase_iter(_pNode, _pTrie) {}
+
+    reference operator*() const
+			{	// return designated value
+			return ((reference)**(_Mybase_iter *)this);
+			}
+
+		_Tptr operator->() const
+			{	// return pointer to class object
+			return (&**this);
+			}
+
+		_Myt_iter& operator++()
+			{	// preincrement
+			++(*(_Mybase_iter *)this);
+			return (*this);
+			}
+
+		_Myt_iter operator++(int)
+			{	// postincrement
+			_Myt_iter _Tmp = *this;
+			++*this;
+			return (_Tmp);
+			}
+  };
+
 public:
   trie() : _Root(new _Node<256>(NULL, ' ', T())) {}
 
   template<class _Iter>
-    const_iterator add(_Iter from, _Iter to, ID_TYPE id) //iterator add()
+    iterator add(_Iter from, _Iter to, ID_TYPE id)
     {
-      const_iterator iter;
+      iterator iter;
       _Node<256> *node = _Root;
       for(; from != to; ++from)
       {
@@ -104,15 +153,19 @@ public:
       return iter;
     }
 
-  //iterator end();
+  iterator end()
+  {
+    return iterator();
+  }
+
   const_iterator end() const
   {
     return const_iterator();
   }
 
-  const_iterator operator[](ID_TYPE id) const
+  iterator operator[](ID_TYPE id) const
   {
-    const_iterator iter;
+    iterator iter;
     std::map<ID_TYPE, _Node<256>*>::const_iterator i = _Id_Map.find(id);
     if(i == _Id_Map.end())
         return iter;
