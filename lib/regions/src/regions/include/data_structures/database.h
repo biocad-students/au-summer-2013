@@ -1,16 +1,16 @@
 #ifndef DATABASE_H_
 #define DATABASE_H_
 
-#include "comparator.hpp"
-#include "io/read.hpp"
-#include "adapter_index.hpp"
-
 #include <string>
 #include <map>
+#include <set>
+#include "comparator.h"
+#include "read.h"
 
 class DatabaseFiller {
 public:
-	DatabaseFiller() : 	name2seq(new std::map<std::string *, std::string *, Compare>()),
+	DatabaseFiller(int kmer_size) : kmer_size(kmer_size),
+						name2seq(new std::map<std::string *, std::string *, Compare>()),
 						seq2name(new std::map<std::string *, std::string *, Compare>()),
 						kmer2listOfSeq(new std::map<std::string *, std::set<std::string *, Compare>, Compare>) {};
 	bool operator()(const Read &r);
@@ -26,15 +26,16 @@ public:
 	}
 
 private:
-	void insert2db(const cclean::KMer& kmer, std::string * source_sequence);
+	void insert2db(std::string * kmer, std::string * source_sequence);
 	std::map<std::string *, std::string *, Compare> * name2seq;
 	std::map<std::string *, std::string *, Compare> * seq2name;
 	std::map<std::string *, std::set<std::string *, Compare>, Compare> * kmer2listOfSeq;
+	const int kmer_size;
 };
 
 class Database {
 public:
-	Database(const std::string& filename);
+	Database(const std::string& filename, int kmer_size);
 	~Database();
 	int get_sequences_amount() const;
 	int get_kmers_amount() const;

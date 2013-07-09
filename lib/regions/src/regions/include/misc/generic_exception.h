@@ -6,7 +6,7 @@
 
 class GenericException : public std::exception {
 public:
-	GenericException(const std::string m);
+	GenericException(const std::string & m);
 	~GenericException() throw ();
 
 	const char* what() const throw ();

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 
 project(regions)
 #find_package(TBB REQUIRED)
-#find_package(Log4cxx REQUIRED)
+#find_package(LOG4CXX REQUIRED)
+find_package(gtest REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
@@ -16,17 +17,20 @@ add_subdirectory(data_structures)
 add_subdirectory(ssw)
 add_subdirectory(tests)
 add_subdirectory(misc)
+add_subdirectory(io)
 add_subdirectory(utils)
 
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/opt/local/include)
 include_directories(../include)
 include_directories(../include/ssw)
+include_directories(../include/io)
 include_directories(../include/misc)
 include_directories(../include/utils)
 include_directories(../include/algorithm)
 
 link_directories(${CMAKE_SOURCE_DIR}/ssw)
+link_directories(${CMAKE_SOURCE_DIR}/io)
 link_directories(${CMAKE_SOURCE_DIR}/misc)
 link_directories(${CMAKE_SOURCE_DIR}/utils)
 link_directories(${CMAKE_SOURCE_DIR}/algorithm)
@@ -44,5 +48,8 @@ install(DIRECTORY "./config"
         FILES_MATCHING 
         PATTERN "*.ini"
         PATTERN "*.properties")
-
+install(DIRECTORY "./test_data"
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+        FILES_MATCHING 
+        PATTERN "*.fasta")
         

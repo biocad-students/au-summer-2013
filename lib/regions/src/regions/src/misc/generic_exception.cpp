@@ -1,6 +1,6 @@
 #include "generic_exception.h"
 
-GenericException::GenericException(const std::string m) {
+GenericException::GenericException(const std::string& m) {
 	this->message = m;
 };
 

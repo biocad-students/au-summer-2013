@@ -4,7 +4,7 @@
 #include "reverse_complement.h"
 #include "generic_exception.h"
 
-std::string revc(const std::string& data) {
+std::string ReverseComplement::getRevc(const std::string& data) {
 	std::map<char, char> reverse;
 	reverse['C'] = 'G';
 	reverse['G'] = 'C';

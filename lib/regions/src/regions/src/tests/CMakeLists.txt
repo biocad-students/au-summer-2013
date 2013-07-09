@@ -10,15 +10,21 @@ find_package (Threads)
 
 include_directories(/opt/local/include)
 include_directories(../../include/utils)
+include_directories(../../include/io)
+include_directories(../../include/data_structures)
+include_directories(../../include/ssw)
 
 link_directories(/opt/local/lib)
+link_directories(${CMAKE_SOURCE_DIR}/data_structures)
 link_directories(${CMAKE_SOURCE_DIR}/utils)
 link_directories(${CMAKE_SOURCE_DIR}/misc)
+link_directories(${CMAKE_SOURCE_DIR}/io)
+link_directories(${CMAKE_SOURCE_DIR}/ssw)
 
 add_executable(tests
   tests.cpp)
   
-target_link_libraries(tests log4cxx gtest gtest_main misc utils)
+target_link_libraries(tests log4cxx gtest gtest_main misc utils io z ssw data_structures)
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT})
 
 add_test(NAME tests COMMAND tests)

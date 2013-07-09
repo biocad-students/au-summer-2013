@@ -3,6 +3,9 @@
 
 #include <string>
 
-std::string revc(const std::string& data);
+class ReverseComplement {
+public:
+	static std::string getRevc(const std::string& data);
+};
 
 #endif /* REVERSE_COMPLEMENT_H_ */
