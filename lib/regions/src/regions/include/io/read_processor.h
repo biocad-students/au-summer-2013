@@ -6,7 +6,7 @@
 class ReadProcessor {
 public:
 	template<typename Reader, typename Handler>
-	void read_and_process(Reader& reader, Handler& handler) const {
+	void readAndProcess(Reader& reader, Handler& handler) const {
 
 		//TODO TBB concurrent_queue here
 		if(reader.is_opened()) {

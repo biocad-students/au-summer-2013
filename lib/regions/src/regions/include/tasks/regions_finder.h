@@ -1,38 +1,24 @@
-#ifndef JOBWRAPERS_H_
-#define JOBWRAPERS_H_
+#ifndef REGIONS_FINDER_H_
+#define REGIONS_FINDER_H_
 
-#include "running_modes.hpp"
-#include "QcException.hpp"
-#include "aho_corasick.hpp"
-#include "output.hpp"
-#include "config_struct_cclean.hpp"
-#include "io/read_processor.hpp"
+#include <iostream>
+#include "aho_corasick.h"
+#include "database.h"
 
-namespace cclean {
-class AdapterIndex;
-}
-
-class ExactAndAlignJobWrapper {
+class ReginosFinder {
 public:
-  ExactAndAlignJobWrapper(const Database * data, std::ostream& output, std::ostream& bed,
-                          const AhoCorasick &a, const AhoCorasick &b,
-                          const cclean::AdapterIndex &index)
-      : data(data), output(output), bed(bed), dbAhoCorasick(a), kmersAhoCorasick(b),
-        mismatch_threshold(cfg::get().mismatch_threshold), aligned_part_fraction(cfg::get().aligned_part_fraction),
-        aligned_(0), index_(index) {};
+	ReginosFinder(const Database * data, std::ostream& output,
+			const AhoCorasick &dbAhoCorasick, const AhoCorasick &kmersAhoCorasick, int kmer_size)
+      : data(data), output(output), dbAhoCorasick(dbAhoCorasick), kmersAhoCorasick(kmersAhoCorasick), kmer_size(kmer_size){};
 
-  bool operator()(const Read &r);
-  size_t aligned() const { return aligned_; }
+	void operator()(const Read &r);
+
 private:
   const Database * data;
   std::ostream& output;
-  std::ostream& bed;
   AhoCorasick dbAhoCorasick;
   AhoCorasick kmersAhoCorasick;
-  unsigned mismatch_threshold;
-  double aligned_part_fraction;
-  size_t aligned_;
-  const cclean::AdapterIndex &index_;
+  const int kmer_size;
 };
 
-#endif /* JOBWRAPERS_H_ */
+#endif /* REGIONS_FINDER_H_ */

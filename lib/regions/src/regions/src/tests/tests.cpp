@@ -21,7 +21,7 @@ log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 TEST(Database, ReadDatabaseTest) {
 	Database db(DATA_FILE, 51);
 	{
-		ASSERT_EQ(db.get_sequences_amount(), 2);
+		ASSERT_EQ(db.get_num_sequences(), 2);
 		std::string tmp;
 		db.get_name_by_sequence("GCTGAATACTTCCAGCACTGGGGCCAGGGCACCCTGGTCACCGTCTCCTCAG", tmp);
 		ASSERT_EQ(tmp, "IGHJ1*01");

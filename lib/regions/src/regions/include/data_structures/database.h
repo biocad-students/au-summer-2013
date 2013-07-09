@@ -37,7 +37,7 @@ class Database {
 public:
 	Database(const std::string& filename, int kmer_size);
 	~Database();
-	int get_sequences_amount() const;
+	int get_num_sequences() const;
 	int get_kmers_amount() const;
 	void get_sequence_by_name(const std::string& name, std::string & out_seq) const;
 	void get_name_by_sequence(const std::string& seq, std::string & out_name) const;
