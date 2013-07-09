@@ -68,6 +68,33 @@ void read_fasta_unittest() {
 	std::cout << my_contig[158].second.name;
 }
 
+void search_seq_unittest() {
+	contig<char, Prop> my_contig;
+	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+	Read tmp;
+	while(!FR.is_eof()) {
+		FR >> tmp;
+		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
+		auto vct = my_contig.getPath(id);
+	}
+	std::string str_gene1 = "ACGTACGT";
+	std::vector<std::vector<trie_node<char>*>> results = my_contig.find(str_gene1.begin(), str_gene1.end());
+	std::vector<auto> autoresults = my_contig.find(str_gene1.begin(), str_gene1.end());
+}
+
+void align_seq_unittest() {
+	contig<char, Prop> my_contig;
+	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+	Read tmp;
+	while(!FR.is_eof()) {
+		FR >> tmp;
+		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
+		auto vct = my_contig.getPath(id);
+	}
+	std::string str_gene1 = "ACGTACGT";
+	// TODO: create FIGA class holder
+}
+
 int main()
 {
   add_sequence_unittest();
