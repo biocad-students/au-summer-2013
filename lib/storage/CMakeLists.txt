@@ -1,31 +1,19 @@
 cmake_minimum_required (VERSION 2.6)
 
-project(
-	IG_Storage
-	)
+project(IG_Storage)
 
-set ( SRC_DIR
-	${PROJECT_SOURCE_DIR}/sources
-	)
+set (APP_NAME IG_Storage)
 	
-set ( HDR_DIR
-	${PROJECT_SOURCE_DIR}/include
-	)
+set (SRC_DIR ${PROJECT_SOURCE_DIR}/sources)
 	
-set ( TST_DIR
-	${PROJECT_SOURCE_DIR}/tests
-	)
+set (HDR_DIR ${PROJECT_SOURCE_DIR}/include)
+	
+set (TST_DIR ${PROJECT_SOURCE_DIR}/tests)
 
-set ( CMN_DIR
-	${PROJECT_SOURCE_DIR}/common
-	)
+set (CMN_DIR ${PROJECT_SOURCE_DIR}/common)
 	
-set ( APP_NAME 
-	IG_Storage
-	)
-
 # DEBUG|RELEASE|RELWITHDEBINFO|MINSIZEREL
-set( CMAKE_BUILD_TYPE DEBUG )
+set(CMAKE_BUILD_TYPE DEBUG)
 	
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
@@ -37,8 +25,10 @@ SET( SOURCES
 )
 
 SET( HEADERS
+	${HDR_DIR}/annotation.hpp
 	${HDR_DIR}/trie.hpp
 	${HDR_DIR}/contig.hpp
+	${HDR_DIR}/kstat.hpp
 )
 
 set ( COMMON
@@ -50,21 +40,23 @@ set ( COMMON
 SET ( TESTS
 	${TST_DIR}/unittest.cpp
 	)
-
-SET ( REQUIRED_LIBRARIES
-	zlib
-)
+	
+#SET ( REQUIRED_LIBRARIES
+#	${zlib_LIBRARIES}
+#)
 
 source_group ("Header Files" FILES ${HEADERS})
 source_group ("Source Files" FILES ${SOURCES})
 source_group ("Common Files" FILES ${COMMON})
 source_group ("Test Files" FILES ${TESTS})
 
-add_executable (${PROJECT_NAME}
+add_executable (${APP_NAME}
 	${SOURCES}
 	${HEADERS}
 	${COMMON}
 	${TESTS}
 	)
-	
-target_link_libraries(${REQUIRED_LIBRARIES})
+
+#target_link_libraries(${APP_NAME} 
+#	${REQUIRED_LIBRARIES}
+#	)

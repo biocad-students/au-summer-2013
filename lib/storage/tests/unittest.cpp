@@ -1,5 +1,7 @@
 #include "contig.hpp"
 #include "fasta_reader.h"
+#include "kstat.hpp"
+#include "annotation.hpp"
 #include <list>
 #include <string>
 #include <iostream>
@@ -51,8 +53,6 @@ void add_sequence_unittest()
 
   std::vector<trie_node<char>*> vct = cheese_.getPath(id);
   dump_s(vct);
-
-
 }
 
 void read_fasta_unittest() {
@@ -68,35 +68,71 @@ void read_fasta_unittest() {
 	std::cout << my_contig[158].second.name;
 }
 
-void search_seq_unittest() {
-	contig<char, Prop> my_contig;
-	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
-	Read tmp;
-	while(!FR.is_eof()) {
-		FR >> tmp;
-		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
-		auto vct = my_contig.getPath(id);
+//void search_seq_unittest() {
+//	contig<char, Prop> my_contig;
+//	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+//	Read tmp;
+//	while(!FR.is_eof()) {
+//		FR >> tmp;
+//		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
+//		auto vct = my_contig.getPath(id);
+//	}
+//	std::string str_gene1 = "ACGTACGT";
+//	std::vector<std::vector<trie_node<char>*>> results = my_contig.find(str_gene1.begin(), str_gene1.end());
+//	std::vector<std::vector<trie_node<char>*>> autoresults = my_contig.find(str_gene1.begin(), str_gene1.end());
+//}
+
+//void align_seq_unittest() {
+//	contig<char, Prop> my_contig;
+//	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+//	Read tmp;
+//	while(!FR.is_eof()) {
+//		FR >> tmp;
+//		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
+//		auto vct = my_contig.getPath(id);
+//	}
+//	std::string str_gene1 = "ACGTACGT";
+//	// TODO: create FIGA class holder
+//}
+
+void kstat_unittest(void) {
+	std::string str_ = "ACATAGACTAGCTA";
+	std::string::iterator iter = str_.begin();
+	std::string::iterator end = str_.end();
+	annotation<Prop<char>> annot_;
+	annotation<Prop<char>>::iterator aniter = annot_.begin();
+	std::vector<unsigned char> alphabet_;
+	alphabet_.push_back('A');
+	alphabet_.push_back('C');
+	alphabet_.push_back('G');
+	alphabet_.push_back('T');
+	int K_ = 7;
+	kstat_t<Prop<char>> kstat_(alphabet_, K_);
+
+	for(;iter != end - K_ + 1; ++iter)
+	{
+		kstat_.add(iter, iter + K_, aniter);
 	}
-	std::string str_gene1 = "ACGTACGT";
-	std::vector<std::vector<trie_node<char>*>> results = my_contig.find(str_gene1.begin(), str_gene1.end());
-	std::vector<auto> autoresults = my_contig.find(str_gene1.begin(), str_gene1.end());
 }
 
-void align_seq_unittest() {
-	contig<char, Prop> my_contig;
-	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
-	Read tmp;
-	while(!FR.is_eof()) {
-		FR >> tmp;
-		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
-		auto vct = my_contig.getPath(id);
-	}
-	std::string str_gene1 = "ACGTACGT";
-	// TODO: create FIGA class holder
-}
+// TODO: create treeIterator & annotationIterator
+//void add(Iterator start, Iterator end) {
+//	Iterator iter = start;
+//	trieIterator lastTrie = m_trie.begin();
+//	annotationIterator lastAnno = m_annotation.begin();
+//	// TODO: fix offset (Roman)
+//	while(iter + 7 != end) {
+//		lastTrie = m_trie.insert(lastTrie, iter);
+//		lastAnno = m_annotation.insert(lastAnno, iter);
+//		lastAnno.addLink(lastTrie);
+//		m_kstat.add(iter, iter + 7, lastAnno);
+//		++iter;
+//	}
+//}
 
 int main()
 {
-  add_sequence_unittest();
-  read_fasta_unittest();
+	kstat_unittest();
+	add_sequence_unittest();
+	read_fasta_unittest();
 }

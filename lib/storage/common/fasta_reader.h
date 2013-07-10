@@ -1,7 +1,7 @@
 #ifndef FASTA_READER_H_
 #define FASTA_READER_H_
 
-#include "zlib.h"
+#include <zlib.h>
 #include <string>
 #include "kseq.h"
 #include "read.h"
