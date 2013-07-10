@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "utils/comparator.h"
+#include "comparator.h"
 
 class Node {
  public:

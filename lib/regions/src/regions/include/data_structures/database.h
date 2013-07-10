@@ -38,7 +38,7 @@ public:
 	Database(const std::string& filename, int kmer_size);
 	~Database();
 	int get_num_sequences() const;
-	int get_kmers_amount() const;
+	int get_num_kmers() const;
 	void get_sequence_by_name(const std::string& name, std::string & out_seq) const;
 	void get_name_by_sequence(const std::string& seq, std::string & out_name) const;
 	void get_sequences_for_kmer(const std::string& kmer, std::set<std::string *, Compare> & out_seq) const;

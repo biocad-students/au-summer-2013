@@ -5,21 +5,28 @@
 #include <log4cxx/propertyconfigurator.h>
 #include <log4cxx/helpers/exception.h>
 #include "config_reader.h"
-#include "ssw_cpp.h"
+#include "task_configurator.h"
+#include "settings.h"
 
 int main() {
 	log4cxx::PropertyConfigurator::configure("./config/log4cxx.properties");
 	log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 
-    LOG4CXX_DEBUG(logger, "Hello World");
+    LOG4CXX_INFO(logger, "Lets start");
+
+	struct settings_t settings;
+
 	try {
-		po::variables_map vm = ConfigReader::read_settings();
-		std::cout << "res: " << vm["settings.max_nthreads"].as<std::string>() << std::endl;
-	} catch (std::exception & e) {
-	    LOG4CXX_DEBUG(logger, e.what());
+		settings = ConfigReader::read_settings();
+	} catch (std::exception& e) {
+		LOG4CXX_ERROR(logger, "Config file is incorrect: " << e.what());
+		return 0;
 	}
 
-    LOG4CXX_DEBUG(logger, "Goodbye!");
+	clock_t start = clock();
+	TaskConfigurator::configureAndRun(settings);
+	clock_t ends = clock();
+	LOG4CXX_INFO(logger, "Done in " << (double) (ends - start) / CLOCKS_PER_SEC << " seconds. Bye!");
 
     return 0;
 }

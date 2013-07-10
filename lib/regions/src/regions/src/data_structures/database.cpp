@@ -92,7 +92,7 @@ int Database::get_num_sequences() const {
 	return name2seq->size();
 }
 
-int Database::get_kmers_amount() const {
+int Database::get_num_kmers() const {
 	return kmer2listOfSeq->size();
 }
 
