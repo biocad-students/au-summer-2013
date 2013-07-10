@@ -18,7 +18,7 @@ public:
 				reader >> r;
 				handler(r);
 
-				if (++read % 10000 == 0) {
+				if (++read % 1000 == 0) {
 				  std::clog << read << " reads processed\r";
 				}
 			}
