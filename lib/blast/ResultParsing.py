@@ -1,6 +1,6 @@
 from Bio.Blast import NCBIXML
 
-xml_results_name = 'blasth.xml'
+xml_results_name = 'results.xml'
 
 bad_aligments=0
 for blast_record in NCBIXML.parse(open(xml_results_name)):
@@ -14,9 +14,8 @@ for blast_record in NCBIXML.parse(open(xml_results_name)):
                     print('sequence:', alignment.title)
                     print('length:', alignment.length)
                     print('e value:', hsp.expect)
-                    print(hsp.query[0:75] + '...')
-                    print(hsp.match[0:75] + '...')
-                    print(hsp.sbjct[0:75] + '...')
+                    print('distance:', hsp.identities*1000//hsp.align_length/10, '%')
+                    #print(hsp.sbjct)
                 else:
                     bad_aligments += 1
 print('bad_aligments = ',bad_aligments)
