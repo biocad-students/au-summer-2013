@@ -14,11 +14,11 @@ bool FastaReader::open(std::string filename) {
 }
 
 void FastaReader::readNext() {
-	if(!is_opened()) {
+	if(!is_open()) {
 		throw GenericException("File is not opened");
 	}
 
-	if(is_eof()) {
+	if(eof()) {
 		throw GenericException("End of file reached");
 	}
 
@@ -32,11 +32,11 @@ FastaReader::~FastaReader(){
 }
 
 FastaReader& FastaReader::operator>>(Read &r){
-	if(!is_opened()) {
+	if(!is_open()) {
 		throw GenericException("File is not opened");
 	}
 
-	if(is_eof()) {
+	if(eof()) {
 		throw GenericException("End of file reached");
 	}
 
@@ -56,16 +56,16 @@ void FastaReader::reset() {
 	open(filename);
 }
 
-bool FastaReader::is_opened() const {
+bool FastaReader::is_open() const {
 	return is_opened_;
 }
 
-bool FastaReader::is_eof() const{
+bool FastaReader::eof() const{
 	return is_eof_;
 }
 
 void FastaReader::close() {
-	if (is_opened()) {
+	if (is_open()) {
 		kseq_destroy(seq);
 		gzclose(fp);
 		is_opened_ = false;

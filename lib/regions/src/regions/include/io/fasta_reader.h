@@ -17,8 +17,8 @@ public:
 	virtual ~FastaReader();
 	FastaReader& operator>>(Read &r);
 	void reset();
-	bool is_opened() const;
-	bool is_eof() const;
+	bool is_open() const;
+	bool eof() const;
 private:
 	bool open(std::string filename);
 	void readNext();

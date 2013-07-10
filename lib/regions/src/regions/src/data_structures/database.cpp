@@ -22,23 +22,19 @@ void DatabaseFiller::insert2db(std::string * kmer, std::string * sequence){
 }
 
 bool DatabaseFiller::operator()(const Read &r) {
-	try {
-		//TODO do we need reverse complement reads and k-mers?
-		std::string * name = new std::string(r.getName());
-		std::string * sequence = new std::string(r.getSeq());
+	//TODO do we need reverse complement reads and k-mers?
+	std::string * name = new std::string(r.getName());
+	std::string * sequence = new std::string(r.getSeq());
 
 //#pragma omp critical
-		{
-			name2seq->insert(std::make_pair(name, sequence));
-			seq2name->insert(std::make_pair(sequence, name));
-		}
+	{
+		name2seq->insert(std::make_pair(name, sequence));
+		seq2name->insert(std::make_pair(sequence, name));
+	}
 
-		std::vector<std::string> kmers = KmerGenerator::getKmers(r, kmer_size);
-		for (std::vector<std::string>::const_iterator it = kmers.begin(); it != kmers.end(); ++it) {
-			insert2db(new std::string(*it), sequence);
-		}
-	} catch (std::exception& e) {
-		//TODO do I need an error message here? ERROR(e.what() << " for " << r.getName() << " " << r.getSequenceString());
+	std::vector<std::string> kmers = KmerGenerator::getKmers(r, kmer_size);
+	for (std::vector<std::string>::const_iterator it = kmers.begin(); it != kmers.end(); ++it) {
+		insert2db(new std::string(*it), sequence);
 	}
 	return false;
 }
@@ -47,7 +43,7 @@ Database::Database(const std::string& filename, int kmer_size) {
 	FastaReader reader(filename);
 	DatabaseFiller filler(kmer_size);
 	ReadProcessor rp;
-	rp.read_and_process(reader, filler);
+	rp.readAndProcess(reader, filler);
 
 	name2seq = filler.getName2seq();
 	seq2name = filler.getSeq2name();
@@ -92,11 +88,11 @@ void Database::get_sequences_for_kmer(const std::string& kmer, std::set<std::str
 	}
 }
 
-int Database::get_sequences_amount() const {
+int Database::get_num_sequences() const {
 	return name2seq->size();
 }
 
-int Database::get_kmers_amount() const {
+int Database::get_num_kmers() const {
 	return kmer2listOfSeq->size();
 }
 

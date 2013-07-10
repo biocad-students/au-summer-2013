@@ -2,12 +2,13 @@
 #define CONFIG_READER_H_
 
 #include <boost/program_options.hpp>
+#include "settings.h"
 
 namespace po = boost::program_options;
 
 class ConfigReader {
 public:
-	static po::variables_map read_settings();
+	static struct settings_t read_settings();
 };
 
 #endif /* CONFIG_READER_H_ */

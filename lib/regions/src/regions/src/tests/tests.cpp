@@ -21,7 +21,7 @@ log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 TEST(Database, ReadDatabaseTest) {
 	Database db(DATA_FILE, 51);
 	{
-		ASSERT_EQ(db.get_sequences_amount(), 2);
+		ASSERT_EQ(db.get_num_sequences(), 2);
 		std::string tmp;
 		db.get_name_by_sequence("GCTGAATACTTCCAGCACTGGGGCCAGGGCACCCTGGTCACCGTCTCCTCAG", tmp);
 		ASSERT_EQ(tmp, "IGHJ1*01");
@@ -36,7 +36,7 @@ TEST(Database, ReadDatabaseTest) {
 		ASSERT_EQ(tmp, "AAAGGTGCTGGGGGTCCCCTGAACCCGACCCGCCCTGAGACCGCAGCCACATCA");
 	}
 	{
-		ASSERT_EQ(db.get_kmers_amount(), 6);
+		ASSERT_EQ(db.get_num_kmers(), 6);
 		auto it = db.get_kmer_iterator();
 
 		//kmer
@@ -100,8 +100,8 @@ TEST(Kmers, SimpleTest) {
 TEST(IO, SimpleTest) {
 	std::vector<Read> result;
 	FastaReader reader(DATA_FILE);
-	if(reader.is_opened()) {
-		while (!reader.is_eof()) {
+	if(reader.is_open()) {
+		while (!reader.eof()) {
 			Read r;
 			reader >> r;
 			result.push_back(r);
