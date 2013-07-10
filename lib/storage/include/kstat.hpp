@@ -17,7 +17,9 @@ public:
 	
 	template <class Iterator>
 	std::vector<annoIter>* get(Iterator begin, Iterator end) {
-		return m_data[hash(begin, end)];
+		std::vector<annoIter>* result = &m_data[hash(begin, end)];
+		// TODO: add filtering results (Roman);
+		return result;
 	}
 
 	template <class Iterator>
@@ -38,4 +40,4 @@ private:
 	std::vector<unsigned char> m_alphabet;
 	std::vector<std::vector<annoIter>> m_data;
 	int k;
-};
+};	

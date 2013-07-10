@@ -63,7 +63,6 @@ void read_fasta_unittest() {
 		FR >> tmp;
 		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
 		auto vct = my_contig.getPath(id);
-		dump_s(vct);
 	}
 	std::cout << my_contig[158].second.name;
 }
@@ -96,9 +95,7 @@ void read_fasta_unittest() {
 //}
 
 void kstat_unittest(void) {
-	std::string str_ = "ACATAGACTAGCTA";
-	std::string::iterator iter = str_.begin();
-	std::string::iterator end = str_.end();
+
 	annotation<Prop<char>> annot_;
 	annotation<Prop<char>>::iterator aniter = annot_.begin();
 	std::vector<unsigned char> alphabet_;
@@ -106,13 +103,26 @@ void kstat_unittest(void) {
 	alphabet_.push_back('C');
 	alphabet_.push_back('G');
 	alphabet_.push_back('T');
+	alphabet_.push_back('N');
 	int K_ = 7;
 	kstat_t<Prop<char>> kstat_(alphabet_, K_);
 
-	for(;iter != end - K_ + 1; ++iter)
-	{
-		kstat_.add(iter, iter + K_, aniter);
+	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+	Read tmp;
+	std::string::iterator iter;
+	std::string::iterator end;
+	while(!FR.is_eof()) {
+		FR >> tmp;
+		iter = tmp.seq.begin();
+		end = tmp.seq.end();
+		for(;iter != end - K_ + 1; ++iter)
+		{
+			kstat_.add(iter, iter + K_, aniter);
+		}
 	}
+
+	std::string tst = "AGCCTGG";
+	std::vector<typename annotation<Prop<char>>::iterator>* result = kstat_.get(tst.begin(), tst.end());
 }
 
 // TODO: create treeIterator & annotationIterator
