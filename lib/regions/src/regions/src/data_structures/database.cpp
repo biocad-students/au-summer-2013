@@ -1,4 +1,5 @@
 #include <vector>
+#include <log4cxx/logger.h>
 
 #include "database.h"
 #include "generic_exception.h"
@@ -6,6 +7,8 @@
 #include "kmer_generator.h"
 #include "fasta_reader.h"
 #include "read_processor.h"
+
+extern log4cxx::LoggerPtr logger;
 
 void DatabaseFiller::insert2db(std::string * kmer, std::string * sequence){
 
@@ -45,6 +48,7 @@ Database::Database(const std::string& filename, int kmer_size) {
 	ReadProcessor rp;
 	rp.readAndProcess(reader, filler);
 
+	LOG4CXX_DEBUG(logger, "Number of reference reads is " << rp.get_num_processed_reads());
 	name2seq = filler.getName2seq();
 	seq2name = filler.getSeq2name();
 	kmer2listOfSeq = filler.getKmer2listOfSeq();

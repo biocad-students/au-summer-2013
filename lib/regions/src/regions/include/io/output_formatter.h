@@ -19,7 +19,7 @@ public:
 
 private:
 	static void print_n_times(std::ostream& output, char c, int n);
-	static void restoreFromCigar(const std::string& ref, const std::string& query, std::string& out_ref,
+	static int restoreFromCigar(const std::string& ref, const std::string& query, std::string& out_ref,
 			std::string& out_query, const StripedSmithWaterman::Alignment& a);
 };
 
