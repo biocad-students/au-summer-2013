@@ -44,22 +44,21 @@ public:
 				while (!reader.eof()) {
 					Read r;
 					reader >> r;
-#pragma omp atomic
-					++read;
 					queue.push(r);
-
-					if (read % 1000 == 0) {
-					  std::clog << read << " reads processed\r";
-					}
 				}
 //#pragma omp atomic
 				stop = true;
 			}
 
-			while(!stop) {
+			while(!stop || !queue.empty()) {
 				Read r;
 				if (queue.try_pop(r)) {
 					handler(r);
+#pragma omp atomic
+					++read;
+					if (read % 1000 == 0) {
+						std::clog << read << " reads processed\r";
+					}
 				}
 			}
 		}
