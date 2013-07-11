@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 #define cheese trie
 
@@ -16,6 +17,7 @@ struct Prop {
 	Prop(std::string name_) : name(name_) {}
 	Prop() : name("") {}
 };
+
 template<class T>
 void dump_s(std::vector<trie_node<T>*> const & vct) {
 	for(auto iter = vct.begin(); iter != vct.end(); ++iter)
@@ -52,10 +54,10 @@ void add_sequence_unittest()
   id = cheese_.pushSequence(str_gene4.begin(), str_gene4.end(), Prop<char>());
 
   std::vector<trie_node<char>*> vct = cheese_.getPath(id);
-  dump_s(vct);
 }
 
 void read_fasta_unittest() {
+	clock_t t0 = clock();
 	contig<char, Prop> my_contig;
 	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
 	Read tmp;
@@ -64,7 +66,9 @@ void read_fasta_unittest() {
 		int id = my_contig.pushSequence(tmp.seq.begin(), tmp.seq.end(), Prop<char>(tmp.name));
 		auto vct = my_contig.getPath(id);
 	}
-	std::cout << my_contig[158].second.name;
+	std::cout << my_contig[158].second.name << std::endl;
+	clock_t t1 = clock();
+	std::cout << "time_read_fasta_unittest: " << (double)(t1 - t0) / CLOCKS_PER_SEC << std::endl;
 }
 
 //void search_seq_unittest() {
@@ -94,10 +98,16 @@ void read_fasta_unittest() {
 //	// TODO: create FIGA class holder
 //}
 
-void kstat_unittest(void) {
+void annotation_unittest(void ) {
+	annotation_vector_t<char, Prop> annot_;
 
-	annotation<Prop<char>> annot_;
-	annotation<Prop<char>>::iterator aniter = annot_.begin();
+	annotation_vector_t<char, Prop>::iterator aniter = annot_.begin();
+}
+
+void kstat_unittest(void) {
+	clock_t t0 = clock();
+	annotation_vector_t<char, Prop> annot_;
+	annotation_vector_t<char, Prop>::iterator aniter = annot_.begin();
 	std::vector<unsigned char> alphabet_;
 	alphabet_.push_back('A');
 	alphabet_.push_back('C');
@@ -105,7 +115,7 @@ void kstat_unittest(void) {
 	alphabet_.push_back('T');
 	alphabet_.push_back('N');
 	int K_ = 7;
-	kstat_t<Prop<char>> kstat_(alphabet_, K_);
+	kstat_t<char, Prop> kstat_(alphabet_, K_);
 
 	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
 	Read tmp;
@@ -115,30 +125,18 @@ void kstat_unittest(void) {
 		FR >> tmp;
 		iter = tmp.seq.begin();
 		end = tmp.seq.end();
-		for(;iter != end - K_ + 1; ++iter)
+		for(;iter != end; ++iter)
 		{
-			kstat_.add(iter, iter + K_, aniter);
+			if(!kstat_.add(iter, end, aniter))
+				break;
 		}
 	}
-
+	clock_t t1 = clock();
+	std::cout << "time_kstat_unittest: " << (double)(t1 - t0) / CLOCKS_PER_SEC << std::endl;
 	std::string tst = "AGCCTGG";
-	std::vector<typename annotation<Prop<char>>::iterator>* result = kstat_.get(tst.begin(), tst.end());
+	std::vector<typename annotation_vector_t<char, Prop>::iterator>* result = kstat_.get(tst.begin(), tst.end());
+	std::cout << &result[150] << std::endl;
 }
-
-// TODO: create treeIterator & annotationIterator
-//void add(Iterator start, Iterator end) {
-//	Iterator iter = start;
-//	trieIterator lastTrie = m_trie.begin();
-//	annotationIterator lastAnno = m_annotation.begin();
-//	// TODO: fix offset (Roman)
-//	while(iter + 7 != end) {
-//		lastTrie = m_trie.insert(lastTrie, iter);
-//		lastAnno = m_annotation.insert(lastAnno, iter);
-//		lastAnno.addLink(lastTrie);
-//		m_kstat.add(iter, iter + 7, lastAnno);
-//		++iter;
-//	}
-//}
 
 int main()
 {
