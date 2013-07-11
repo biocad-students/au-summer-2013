@@ -12,7 +12,7 @@ extern log4cxx::LoggerPtr logger;
 
 void DatabaseFiller::insert2db(std::string * kmer, std::string * sequence){
 
-//#pragma omp critical
+#pragma omp critical
 	{
 		if (kmer2listOfSeq->end() == kmer2listOfSeq->find(kmer)) {
 			std::set<std::string *, Compare> source;
@@ -25,11 +25,11 @@ void DatabaseFiller::insert2db(std::string * kmer, std::string * sequence){
 }
 
 bool DatabaseFiller::operator()(const Read &r) {
-	//TODO do we need reverse complement reads and k-mers?
+	//TODO(Feodorov) do we need reverse complement reads and k-mers?
 	std::string * name = new std::string(r.getName());
 	std::string * sequence = new std::string(r.getSeq());
 
-//#pragma omp critical
+#pragma omp critical
 	{
 		name2seq->insert(std::make_pair(name, sequence));
 		seq2name->insert(std::make_pair(sequence, name));
@@ -42,11 +42,11 @@ bool DatabaseFiller::operator()(const Read &r) {
 	return false;
 }
 
-Database::Database(const std::string& filename, int kmer_size) {
-	FastaReader reader(filename);
-	DatabaseFiller filler(kmer_size);
-	ReadProcessor rp;
-	rp.readAndProcess(reader, filler);
+Database::Database(const struct settings_t& settings) {
+	FastaReader reader(settings.reference_file);
+	DatabaseFiller filler(settings.kmer_size);
+	ReadProcessor rp(settings.max_threads);
+	rp.readAndProcessSingleThread(reader, filler);
 
 	LOG4CXX_DEBUG(logger, "Number of reference reads is " << rp.get_num_processed_reads());
 	name2seq = filler.getName2seq();

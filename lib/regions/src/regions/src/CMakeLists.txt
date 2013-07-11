@@ -8,6 +8,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp ${OpenMP_CXX_FLAGS} -std=c++11")
 
 set(CMAKE_CURRENT_BINARY_DIR "../bin")
 set(CMAKE_INSTALL_PREFIX "./")
@@ -43,7 +44,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 add_executable(regions
 	main.cpp)
 
-target_link_libraries(regions ssw algorithm misc tasks io utils data_structures z log4cxx ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+target_link_libraries(regions ssw algorithm misc tasks io utils tbb data_structures z log4cxx ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 
 install(TARGETS regions DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

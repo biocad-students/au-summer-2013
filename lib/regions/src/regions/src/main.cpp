@@ -26,7 +26,7 @@ int main() {
 	clock_t start = clock();
 	TaskConfigurator::configureAndRun(settings);
 	clock_t ends = clock();
-	LOG4CXX_INFO(logger, "Done in " << (double) (ends - start) / CLOCKS_PER_SEC << " seconds. Bye!");
+	LOG4CXX_INFO(logger, "Done. Processor time spent is " << (double) (ends - start) / CLOCKS_PER_SEC << " seconds. Bye!");
 
     return 0;
 }

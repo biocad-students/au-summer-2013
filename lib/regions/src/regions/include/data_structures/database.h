@@ -6,6 +6,7 @@
 #include <set>
 #include "comparator.h"
 #include "read.h"
+#include "settings.h"
 
 class DatabaseFiller {
 public:
@@ -35,7 +36,7 @@ private:
 
 class Database {
 public:
-	Database(const std::string& filename, int kmer_size);
+	Database(const struct settings_t& settings);
 	~Database();
 	int get_num_sequences() const;
 	int get_num_kmers() const;

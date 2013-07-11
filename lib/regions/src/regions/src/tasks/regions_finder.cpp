@@ -1,9 +1,11 @@
+#include <log4cxx/logger.h>
+#include <omp.h>
+
 #include "regions_finder.h"
 #include "ssw_cpp.h"
 #include "output_formatter.h"
 #include "kmer_generator.h"
 #include "aho_corasick.h"
-#include <log4cxx/logger.h>
 
 extern log4cxx::LoggerPtr logger;
 
@@ -34,7 +36,7 @@ void RegionsFinder::operator()(const Read &r) {
       std::string database_name;
       data->get_name_by_sequence(query, database_name);
 
-//#pragma omp critical
+#pragma omp critical
         {
     	  OutputFormatter::print_alignment(output, alignment, sequence, query, name, database_name);
         }
