@@ -38,14 +38,9 @@ public:
 		}
 	}
 
-	T & operator[](size_t i)
-	{
-		return m_cont[i];
-	}
-
 	iterator insert(iterator i, byte symbol)
 	{
-		trie_node* new_node = m_trie->insert(m_cont.nodeOf(i.current()), symbol);
+		trie_node* new_node = m_trie->insert(m_cont.nodeOf(i.index()), symbol);
 		if (new_node->id() == m_cont.size())
 		{
 			return iterator(this, m_cont.push(new_node));
@@ -69,6 +64,11 @@ public:
 	}
 
 private:
+	T & operator[](size_t i)
+	{
+		return m_cont[i];
+	}
+
 	trie_node* get(size_t i)
 	{
 		return m_cont.nodeOf(i);

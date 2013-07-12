@@ -46,7 +46,7 @@ void add_test2( trie<T> * t )
 	}
 }
 
-int main(int argc, char *argv[])
+void iterators_tests()
 {
 	trie<bool> t;
 	trie<bool> s;
@@ -54,22 +54,27 @@ int main(int argc, char *argv[])
 	add_test1(&t);
 	for (auto i = t.begin(); i != t.end(); ++i)
 	{
-		std::cout << i.symbol() << " ";
+		std::cout << i.symbol();
 	}
 	std::cout << std::endl;
 
 	add_test2(&s);
 	for (auto i = s.begin(); i != s.end(); ++i)
 	{
-		std::cout << i.symbol() << " ";
+		std::cout << i.symbol();
 	}
 	std::cout << std::endl;
 
 	for (size_t k = 0; k < t.size(); ++k)
 	{
-		std::cout << (t.begin() + k).symbol() << " ";
+		std::cout << (t.begin() + k).symbol();
 	}
 	std::cout << std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+	iterators_tests();
 
 	return 0;
 }

@@ -108,8 +108,7 @@ public:
 		return !(*this == iter);
 	}
 
-private:
-	size_t current()
+	size_t index()
 	{
 		return m_current;
 	}
