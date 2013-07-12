@@ -91,17 +91,17 @@ public:
 
 	T* operator->()
 	{
-		return &(*this);
+		return &(**this);
 	}
 
-	bool operator==(trie_iterator<T> const & iter)
+	bool operator==(trie_iterator<T> iter)
 	{
 		if (m_current < m_trie->size())
 			return m_current == iter.m_current;
 		return iter.m_current > m_trie->size();
 	}
 
-	bool operator!=(trie_iterator<T> const & iter)
+	bool operator!=(trie_iterator<T> iter)
 	{
 		return !(*this == iter);
 	}

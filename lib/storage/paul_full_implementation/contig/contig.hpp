@@ -8,19 +8,22 @@
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
 
+#include "contig_iterator.hpp"
+
 template <class T, template <class> class Property, class LabelType=std::string>
 class contig
 {
 public:
-	typedef Property<T>                        data_type;
-	typedef std::vector<byte>				   alphabet_type;
-	typedef size_t							   kstart_link_type;
-	typedef annotation<T, Property, LabelType> anno_type;
-	typedef typename anno_type::index          link_type;
-	typedef typename anno_type::record_type    record_type;
-	typedef kstatistics<kstart_link_type>      kstat_type;
-	typedef trie<link_type>                    trie_type;
-	typedef typename trie_type::iterator       iterator;
+	typedef Property<T>                        		data_type;
+	typedef std::vector<byte>				   		alphabet_type;
+	typedef size_t							   		kstart_link_type;
+	typedef annotation<T, Property, LabelType> 		anno_type;
+	typedef typename anno_type::index          		link_type;
+	typedef typename anno_type::record_type    		record_type;
+	typedef kstatistics<kstart_link_type>      		kstat_type;
+	typedef trie<link_type>                    		trie_type;
+	typedef typename trie_type::iterator       		iterator;
+	typedef contig_iterator<T, Property, LabelType> aiterator;
 
 	contig(std::string const & name, alphabet_type const & alphabet, size_t k = 7)
 		: m_name(name), m_stat(alphabet, k)
@@ -117,6 +120,16 @@ public:
 	iterator end()
 	{
 		return m_trie.end();
+	}
+
+	aiterator abegin()
+	{
+		return aiterator(this, begin());
+	}
+
+	aiterator aend()
+	{
+		return aiterator(this, end());
 	}
 
 private:

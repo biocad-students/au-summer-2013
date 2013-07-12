@@ -38,9 +38,16 @@ void test_contig()
 
 	contig<Alphabet, RegionProp>::iterator iter = my_contig.push_unannotated(s1.begin(), s1.end(), "s1");
 	std::cout << my_contig.getLabel(iter) << std::endl;
-	while(iter != my_contig.end())
+	while (iter != my_contig.end())
 	{
 		std::cout << my_contig.getAnnotation(iter++).region_id << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "with root" << std::endl;
+	for (auto ai = my_contig.abegin(); ai != my_contig.aend(); ++ai)
+	{
+		std::cout << ai->region_id << " ";
 	}
 	std::cout << std::endl;
 }
