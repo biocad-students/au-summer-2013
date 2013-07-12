@@ -1,18 +1,39 @@
 import json
 import argparse
+import os
+import sys
 
 from Bio import SeqIO
-import sys
+from Bio.SeqUtils.CheckSum import seguid
+
+from separate import split
+
+
+def remove_duplicates(fasta):
+    check_sums = set()
+    for record in fasta:
+        checksum = seguid(record.seq)
+        if checksum in check_sums:
+            print ("Ignoring record {0}".format(record.id))
+            continue
+        check_sums.add(checksum)
+        yield record
+
+
+def fasta_translation(fasta):
+    for record in fasta:
+        record.seq = record.seq.translate()
+        yield record
 
 
 def main(args):
     # Parse parameters
     parser = argparse.ArgumentParser(
         description="Clustering sequences by cdr3, cdr2, cdr1")
-    parser.add_argument("-i", metavar="fasta_path", nargs=1, required=True,
+    parser.add_argument("-i", metavar="fasta_path", required=True,
                         type=argparse.FileType("r"),
                         help="path to FASTA file with reads")
-    parser.add_argument("-o", metavar="out_dir", nargs=1, required=True,
+    parser.add_argument("-o", metavar="out_dir", required=True,
                         help="path to file you want to write result")
     parser.add_argument("-c", metavar="config_path", default="config.json",
                         type=argparse.FileType("r"),
@@ -34,12 +55,17 @@ def main(args):
     config_file = args.c
     out_dir_path = args.o
 
+    if not os.path.exists(out_dir_path):
+        os.makedirs(out_dir_path)
+
     # Read config (by default in config.json)
     config = json.load(config_file)
 
     # Read and process fasta
     fasta = SeqIO.parse(fasta_file, "fasta")
-
+    separated_fasta = split(config, fasta)
+    for key, value in separated_fasta.iteritems():
+        print key, len(value)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

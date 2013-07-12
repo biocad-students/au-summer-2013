@@ -1,8 +1,7 @@
 import re
-import numpy
 import logging
-import subprocess
 
+import numpy
 import align
 
 # MUSCLE alignment implementation with BioPython

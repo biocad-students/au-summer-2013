@@ -7,13 +7,13 @@
         "reversePrimer": "CACAGACGGGCCTTTTGTAGAC",
         "cdr3Start": "Y[YH]C",
         "cdr3End": "WG[KQR]",
-        "cdr3regex": "Y(Y|H)C\\w?WG(K|Q|R)",
+        "cdr3regex": "Y[YH]C\\w?WG[KQR]",
         "cdr3Threshold": 2,
         "sequenceThreshold": 4
     },
 
     "VHH": {
-        "regex": "(F|Y|I)\\w{4,15}ER\\w?(G|S|A|F)"
+        "regex": "[FYI][A-Z*]{4,15}ER[A-Z*]?[GSAF]"
     },
 
     "VL": {
@@ -24,7 +24,7 @@
         "reversePrimer": "GGCGGGAAAATAAAAACAGACGG",
         "cdr3Start": "Y[YH]C",
         "cdr3End": "GT[KQ]",
-        "cdr3regex": "Y(Y|H)C\\w?GT(K|Q)",
+        "cdr3regex": "Y[YH]C\\w?GT[KQ]",
         "cdr3Threshold": 2,
         "sequenceThreshold": 4
     },
@@ -37,7 +37,7 @@
         "reversePrimer": "GGCGGGAAAATAAAAACAGACGG",
         "cdr3Start": "YYC",
         "cdr3End": "GT[KQ]",
-        "cdr3regex": "Y(Y|H)C\\w?GT(K|Q)",
+        "cdr3regex": "Y[YH]C\\w?GT[KQ]",
         "cdr3Threshold": 2,
         "sequenceThreshold": 4
     }

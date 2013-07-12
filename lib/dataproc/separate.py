@@ -1,3 +1,4 @@
+import re
 import alignment as aln
 from collections import namedtuple, defaultdict
 
@@ -89,5 +90,12 @@ def split(config, fasta):
 
         if not has_match:
             splited_fasta["filtered"].append(record)
+
+    vhh = re.compile(config["VHH"]["regex"])
+    for record in splited_fasta["VH"]:
+        seq = record.seq
+        if vhh.search(str(seq.translate())):
+            splited_fasta["VHH"].append(record)
+            splited_fasta["VH"].remove(record)
 
     return splited_fasta
