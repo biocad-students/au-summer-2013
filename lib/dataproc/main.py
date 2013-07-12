@@ -64,8 +64,15 @@ def main(args):
     # Read and process fasta
     fasta = SeqIO.parse(fasta_file, "fasta")
     separated_fasta = split(config, fasta)
-    for key, value in separated_fasta.iteritems():
-        print key, len(value)
+
+    # Write record groups in files
+    for seq_type, records in separated_fasta.iteritems():
+        file_path = os.path.join(out_dir_path, seq_type + ".fasta")
+        with open(file_path, "w") as fout:
+            SeqIO.write(records, fout, "fasta")
+
+    
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
