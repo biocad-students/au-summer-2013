@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <vector>
-#include <cmath>
 
 typedef unsigned char byte;
 
@@ -11,14 +10,17 @@ class kstatistics {
 public:
 	typedef T link_type;
 
-	kstatistics(std::vector<byte> alphabet, int _k = 7)
+	kstatistics(std::vector<byte> alphabet, int _k)
 		: m_alphabet(alphabet), m_k(_k)
 	{
+		size_t power = 1;
 		for (size_t i = 0; i != m_k; ++i)
 		{
-			m_pow_cache.push_back(pow(alphabet.size(), i));
+			m_pow_cache.push_back(power);
+			power *= alphabet.size();
 		}
-		m_data = std::vector<std::vector<link_type>>(pow(alphabet.size(), m_k + 1), std::vector<link_type>());
+		power *= alphabet.size();
+		m_data = std::vector<std::vector<link_type>>(power, std::vector<link_type>());
 	}
 
 	template <class Iterator>
