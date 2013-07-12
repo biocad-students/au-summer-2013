@@ -2,8 +2,6 @@
 
 #include <map>
 
-#include "debug.h"
-
 typedef unsigned char byte;
 
 class trie_node

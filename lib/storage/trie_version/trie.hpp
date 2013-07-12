@@ -4,8 +4,6 @@
 #include <vector>
 #include <map>
 
-#include "debug.h"
-
 #include "trie_node.hpp"
 #include "trie_impl.hpp"
 #include "trie_cont.hpp"

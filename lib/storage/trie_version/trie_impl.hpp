@@ -1,7 +1,5 @@
 #pragma once
 
-#include "debug.h"
-
 #include "trie_node.hpp"
 
 class trie_impl

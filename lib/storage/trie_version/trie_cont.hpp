@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 
-#include "debug.h"
 #include "trie_node.hpp"
 
 template <class T>
