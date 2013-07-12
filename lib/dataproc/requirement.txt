@@ -1,1 +1,2 @@
 biopython>=1.61
+scikit-learn>=0.13

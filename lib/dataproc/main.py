@@ -6,6 +6,7 @@ import sys
 
 from Bio import SeqIO
 from Bio.SeqUtils.CheckSum import seguid
+from clustering import add_to_cluster
 from region_finding import find_cdr3
 from separate import split
 
@@ -28,6 +29,24 @@ def fasta_translation(fasta):
                         seq=record.seq.translate(), name=record.name)
 
 
+def cluster_reading(clusters_path):
+    result = {}
+    for seq_type in ["VH", "VHH", "VL", "VK"]:
+        result[seq_type] = defaultdict(list)
+        clusters_dir = os.path.join(clusters_path, seq_type)
+        if not os.path.exists(clusters_dir):
+            print "Directory {0} does not exist".\
+                format(os.path.abspath(clusters_dir))
+            continue
+        for cluster_filename in os.listdir(clusters_dir):
+            cluster_id, _ = \
+                os.path.splitext(os.path.basename(cluster_filename))
+            cluster_path = os.path.join(clusters_dir, cluster_filename)
+            result[seq_type][cluster_id] = \
+                list(SeqIO.parse(cluster_path, "fasta"))
+    return result
+
+
 def main(args):
     parser = argparse.ArgumentParser(
         description="Clustering sequences by cdr3, cdr2, cdr1")
@@ -40,10 +59,10 @@ def main(args):
                         type=argparse.FileType("r"),
                         help="path to config in .json (by "
                              "default is config.json")
-    parser.add_argument("--clusters", metavar="clusters_path", nargs=1,
-                        type=argparse.FileType("r"),
-                        help="path to file with known clusters in .cl, use "
-                             "if need add new sequence")
+    parser.add_argument("--clusters", metavar="clusters_path",
+                        help="path to directory with known clusters in "
+                             "grouped by sequences type .fasta files,"
+                             "use if need add new sequence")
     parser.add_argument("--correction", action="store_true", default=False,
                         help="read correction only")
     parser.add_argument("--clustering", action="store_true", default=False,
@@ -61,17 +80,16 @@ def main(args):
 
     config = json.load(config_file)
 
+    # FASTA preparing
     fasta = SeqIO.parse(fasta_file, "fasta")
     separated_fasta = split(config, fasta)
     for seq_type, records in separated_fasta.iteritems():
         separated_fasta[seq_type] = list(remove_duplicates(records))
-        print seq_type, len(separated_fasta[seq_type])
 
     peptide_fasta = defaultdict(list)
     for seq_type, records in separated_fasta.iteritems():
         file_path = os.path.join(out_dir_path, seq_type + ".fasta")
-        with open(file_path, "w") as fout:
-            SeqIO.write(records, fout, "fasta")
+        SeqIO.write(records, file_path, "fasta")
 
         peptide_fasta[seq_type] = list(fasta_translation(records))
 
@@ -79,6 +97,11 @@ def main(args):
     for seq_type in config.iterkeys():
         records = peptide_fasta[seq_type]
         cdr3[seq_type] = list(find_cdr3(records, config[seq_type]["cdr3regex"]))
+
+    if args.add:
+        clusters = cluster_reading(args.clusters)
+        add_to_cluster(clusters, fasta)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
