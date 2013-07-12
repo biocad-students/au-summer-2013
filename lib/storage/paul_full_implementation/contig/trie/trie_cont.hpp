@@ -9,6 +9,7 @@ template <class T>
 class trie_cont
 {
 public:
+	template <class> friend class trie_cont;
 	trie_cont() {}
 
 	template <class S>
@@ -38,7 +39,7 @@ public:
 		return m_data.size() - 1;
 	}
 
-	size_t size()
+	size_t size() const
 	{
 		return m_data.size();
 	}

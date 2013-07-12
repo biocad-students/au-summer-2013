@@ -35,7 +35,7 @@ public:
 	{
 		size_t record_length = std::distance(begin, end);
 
-		record_type new_record = m_anno.add(label, record_length);
+		record_type new_record = m_anno->add(label, record_length);
 		iterator trie_iter = m_trie.begin();
 
 		link_type link;
@@ -107,7 +107,7 @@ public:
 		return m_anno[*iter];
 	}
 
-	LabelType getLabel(iterator iter)
+	LabelType getLabel(iterator iter) const
 	{
 		return m_anno.labelOf(*iter);
 	}
@@ -130,6 +130,12 @@ public:
 	aiterator aend()
 	{
 		return aiterator(this, end());
+	}
+
+	template <class S>
+	trie<S> copyTrie()
+	{
+		return trie<S>(m_trie);
 	}
 
 private:

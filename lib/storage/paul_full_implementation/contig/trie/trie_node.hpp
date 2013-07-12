@@ -50,12 +50,12 @@ public:
 		return m_parent;
 	}
 
-	byte symbol()
+	byte symbol() const
 	{
 		return m_symbol;
 	}
 
-	size_t id()
+	size_t id() const
 	{
 		return m_id;
 	}

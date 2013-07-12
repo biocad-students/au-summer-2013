@@ -27,17 +27,17 @@ public:
 		return *m_data[i];
 	}
 
-	byte symbolOf(size_t i)
+	byte symbolOf(size_t i) const
 	{
 		return m_data[i].symbol();
 	}
 
-	size_t indexOf(size_t i)
+	size_t indexOf(size_t i) const
 	{
 		return m_data[i].index();
 	}
 
-	size_t size()
+	size_t size() const
 	{
 		return m_data.size();
 	}

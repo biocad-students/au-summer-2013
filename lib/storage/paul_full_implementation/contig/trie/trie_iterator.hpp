@@ -20,18 +20,18 @@ public:
 	{
 	}
 
-	byte symbol()
+	byte symbol() const
 	{
 		trie_node* node = m_trie->get(m_current);
 		return node ? node->symbol() : 0;
 	}
 
-	trie_iterator next(byte symbol)
+	trie_iterator next(byte symbol) const
 	{
 		return trie_iterator(m_trie, m_trie->next(symbol));
 	}
 
-	trie_iterator prev()
+	trie_iterator prev() const
 	{
 		return trie_iterator(m_trie, m_trie->prev());
 	}
@@ -64,7 +64,7 @@ public:
 		return tmp;
 	}
 
-	trie_iterator operator+(size_t i)
+	trie_iterator operator+(size_t i) const
 	{
 		size_t new_current = m_current;
 		for (size_t k = 0; k < i; ++k)
@@ -74,7 +74,7 @@ public:
 		return trie_iterator(m_trie, new_current);
 	}
 
-	trie_iterator operator-(size_t i)
+	trie_iterator operator-(size_t i) const
 	{
 		size_t new_current = m_current;
 		for (size_t k = 0; k < i; ++k)
@@ -94,19 +94,19 @@ public:
 		return &(**this);
 	}
 
-	bool operator==(trie_iterator<T> iter)
+	bool operator==(trie_iterator<T> iter) const
 	{
 		if (m_current < m_trie->size())
 			return m_current == iter.m_current;
 		return iter.m_current > m_trie->size();
 	}
 
-	bool operator!=(trie_iterator<T> iter)
+	bool operator!=(trie_iterator<T> iter) const
 	{
 		return !(*this == iter);
 	}
 
-	size_t index()
+	size_t index() const
 	{
 		return m_current;
 	}

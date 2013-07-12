@@ -50,4 +50,12 @@ void test_contig()
 		std::cout << ai->region_id << " ";
 	}
 	std::cout << std::endl;
+
+	std::cout << "isomorphic tree creation" << std::endl;
+	trie<bool> my_trie = my_contig.copyTrie<bool>();
+	for (auto i : my_trie)
+	{
+		std::cout << i << " ";
+	}
+	std::cout << std::endl;
 }

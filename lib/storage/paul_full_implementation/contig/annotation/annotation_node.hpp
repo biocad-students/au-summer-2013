@@ -16,12 +16,12 @@ public:
 		return m_data;
 	}
 
-	size_t index()
+	size_t index() const
 	{
 		return m_trie_index;
 	}
 
-	byte symbol()
+	byte symbol() const
 	{
 		return m_symbol;
 	}

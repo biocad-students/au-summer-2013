@@ -25,7 +25,7 @@ public:
 		return new_node;
 	}
 
-	size_t size()
+	size_t size() const
 	{
 		return m_counter;
 	}

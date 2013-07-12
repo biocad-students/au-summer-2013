@@ -45,12 +45,12 @@ public:
 		return m_data[i.record].second[i.letter];
 	}
 
-	LabelType labelOf(size_t i)
+	LabelType labelOf(size_t i) const
 	{
 		return m_data[i].first;
 	}
 
-	LabelType labelOf(index i)
+	LabelType labelOf(index i) const
 	{
 		return m_data[i.record].first;
 	}
@@ -60,7 +60,7 @@ public:
 		return index(size() - 1, (*this)[size() - 1].size() - 1);
 	}
 
-	size_t size()
+	size_t size() const
 	{
 		return m_data.size();
 	}

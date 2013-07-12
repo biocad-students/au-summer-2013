@@ -15,6 +15,7 @@ template <class T>
 class trie
 {
 public:
+	template <class> friend class trie;
 	friend class trie_iterator<T>;
 	typedef trie_iterator<T>       iterator;
 	typedef const trie_iterator<T> const_iterator;
@@ -57,7 +58,7 @@ public:
 		return iterator(this, -1);
 	}
 
-	size_t size()
+	size_t size() const
 	{
 		return m_cont.size();
 	}
