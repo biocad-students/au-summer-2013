@@ -4,6 +4,7 @@
 #include <log4cxx/logger.h>
 #include <log4cxx/propertyconfigurator.h>
 #include <log4cxx/helpers/exception.h>
+#include <omp.h>
 
 #include "fasta_reader.h"
 #include "read.h"
@@ -12,6 +13,7 @@
 #include "kmer_generator.h"
 #include "output_formatter.h"
 #include "database.h"
+#include "settings.h"
 
 log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 
@@ -19,7 +21,8 @@ log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 #define DATA_FILE "./test_data/sample.fasta"
 
 TEST(Database, ReadDatabaseTest) {
-	Database db(DATA_FILE, 51);
+	const struct settings_t settings = {8, 51, DATA_FILE, "", ""};
+	Database db(settings);
 	{
 		ASSERT_EQ(db.get_num_sequences(), 2);
 		std::string tmp;

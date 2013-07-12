@@ -20,6 +20,7 @@ struct settings_t ConfigReader::read_settings() {
 	po::notify(vm);
 
 	struct settings_t settings;
+	//TODO(Feodorov) max(max_threads, max_available_threads_in_system)
 	settings.max_threads = atoi((vm["settings.max_nthreads"].as<std::string>()).c_str());
 	settings.kmer_size = atoi((vm["settings.kmer_size"].as<std::string>()).c_str());
 	settings.reference_file = vm["data.reference_file"].as<std::string>();

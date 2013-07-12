@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 project(tests)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp ${OpenMP_CXX_FLAGS} -std=c++11")
 find_package(gtest REQUIRED)
 enable_testing()
 
@@ -24,7 +25,7 @@ link_directories(${CMAKE_SOURCE_DIR}/ssw)
 add_executable(tests
   tests.cpp)
   
-target_link_libraries(tests log4cxx gtest gtest_main misc utils io z ssw data_structures)
+target_link_libraries(tests log4cxx gtest gtest_main misc utils io z ssw tbb data_structures)
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT})
 
 add_test(NAME tests COMMAND tests)

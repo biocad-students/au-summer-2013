@@ -5,12 +5,13 @@
 #include "regions_finder.h"
 #include "read_processor.h"
 #include "fasta_reader.h"
+#include "settings.h"
 
 log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 
 void TaskConfigurator::configureAndRun(const struct settings_t& settings) {
 	LOG4CXX_INFO(logger, "Reading reference data...");
-	Database db(settings.reference_file, settings.kmer_size);
+	Database db(settings);
 	LOG4CXX_INFO(logger, "Done");
 
 	std::ofstream output(settings.output_file);
@@ -22,7 +23,7 @@ void TaskConfigurator::configureAndRun(const struct settings_t& settings) {
 	AhoCorasick kmersAhoCorasick;
 	TaskConfigurator::getKmersAhoCorasick(db, kmersAhoCorasick);
 	RegionsFinder rf(&db, output, kmersAhoCorasick, settings.kmer_size);
-	ReadProcessor rp;
+	ReadProcessor rp(settings.max_threads);
 	FastaReader input(settings.input_file);
 
 	LOG4CXX_INFO(logger, "Start processing...");
