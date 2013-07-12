@@ -16,7 +16,8 @@ class trie
 {
 public:
 	friend class trie_iterator<T>;
-	typedef trie_iterator<T> iterator;
+	typedef trie_iterator<T>       iterator;
+	typedef const trie_iterator<T> const_iterator;
 
 	trie() : m_trie(new trie_impl()), m_pure(true)
 	{

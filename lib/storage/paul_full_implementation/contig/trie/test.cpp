@@ -1,8 +1,9 @@
-#include <string>
-#include <vector>
 #include <iostream>
+#include <string>
+#include <cstdlib>
 
 #include "trie.hpp"
+#include "../unit_tests.h"
 
 template <class T>
 void add_test1( trie<T> * t )
@@ -72,9 +73,7 @@ void iterators_tests()
 	std::cout << std::endl;
 }
 
-int main(int argc, char *argv[])
+void test_trie()
 {
 	iterators_tests();
-
-	return 0;
 }

@@ -2,8 +2,6 @@
 
 #include <iterator>
 
-#include "debug.h"
-
 #include "trie.hpp"
 
 template <class> class trie;

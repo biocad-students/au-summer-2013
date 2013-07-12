@@ -28,9 +28,12 @@ public:
 	
 	template <class Iterator>
 	std::vector<annoIter>* get(Iterator begin, Iterator end) {
-		std::vector<annoIter>* result = &m_data[hash(begin, end)];
-		// TODO: add filtering results (Roman);
-		return result;
+		if(begin <= end - m_k) {
+			std::vector<annoIter>* result = &m_data[hash(begin, end)];
+			// TODO: add filtering results (Roman);
+			return result;
+		}
+		return nullptr;
 	}
 
 	template <class Iterator>
