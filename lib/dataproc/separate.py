@@ -29,17 +29,17 @@ def with_sequence(mids, primers, seq):
 
         start_seq = mids[forward_direction] + primers[forward_direction]
         start_aln_a, start_aln_b, start_aln_score = local_alignment(
-            seq[:start_flank], start_seq)
+            str(seq)[:start_flank], start_seq)
 
         if start_aln_score < len(start_seq) - FWD_MISSMATCH:
             continue
 
         end_seq = mids[opposite_direction] + primers[opposite_direction]
         end_aln_a, end_aln_b, end_aln_score = local_alignment(
-            reverse_seq[:end_flank], end_seq)
+            str(reverse_seq)[:end_flank], end_seq)
 
         if end_aln_score < len(end_seq) - REV_MISSMATCH:
-            return None, None   # incomplited
+            return None, None   # incompleted
 
         start = len(start_aln_b.rstrip("-"))
         end = len(end_aln_b.rstrip("-"))
@@ -60,10 +60,11 @@ def split(config, fasta):
     splited_fasta = defaultdict(list)
 
     for seq_type in seq_types:
-        forwardMid = config[seq_type]["forwardMid"]
-        reverseMid = config["reverseMid"]
-        forwardPrimer = config["forwardPrimer"]
-        reversePrimer = config["reversePrimer"]
+        type_config = config[seq_type]
+        forwardMid = type_config["forwardMid"]
+        reverseMid = type_config["reverseMid"]
+        forwardPrimer = type_config["forwardPrimer"]
+        reversePrimer = type_config["reversePrimer"]
         mids[seq_type] = Pair(forwardMid, reverseMid)
         primers[seq_type] = Pair(forwardPrimer, reversePrimer)
 
@@ -88,3 +89,5 @@ def split(config, fasta):
 
         if not has_match:
             splited_fasta["filtered"].append(record)
+
+    return splited_fasta
