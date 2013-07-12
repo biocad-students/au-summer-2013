@@ -133,9 +133,9 @@ public:
 	}
 
 	template <class S>
-	trie<S> copyTrie()
+	void copyTrie(trie<S> ** t) const
 	{
-		return trie<S>(m_trie);
+		*t = new trie<S>(m_trie);
 	}
 
 private:

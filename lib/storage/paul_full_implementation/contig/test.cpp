@@ -7,6 +7,8 @@
 #include "kstat/kstat.hpp"
 #include "contig.hpp"
 
+#include "algorithm.hpp"
+
 #include "unit_tests.h"
 
 typedef unsigned char byte;
@@ -28,6 +30,22 @@ struct RegionProp
 	{
 	}
 };
+
+void test_search()
+{
+	contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+	std::string s1 = "ACCCGTCGTGCAGCATGCATGCGACTACGCGCA";
+	std::string s2 = "ACCCATCGATCTGCGACTACGCGCA";
+	std::string s3 = "CGAACGCTCAGCATGCATGCGACTACGCGCA";
+
+	std::string sp = "GATCTGCGACTACG";
+	std::vector<contig<Alphabet, RegionProp>::iterator> result = search(sp.begin(), sp.end(), my_contig);
+	for(auto i : result)
+	{
+		std::cout << i.symbol() << " ";
+	}
+	std::cout << std::endl;
+}
 
 void test_contig()
 {
@@ -52,10 +70,12 @@ void test_contig()
 	std::cout << std::endl;
 
 	std::cout << "isomorphic tree creation" << std::endl;
-	trie<bool> my_trie = my_contig.copyTrie<bool>();
-	for (auto i : my_trie)
+	trie<bool>* my_trie = nullptr;
+	my_contig.copyTrie(&my_trie);
+	for (auto i : *my_trie)
 	{
 		std::cout << i << " ";
 	}
+	delete my_trie;
 	std::cout << std::endl;
 }
