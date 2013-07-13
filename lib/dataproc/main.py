@@ -6,7 +6,9 @@ import sys
 
 from Bio import SeqIO
 from Bio.SeqUtils.CheckSum import seguid
-from clustering import add_to_cluster
+from matplotlib import pyplot as plt
+from clustering import add_to_cdr3_cluster
+from plots import plot_cluster_sizes
 from region_finding import find_cdr3
 from separate import split
 
@@ -100,8 +102,8 @@ def main(args):
 
     if args.add:
         clusters = cluster_reading(args.clusters)
-        add_to_cluster(clusters, fasta)
-
+        # add_to_cdr3_cluster(clusters, fasta, cdr3)
+        plot_path = plot_cluster_sizes(clusters)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
