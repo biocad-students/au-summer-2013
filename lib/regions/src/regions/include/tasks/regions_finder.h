@@ -4,20 +4,29 @@
 #include <iostream>
 #include "aho_corasick.h"
 #include "database.h"
+#include "settings.h"
 
 class RegionsFinder {
 public:
-	RegionsFinder(const Database * data, std::ostream& output,
-			const AhoCorasick &kmersAhoCorasick, int kmer_size)
-      : data(data), output(output), kmersAhoCorasick(kmersAhoCorasick), kmer_size(kmer_size){};
+	RegionsFinder(const Database * data, std::ostream& output_align, std::ostream& output_regions,
+			const AhoCorasick &kmersAhoCorasick, const struct settings_t& settings)
+      : data(data), output_align(output_align), output_regions(output_regions),
+        kmersAhoCorasick(kmersAhoCorasick), kmer_size(settings.kmer_size),
+        match_score(settings.match_score), mismatch_penalty(settings.mismatch_penalty),
+        gap_opening_penalty(settings.gap_opening_penalty), gap_extending_penalty(settings.gap_extending_penalty){};
 
 	void operator()(const Read &r);
 
 private:
   const Database * data;
-  std::ostream& output;
+  std::ostream& output_align;
+  std::ostream& output_regions;
   AhoCorasick kmersAhoCorasick;
   const int kmer_size;
+  const int match_score;
+  const int mismatch_penalty;
+  const int gap_opening_penalty;
+  const int gap_extending_penalty;
 };
 
 #endif /* REGIONS_FINDER_H_ */

@@ -24,7 +24,7 @@ void RegionsFinder::operator()(const Read &r) {
         setOfReferences2check.insert(sequences.begin(), sequences.end());
     }
 
-    StripedSmithWaterman::Aligner aligner;
+    StripedSmithWaterman::Aligner aligner(match_score, mismatch_penalty, gap_opening_penalty, gap_extending_penalty);
     StripedSmithWaterman::Filter filter;
     aligner.SetReferenceSequence(sequence.c_str(), sequence.size());
 
@@ -38,7 +38,8 @@ void RegionsFinder::operator()(const Read &r) {
 
 #pragma omp critical
         {
-    	  OutputFormatter::print_alignment(output, alignment, sequence, query, name, database_name);
+    	  OutputFormatter::print_alignment(output_align, alignment, sequence, query, name, database_name);
+    	  OutputFormatter::print_regions(output_regions, alignment, sequence, query, name, database_name);
         }
     }
 

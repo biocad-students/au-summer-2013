@@ -21,7 +21,7 @@ log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("main"));
 #define DATA_FILE "./test_data/sample.fasta"
 
 TEST(Database, ReadDatabaseTest) {
-	const struct settings_t settings = {8, 51, DATA_FILE, "", ""};
+	const struct settings_t settings = {8, 51, 1, 1, 1, 1, DATA_FILE, "", "", ""};
 	Database db(settings);
 	{
 		ASSERT_EQ(db.get_num_sequences(), 2);

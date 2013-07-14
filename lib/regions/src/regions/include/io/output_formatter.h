@@ -14,6 +14,10 @@ public:
 			const std::string& ref, const std::string& query, const std::string& ref_name,
 			const std::string& query_name);
 
+	static void print_regions(std::ostream& output, const StripedSmithWaterman::Alignment& a,
+			const std::string& ref, const std::string& query, const std::string& ref_name,
+			const std::string& query_name);
+
 	static void print_match(std::ostream& output, std::map<std::string*, std::vector<int>, Compare>& res,
 			const std::string& name, const std::string& seq, const Database * data);
 

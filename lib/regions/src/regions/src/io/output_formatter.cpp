@@ -104,3 +104,9 @@ void OutputFormatter::print_match(std::ostream& output, std::map<std::string*, s
 		}
 	}
 }
+
+void OutputFormatter::print_regions(std::ostream& output, const StripedSmithWaterman::Alignment& a,
+		const std::string& ref, const std::string& query,
+		const std::string& ref_name, const std::string& query_name) {
+	output << query_name << "\t" << ref_name << "\t" << a.query_begin << "\t" << a.query_end << "\t" << a.sw_score << "\t" << a.mismatches << std::endl;
+}

@@ -14,15 +14,16 @@ void TaskConfigurator::configureAndRun(const struct settings_t& settings) {
 	Database db(settings);
 	LOG4CXX_INFO(logger, "Done");
 
-	std::ofstream output(settings.output_file);
-	if (!output.is_open()) {
+	std::ofstream output_align(settings.output_align);
+	std::ofstream output_regions(settings.output_regions);
+	if (!output_align.is_open() || !output_regions.is_open()) {
 		LOG4CXX_ERROR(logger, "Cannot open output file");
 		return;
 	}
 
 	AhoCorasick kmersAhoCorasick;
 	TaskConfigurator::getKmersAhoCorasick(db, kmersAhoCorasick);
-	RegionsFinder rf(&db, output, kmersAhoCorasick, settings.kmer_size);
+	RegionsFinder rf(&db, output_align, output_regions, kmersAhoCorasick, settings);
 	ReadProcessor rp(settings.max_threads);
 	FastaReader input(settings.input_file);
 
@@ -32,7 +33,8 @@ void TaskConfigurator::configureAndRun(const struct settings_t& settings) {
 	LOG4CXX_INFO(logger, "Total reads processed: " << rp.get_num_processed_reads());
 
 	kmersAhoCorasick.cleanup();
-	output.close();
+	output_align.close();
+	output_regions.close();
 }
 
 void TaskConfigurator::getKmersAhoCorasick(const Database& data, AhoCorasick& ahoCorasick) {
