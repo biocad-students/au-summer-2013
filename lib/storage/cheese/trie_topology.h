@@ -60,8 +60,12 @@ public:
       if(!m_DFS->empty())
           m_node = m_DFS->front();
     }
+    const_iterator(const const_iterator &_right) 
+      : m_node(_right.m_node), m_DFS(_right.m_DFS), m_dfs_index(_right.m_dfs_index)
+    {
+    }
 
-    const_iterator& operator = (const_iterator& _right)
+    const_iterator& operator = (const const_iterator &_right)
     {
       m_node = _right.m_node;
       m_DFS = _right.m_DFS;
@@ -141,7 +145,7 @@ public:
       return _Tmp;
     }
 
-    Key_type key()
+    Key_type key() const
     {
       return m_node->cached_key;
     }
