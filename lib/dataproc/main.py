@@ -6,8 +6,7 @@ import sys
 
 from Bio import SeqIO
 from Bio.SeqUtils.CheckSum import seguid
-from matplotlib import pyplot as plt
-from clustering import add_to_cdr3_cluster
+from clustering import add_to_cluster
 from plots import plot_cluster_sizes
 from region_finding import find_cdr3
 from separate import split
@@ -28,7 +27,7 @@ def remove_duplicates(fasta):
 def fasta_translation(fasta):
     for record in fasta:
         yield SeqIO.SeqRecord(id=record.id, description=record.description,
-                        seq=record.seq.translate(), name=record.name)
+                              seq=record.seq.translate(), name=record.name)
 
 
 def cluster_reading(clusters_path):
@@ -37,7 +36,7 @@ def cluster_reading(clusters_path):
         result[seq_type] = defaultdict(list)
         clusters_dir = os.path.join(clusters_path, seq_type)
         if not os.path.exists(clusters_dir):
-            print "Directory {0} does not exist".\
+            print "Directory {0} does not exist". \
                 format(os.path.abspath(clusters_dir))
             continue
         for cluster_filename in os.listdir(clusters_dir):
@@ -49,12 +48,29 @@ def cluster_reading(clusters_path):
     return result
 
 
+def prepare(fasta, config, out_dir_path):
+    separated_fasta = split(config, fasta)
+    for seq_type, records in separated_fasta.iteritems():
+        separated_fasta[seq_type] = list(remove_duplicates(records))
+
+    peptide_fasta = defaultdict(list)
+    for seq_type, records in separated_fasta.iteritems():
+        file_path = os.path.join(out_dir_path, seq_type + ".fasta")
+        SeqIO.write(records, file_path, "fasta")
+
+        peptide_fasta[seq_type] = list(fasta_translation(records))
+
+    return peptide_fasta
+
+
 def main(args):
     parser = argparse.ArgumentParser(
         description="Clustering sequences by cdr3, cdr2, cdr1")
     parser.add_argument("-i", metavar="fasta_path", required=True,
                         type=argparse.FileType("r"),
                         help="path to FASTA file with reads")
+    parser.add_argument("-p", action="store_true", default=False,
+                        help="if your fasta is in peptide alphabet")
     parser.add_argument("-o", metavar="out_dir", required=True,
                         help="path to file you want to write result")
     parser.add_argument("-c", metavar="config_path", default="config.json",
@@ -74,6 +90,7 @@ def main(args):
 
     args = parser.parse_args(args)
     fasta_file = args.i
+    is_peptide = args.p
     config_file = args.c
     out_dir_path = args.o
 
@@ -82,28 +99,27 @@ def main(args):
 
     config = json.load(config_file)
 
-    # FASTA preparing
-    fasta = SeqIO.parse(fasta_file, "fasta")
-    separated_fasta = split(config, fasta)
-    for seq_type, records in separated_fasta.iteritems():
-        separated_fasta[seq_type] = list(remove_duplicates(records))
-
     peptide_fasta = defaultdict(list)
-    for seq_type, records in separated_fasta.iteritems():
-        file_path = os.path.join(out_dir_path, seq_type + ".fasta")
-        SeqIO.write(records, file_path, "fasta")
-
-        peptide_fasta[seq_type] = list(fasta_translation(records))
+    if is_peptide:
+        fasta = list(SeqIO.parse(fasta_file, "fasta"))
+        for seq_type in ["VH", "VHH", "VK", "VL"]:
+            peptide_fasta[seq_type] = fasta[:]
+    else:
+        fasta = SeqIO.parse(fasta_file, "fasta")
+        peptide_fasta = prepare(fasta, config, out_dir_path)
 
     cdr3 = defaultdict(list)
     for seq_type in config.iterkeys():
         records = peptide_fasta[seq_type]
-        cdr3[seq_type] = list(find_cdr3(records, config[seq_type]["cdr3regex"]))
+        cdr3[seq_type] = list(
+            find_cdr3(records, config[seq_type]["cdr3regex"]))
 
     if args.add:
         clusters = cluster_reading(args.clusters)
-        # add_to_cdr3_cluster(clusters, fasta, cdr3)
-        plot_path = plot_cluster_sizes(clusters)
+        insertion_results = add_to_cluster(clusters, peptide_fasta)
+
+#        plot_path = plot_cluster_sizes(clusters)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
