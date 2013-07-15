@@ -13,7 +13,9 @@ public:
       : data(data), output_align(output_align), output_regions(output_regions),
         kmersAhoCorasick(kmersAhoCorasick), kmer_size(settings.kmer_size),
         match_score(settings.match_score), mismatch_penalty(settings.mismatch_penalty),
-        gap_opening_penalty(settings.gap_opening_penalty), gap_extending_penalty(settings.gap_extending_penalty){};
+        gap_opening_penalty(settings.gap_opening_penalty), gap_extending_penalty(settings.gap_extending_penalty){
+		output_regions << "read1\tread2\tread1.begin\tread1.end\tread2.begin\tread2.end\tmismatches\tscore" << std::endl;
+	};
 
 	void operator()(const Read &r);
 

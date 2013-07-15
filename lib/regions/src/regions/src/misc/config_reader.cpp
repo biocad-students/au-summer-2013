@@ -4,6 +4,7 @@
 #include <vector>
 #include <omp.h>
 #include "config_reader.h"
+
 struct settings_t ConfigReader::read_settings() {
 	std::ifstream settings_file( "./config/config.ini" );
 
