@@ -273,9 +273,12 @@ public:
 	iterator insert(const_iterator _where, Key_type _key)
 	{
 		assert(m_topology != NULL);
-		// TODO: check if added (not reused)
-		m_data.resize(m_data.size()+1);
-		return iterator(m_topology->insert(_where.m_topology_iter, _key), &m_data);
+		_My_topology_iter_type topology_iter = m_topology->insert(_where.m_topology_iter, _key);
+		if(topology_iter.index() == m_data.size())
+		{
+			m_data.resize(m_data.size() + 1);
+		}
+		return iterator(topology_iter, &m_data);
 	}
 
 
