@@ -3,15 +3,24 @@
 #include <vector>
 #include "annotation_record.hpp"
 
-template <class T, template <class> class Property, class Label>
-class annotation_t {
+namespace IG {
+// Class annotation:
+// typename T - template parameter of stored type
+// typename Propery<T> - the type used to be stored in each node
+// typename Label - the type used to be stored in each record
+// typename Link - TODO: add description
+template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
+class annotation {
 public:
-	typedef annotation_record_t<T, Property, Label> annotation_record;
+	typedef Property<T> property_t;
+	typedef std::pair<Link, Link> offset_t;
+	typedef annotation_record<T, Property, Label, Link> annotation_record;
+	typedef std::vector<annotation_record> data_t;
 
-	annotation_t () {
+	annotation () {
 	}
 
-	~annotation_t () {
+	~annotation () {
 	}
 
 	void reserve(size_t _size) {
@@ -19,22 +28,29 @@ public:
 	}
 
 	// add node
-	void insert(size_t _idx, size_t _link, Property<T> _prop) {
+	void insert(size_t _link, property_t _prop, size_t _idx) {
 		m_data[_idx].push_back(_link, _prop);
 	}
 
+		// add node
+	void insert_back(size_t _link, property_t _prop) {
+		insert(_link, _prop, m_data.size() - 1);
+	}
+
 	// add new annotation
-	void push_back(size_t _size, Label _label) {
+	void push_back(Label _label, size_t _size = 0) {
 		annotation_record tmp = annotation_record(_label);
-		tmp.reserve(_size);
+		if(_size) {
+			tmp.reserve(_size);
+		}
 		m_data.push_back(tmp);
 	}
 
-	Label getRecordData(size_t top) {
-		return *m_data[top];
+	Label getRecordData(size_t _top) {
+		return *m_data[_top];
 	}
 
-	Property<T> getNodeData(size_t _top, size_t _left) {
+	property_t getNodeData(size_t _top, size_t _left) {
 		return *(((m_data[_top])[_left]));
 	}
 
@@ -42,6 +58,10 @@ public:
 		return m_data.size();
 	}
 
+	size_t record_size(size_t _idx) {
+		return m_data[_idx].size();
+	}
 private:
-	std::vector<annotation_record> m_data;
+	data_t m_data;
 };
+}

@@ -30,8 +30,9 @@ SET( HEADERS
 	${HDR_DIR}/annotation_node.hpp
 	${HDR_DIR}/annotation_record.hpp
 	${HDR_DIR}/trie.hpp
-	${HDR_DIR}/contig.hpp
+	${HDR_DIR}/trie_topology.hpp
 	${HDR_DIR}/kstat.hpp
+	${HDR_DIR}/contig.hpp
 )
 
 set ( COMMON
