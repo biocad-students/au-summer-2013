@@ -48,7 +48,7 @@ public:
 			Link node = m_annotation.record_size(record);
 
 			// TODO: add link to annotation
-			// *lastTrie = offset_t(record, node);
+			//lastTrie->push_back(offset_t(record, node));
 
 			++iter;
 		}

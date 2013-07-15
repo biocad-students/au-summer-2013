@@ -14,9 +14,9 @@ class annotation {
 public:
 	typedef Property<T> property_t;
 	typedef std::pair<Link, Link> offset_t;
-	typedef annotation_record<T, Property, Label, Link> annotation_record;
-	typedef std::vector<annotation_record> data_t;
-
+	typedef annotation_record<T, Property, Label, Link> annotation_record_t;
+	typedef std::vector<annotation_record_t> data_t;
+	
 	annotation () {
 	}
 
@@ -39,7 +39,7 @@ public:
 
 	// add new annotation
 	void push_back(Label _label, size_t _size = 0) {
-		annotation_record tmp = annotation_record(_label);
+		annotation_record_t tmp = annotation_record_t(_label);
 		if(_size) {
 			tmp.reserve(_size);
 		}
@@ -61,6 +61,7 @@ public:
 	size_t record_size(size_t _idx) {
 		return m_data[_idx].size();
 	}
+
 private:
 	data_t m_data;
 };

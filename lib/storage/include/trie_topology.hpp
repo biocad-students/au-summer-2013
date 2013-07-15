@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 
-
 template<typename Key_type, typename Index_type>
 class trie_topology
 {
