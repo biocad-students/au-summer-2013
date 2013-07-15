@@ -10,6 +10,7 @@ std::string ReverseComplement::getRevc(const std::string& data) {
 	reverse['G'] = 'C';
 	reverse['T'] = 'A';
 	reverse['A'] = 'T';
+	reverse['N'] = 'N';
 
 	std::vector<char> res;
 	for(int i = 0; i < (int) data.length(); ++i) {
