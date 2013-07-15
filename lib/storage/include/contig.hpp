@@ -46,9 +46,8 @@ public:
 			m_annotation.insert_back(lastTrie.index(), (Prop<char>("")));
 			Link record = m_annotation.size()-1;
 			Link node = m_annotation.record_size(record);
-
-			// TODO: add link to annotation
-			//lastTrie->push_back(offset_t(record, node));
+			offset_t tmp = std::make_pair(record, node);
+			lastTrie->push_back(tmp);
 
 			++iter;
 		}

@@ -19,8 +19,8 @@ public:
 	~kstat() {
 	}
 
-	kstat(alphabet_t alphabet, int _k = 7): m_alphabet(alphabet), m_k(_k) {
-		m_size = pow(alphabet.size(),_k);
+	kstat(alphabet_t _alphabet, int _k = 7): m_alphabet(_alphabet), m_k(_k) {
+		m_size = pow(_alphabet.size(),_k);
 		if(!m_size) {
 			return;
 		}
@@ -55,7 +55,11 @@ public:
 		int power = 0;
 		size_t hash_val = 0;
 		while(iter != end) {
-			hash_val += m_pow_cache[power] * (std::find(m_alphabet.begin(), m_alphabet.end(), *iter) - m_alphabet.begin());
+			alphabet_t::iterator idx = std::find(m_alphabet.begin(), m_alphabet.end(), *iter);
+			if(idx == m_alphabet.end()) {
+				return m_size + 1;
+			}
+			hash_val += m_pow_cache[power] * (idx - m_alphabet.begin());
 			power++;
 			++iter;
 		}

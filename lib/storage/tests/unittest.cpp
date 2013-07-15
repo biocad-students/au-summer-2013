@@ -118,7 +118,6 @@ void kstat_unittest(void) {
 	alphabet_.push_back('C');
 	alphabet_.push_back('G');
 	alphabet_.push_back('T');
-	alphabet_.push_back('N');
 	int K_ = 7;
 	IG::kstat<size_t> kstat_(alphabet_, K_);
 
@@ -149,12 +148,11 @@ void contig_unittest (void) {
 	alphabet_.push_back('C');
 	alphabet_.push_back('G');
 	alphabet_.push_back('T');
-	alphabet_.push_back('N');
 	int K_ = 7;
 	IG::contig<char, Prop, Lab> my_contig(alphabet_, K_);
-	std::string str1 = "ACGCTAGCTG";
+	std::string str1 = "NNNACGCTAGCTG";
 	my_contig.pushSequence(str1.begin(), str1.end(), Lab("New label 1"));
-	std::string str2 = "ACGCTAGCTC";
+	std::string str2 = "ACGCTAGCTCNNN";
 	my_contig.pushSequence(str2.begin(), str2.end(), Lab("New label 2"));
 	std::string str3 = "AAGCTAGCTC";
 	my_contig.pushSequence(str3.begin(), str3.end(), Lab("New label 3"));
@@ -162,8 +160,8 @@ void contig_unittest (void) {
 
 int main()
 {
-	contig_unittest();
-	annotation_unittest();
+	//contig_unittest();
+	//annotation_unittest();
 	kstat_unittest();
 	//add_sequence_unittest();
 	//read_fasta_unittest();
