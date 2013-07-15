@@ -1,6 +1,8 @@
 #include "contig.hpp"
 #include "fasta_reader.h"
 #include "kstat.hpp"
+#include "annotation_node.hpp"
+#include "annotation_record.hpp"
 #include "annotation.hpp"
 #include <list>
 #include <string>
@@ -16,6 +18,11 @@ struct Prop {
 	std::string name;
 	Prop(std::string name_) : name(name_) {}
 	Prop() : name("") {}
+};
+
+struct Lab {
+	std::string m_name;
+	Lab(std::string _name) : m_name(_name) {}
 };
 
 template<class T>
@@ -99,15 +106,23 @@ void read_fasta_unittest() {
 //}
 
 void annotation_unittest(void ) {
-	annotation_vector_t<char, Prop> annot_;
-
-	annotation_vector_t<char, Prop>::iterator aniter = annot_.begin();
+	int seq_count = 20;
+	int seq_size = 200;
+	annotation_t<char, Prop, Lab> annot_;
+	for(int s = 0; s<seq_count; s++) {
+		Lab label("Bar");
+		annot_.push_back(seq_size, label);
+		for(int i = 0; i<seq_size; i++) {
+			annot_.insert(s, i, (Prop<char>("Foo")));
+		}
+	}
+	Lab record_data = annot_.getRecordData(5);
+	Prop<char> node_data = annot_.getNodeData(5,1);
 }
 
 void kstat_unittest(void) {
 	clock_t t0 = clock();
-	annotation_vector_t<char, Prop> annot_;
-	annotation_vector_t<char, Prop>::iterator aniter = annot_.begin();
+	annotation_t<char, Prop, Lab> annot_;
 	std::vector<unsigned char> alphabet_;
 	alphabet_.push_back('A');
 	alphabet_.push_back('C');
@@ -115,7 +130,7 @@ void kstat_unittest(void) {
 	alphabet_.push_back('T');
 	alphabet_.push_back('N');
 	int K_ = 7;
-	kstat_t<char, Prop> kstat_(alphabet_, K_);
+	kstat_t<char, Prop, char*> kstat_(alphabet_, K_);
 
 	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
 	Read tmp;
@@ -127,19 +142,20 @@ void kstat_unittest(void) {
 		end = tmp.seq.end();
 		for(;iter != end; ++iter)
 		{
-			if(!kstat_.add(iter, end, aniter))
+			if(!kstat_.add(iter, end, nullptr))
 				break;
 		}
 	}
 	clock_t t1 = clock();
 	std::cout << "time_kstat_unittest: " << (double)(t1 - t0) / CLOCKS_PER_SEC << std::endl;
 	std::string tst = "AGCCTGG";
-	std::vector<typename annotation_vector_t<char, Prop>::iterator>* result = kstat_.get(tst.begin(), tst.end());
+	std::vector<char*>* result = kstat_.get(tst.begin(), tst.end());
 	std::cout << &result[150] << std::endl;
 }
 
 int main()
 {
+	annotation_unittest();
 	kstat_unittest();
 	add_sequence_unittest();
 	read_fasta_unittest();

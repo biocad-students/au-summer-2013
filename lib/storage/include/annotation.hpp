@@ -1,82 +1,47 @@
+#pragma once
+
 #include <vector>
+#include "annotation_record.hpp"
 
-// annotationIterator lastAnno = m_annotation.begin();
-// lastAnno = m_annotation.insert(lastAnno, iter->first);
-// lastAnno->addLink(lastTrie);
-// lastAnno->setAnno(iter->second);
-
-template <class T, template <class> class Property>
-class annotation_node_t {
-public:
-	typedef void trie_node;
-	annotation_node_t () {
-	}
-
-	~annotation_node_t () {
-	}
-private:
-	Property<T> m_internal;
-	trie_node* m_trie_node;
-};
-
-template <class T, template <class> class Property>
+template <class T, template <class> class Property, class Label>
 class annotation_t {
 public:
-	typedef typename std::vector<annotation_node_t<T, Property>>::iterator iterator;
+	typedef annotation_record_t<T, Property, Label> annotation_record;
 
-	annotation_t() {
+	annotation_t () {
 	}
 
-	~annotation_t() {
+	~annotation_t () {
 	}
 
-	iterator push_back(annotation_node_t<T, Property> _annotation_node) {
-		return m_data.push_back(_annotation_node);
+	void reserve(size_t _size) {
+		m_data.reserve(_size);
 	}
 
-	iterator begin() {
-		return m_data.begin();
+	// add node
+	void insert(size_t _idx, size_t _link, Property<T> _prop) {
+		m_data[_idx].push_back(_link, _prop);
 	}
 
-	iterator end() {
-		return m_data.end();
+	// add new annotation
+	void push_back(size_t _size, Label _label) {
+		annotation_record tmp = annotation_record(_label);
+		tmp.reserve(_size);
+		m_data.push_back(tmp);
 	}
 
-private:
-	std::vector<annotation_node_t<T, Property>> m_data;
-};
-
-template <class T, template <class> class Property>
-class annotation_vector_t {
-public:
-	typedef typename std::vector<annotation_t<T, Property>>::iterator iterator;
-
-	annotation_vector_t () {
+	Label getRecordData(size_t top) {
+		return *m_data[top];
 	}
 
-	~annotation_vector_t () {
+	Property<T> getNodeData(size_t _top, size_t _left) {
+		return *(((m_data[_top])[_left]));
 	}
 
-	iterator begin() {
-		return m_data.begin();
-	}
-
-	iterator push_back(annotation_t<T, Property> _annotation) {
-		return m_data.push_back(_annotation);
-	}
-
-	iterator getAnnotationByOffset(int top) {
-		return m_data[top].begin();
-	}
-
-	iterator getNodeByOffset(int top, int right) {
-		return m_data[top][right].begin();
-	}
-
-	iterator end() {
-		return m_data.end();
+	size_t size() {
+		return m_data.size();
 	}
 
 private:
-	std::vector<annotation_t<T, Property>> m_data;
+	std::vector<annotation_record> m_data;
 };

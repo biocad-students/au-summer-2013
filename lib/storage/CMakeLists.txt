@@ -27,6 +27,8 @@ SET( SOURCES
 
 SET( HEADERS
 	${HDR_DIR}/annotation.hpp
+	${HDR_DIR}/annotation_node.hpp
+	${HDR_DIR}/annotation_record.hpp
 	${HDR_DIR}/trie.hpp
 	${HDR_DIR}/contig.hpp
 	${HDR_DIR}/kstat.hpp
