@@ -33,7 +33,7 @@ protected:
 
 public:
   trie_topology()
-    : m_counter(0)
+    : m_counter(-1)
   {
     m_root = create_node(NULL, ' ', true, false);
   }
