@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(tests)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp ${OpenMP_CXX_FLAGS} -std=c++11")
-find_package(gtest REQUIRED)
+#find_package(gtest REQUIRED)
 enable_testing()
 
 set(CMAKE_CURRENT_BINARY_DIR "../bin")
@@ -22,6 +22,7 @@ link_directories(${CMAKE_SOURCE_DIR}/utils)
 link_directories(${CMAKE_SOURCE_DIR}/misc)
 link_directories(${CMAKE_SOURCE_DIR}/io)
 link_directories(${CMAKE_SOURCE_DIR}/ssw)
+link_directories(${CMAKE_SOURCE_DIR}/gtest-1.6.0)
 
 add_executable(tests
   tests.cpp)

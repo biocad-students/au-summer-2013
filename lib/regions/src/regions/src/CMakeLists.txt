@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 project(regions)
 #find_package(TBB REQUIRED)
 #find_package(LOG4CXX REQUIRED)
-find_package(gtest REQUIRED)
+#find_package(gtest REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
@@ -21,6 +21,7 @@ add_subdirectory(misc)
 add_subdirectory(io)
 add_subdirectory(utils)
 add_subdirectory(tasks)
+add_subdirectory(gtest-1.6.0)
 
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/opt/local/include)
@@ -39,12 +40,12 @@ link_directories(${CMAKE_SOURCE_DIR}/misc)
 link_directories(${CMAKE_SOURCE_DIR}/utils)
 link_directories(${CMAKE_SOURCE_DIR}/algorithm)
 link_directories(${CMAKE_SOURCE_DIR}/tasks)
+link_directories(${CMAKE_SOURCE_DIR}/data_structures)
 link_directories(${Boost_LIBRARY_DIRS})
 
 add_executable(regions
 	main.cpp)
-
-target_link_libraries(regions ssw algorithm misc tasks io utils tbb data_structures z log4cxx ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+target_link_libraries(regions utils io tasks algorithm ssw misc io data_structures tbb z log4cxx ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 
 install(TARGETS regions DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
