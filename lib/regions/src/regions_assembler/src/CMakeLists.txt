@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
 
 project(regions_assembler)
+find_package(Boost COMPONENTS program_options REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost COMPONENTS program_options REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CURRENT_BINARY_DIR "../bin")
