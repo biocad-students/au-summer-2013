@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
 project(regions_assembler)
-find_package(gtest REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
@@ -15,6 +14,7 @@ add_subdirectory(tests)
 add_subdirectory(utils)
 add_subdirectory(model)
 add_subdirectory(misc)
+add_subdirectory(gtest-1.6.0)
 
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/opt/local/include)
