@@ -24,7 +24,12 @@ int main() {
 	}
 
 	clock_t start = clock();
-	TaskConfigurator::configureAndRun(settings);
+	try {
+		TaskConfigurator::configureAndRun(settings);
+	} catch (std::exception& e) {
+		LOG4CXX_ERROR(logger, "Config file is incorrect: " << e.what());
+		return 0;
+	}
 	clock_t ends = clock();
 	LOG4CXX_INFO(logger, "Done. Processor time spent is " << (double) (ends - start) / CLOCKS_PER_SEC << " seconds. Bye!");
 

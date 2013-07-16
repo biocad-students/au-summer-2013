@@ -52,42 +52,50 @@ int main() {
 
 	std::set<std::string> uniq_reads;
 	std::map<std::string, Alignment> v_reads, d_reads, j_reads;
+	std::cout << "Reading V data..." << std::endl;
 	getMapForFile(v_data, v_reads, uniq_reads);
+	std::cout << "Done.\nReading D data..." << std::endl;
 	getMapForFile(d_data, d_reads, uniq_reads);
+	std::cout << "Done.\nReading J data..." << std::endl;
 	getMapForFile(j_data, j_reads, uniq_reads);
+	std::cout << "Done." << std::endl;
 
 	v_data.close();
 	d_data.close();
 	j_data.close();
 
-
+	std::cout << "Start processing..." << std::endl;
+	int counter = 0;
 	for (auto it = uniq_reads.begin(); it != uniq_reads.end(); ++it) {
 		output << *it << "\t";
 		auto iter = v_reads.find(*it);
 		if (v_reads.end() == iter) {
 			output << "-\t-\t";
 		} else {
-			output << iter->second.getRefBegin() << "\t" << iter->second.getRefEnd() << "\t";
+			output << iter->second.getReadBegin() << "\t" << iter->second.getReadEnd() << "\t";
 		}
 
 		iter = d_reads.find(*it);
 		if (d_reads.end() == iter) {
 			output << "-\t-\t";
 		} else {
-			output << iter->second.getRefBegin() << "\t" << iter->second.getRefEnd() << "\t";
+			output << iter->second.getReadBegin() << "\t" << iter->second.getReadEnd() << "\t";
 		}
 
 		iter = j_reads.find(*it);
 		if (j_reads.end() == iter) {
 			output << "-\t-\t";
 		} else {
-			output << iter->second.getRefBegin() << "\t" << iter->second.getRefEnd() << "\t";
+			output << iter->second.getReadBegin() << "\t" << iter->second.getReadEnd() << "\t";
 		}
 		output << std::endl;
+		if (++counter % 100) {
+			std::cout << counter << " reads of " << uniq_reads.size() << " processed\r";
+		}
 	}
 
 	output.close();
-	std::cout << "Done" << std::endl;
+	std::cout << std::endl << "Done" << std::endl;
 
 	return 0;
 }

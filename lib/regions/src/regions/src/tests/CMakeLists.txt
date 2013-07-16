@@ -14,6 +14,7 @@ include_directories(../../include/utils)
 include_directories(../../include/io)
 include_directories(../../include/data_structures)
 include_directories(../../include/ssw)
+include_directories(../../include/misc)
 
 link_directories(/opt/local/lib)
 link_directories(${CMAKE_SOURCE_DIR}/data_structures)

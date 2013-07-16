@@ -1,0 +1,2 @@
+#!/bin/sh
+./run.sh /Users/Kos/Downloads /Users/Kos/Dropbox/Biocad/Data/1.TCA.454Reads.fna /Users/Kos/Dropbox/Biocad/au-summer-2013/data/germline/human/VL.fasta /dev/null /Users/Kos/Dropbox/Biocad/au-summer-2013/data/germline/human/JL.fasta
