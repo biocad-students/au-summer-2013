@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include "annotation.hpp"
 
 namespace IG {
@@ -20,14 +21,14 @@ public:
 	}
 
 	kstat(alphabet_t _alphabet, int _k = 7): m_alphabet(_alphabet), m_k(_k) {
-		m_size = pow(_alphabet.size(),_k);
+		m_size = pow(double(_alphabet.size()),_k);
 		if(!m_size) {
 			return;
 		}
 		m_data = data_t(m_size, data_raw_t());
 		int len = m_alphabet.size();
 		for (int i = 0; i<m_k; i++) {
-			m_pow_cache.push_back(pow(len, i));
+			m_pow_cache.push_back(pow(double(len), i));
 		}
 	}
 
