@@ -1,19 +1,19 @@
 #pragma once
-// ContIG - Container ImmunoGlobulin
+// IGC - ImmunoGlobulin Container
 
 #include <map>
 #include <vector>
-#include "annotation.hpp"
-#include "kstat.hpp"
-#include "trie.hpp"
+#include "Annotation\annotation.hpp"
+#include "Kstat\kstat.hpp"
+#include "Trie\trie.hpp"
 
-namespace IG {
+namespace IGC {
 // typedef T - property param
 // typedef Property - annotation stored type
 // typedef Label - record label type
 // typedef Link - index 1D offset type
 template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
-class contig
+class Storage
 {
 public:
 	typedef std::pair<Link, Link> offset_t;
@@ -21,12 +21,38 @@ public:
 	typedef typename annotation<T, Property, Label, Link> annotation_t;
 	typedef typename kstat<Link> kstat_t;
 	typedef std::vector<unsigned char> alphabet_t;
-
+	typedef typename trie_t::iterator iterator;
+	typedef typename trie_t::const_iterator const_iterator;
 public:
-	contig(alphabet_t _alphabet, size_t _K) : m_kstat(_alphabet, _K) {
+
+	iterator begin() {
+		return m_trie.begin();
 	}
 
-	~contig() {
+	const_iterator begin () const {
+		return m_trie.begin();
+	}
+
+	iterator end() {
+		return m_trie.end();
+	}
+
+	const_iterator end () const {
+		return m_trie.end();
+	}
+
+	iterator find(size_t _idx) {
+		return m_trie.find(_idx);
+	}
+
+	const_iterator find(size_t _idx) const {
+		return m_trie.find(_idx);
+	}
+
+	Storage(alphabet_t _alphabet, size_t _K) : m_kstat(_alphabet, _K) {
+	}
+
+	~Storage() {
 	}
 
 	template <class Iterator>
@@ -52,6 +78,7 @@ public:
 			++iter;
 		}
 	}
+
 
 	template <class Iterator>
 	std::vector<Label> find(Iterator _begin, Iterator _end) {

@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 
+namespace IGC {
+
 template<typename Key_type, typename Index_type>
 class trie_topology
 {
@@ -304,3 +306,4 @@ private:
   Index_type m_nodeCounter;
   std::vector<Node*> m_DFS;
 };
+}

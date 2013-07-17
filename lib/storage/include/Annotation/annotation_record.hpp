@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "annotation_node.hpp"
+#include "Annotation\annotation_node.hpp"
 
-namespace IG {
+namespace IGC {
 
 template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
 class annotation_record {

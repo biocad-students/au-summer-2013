@@ -25,14 +25,27 @@ SET( SOURCES
 	${SRC_DIR}/fasta_reader.cpp
 )
 
-SET( HEADERS
-	${HDR_DIR}/annotation.hpp
-	${HDR_DIR}/annotation_node.hpp
-	${HDR_DIR}/annotation_record.hpp
-	${HDR_DIR}/trie.hpp
-	${HDR_DIR}/trie_topology.hpp
-	${HDR_DIR}/kstat.hpp
-	${HDR_DIR}/contig.hpp
+SET( ANNOTATION
+	${HDR_DIR}/annotation/annotation.hpp
+	${HDR_DIR}/annotation/annotation_node.hpp
+	${HDR_DIR}/annotation/annotation_record.hpp
+)
+
+SET( TRIE
+	${HDR_DIR}/trie/trie.hpp
+	${HDR_DIR}/trie/trie_topology.hpp
+)
+
+SET( KSTAT
+	${HDR_DIR}/kstat/kstat.hpp
+)
+
+SET( STORAGE
+	${HDR_DIR}/storage/storage.hpp
+)
+
+SET( ALGORITHM
+	${HDR_DIR}/algorithm/algorithm.hpp
 )
 
 set ( COMMON
@@ -50,14 +63,22 @@ SET ( REQUIRED_LIBRARIES
 	zlib
 )
 
-source_group ("Header Files" FILES ${HEADERS})
+source_group ("Annotation Files" FILES ${ANNOTATION})
+source_group ("Trie Files" FILES ${TRIE})
+source_group ("Kstat Files" FILES ${KSTAT})
+source_group ("Storage Files" FILES ${STORAGE})
+source_group ("Algorithm Files" FILES ${ALGORITHM})
 source_group ("Source Files" FILES ${SOURCES})
 source_group ("Common Files" FILES ${COMMON})
 source_group ("Test Files" FILES ${TESTS})
 
 add_executable (${APP_NAME}
 	${SOURCES}
-	${HEADERS}
+	${ANNOTATION}
+	${TRIE}
+	${KSTAT}
+	${STORAGE}
+	${ALGORITHM}
 	${COMMON}
 	${TESTS}
 	)

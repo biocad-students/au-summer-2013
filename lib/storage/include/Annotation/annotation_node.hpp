@@ -2,9 +2,9 @@
 
 #include <vector>
 
-namespace IG {
+namespace IGC {
 
-	template <class T, template <class> class Property, class Link = size_t>
+template <class T, template <class> class Property, class Link = size_t>
 class annotation_node {
 public:
 	typedef Property<T> property_t;

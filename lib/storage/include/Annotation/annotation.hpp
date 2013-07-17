@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "annotation_record.hpp"
+#include "Annotation\annotation_record.hpp"
 
-namespace IG {
+namespace IGC {
 // Class annotation:
 // typename T - template parameter of stored type
 // typename Propery<T> - the type used to be stored in each node
