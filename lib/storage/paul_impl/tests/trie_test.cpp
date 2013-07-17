@@ -2,7 +2,7 @@
 #include <string>
 #include <cstdlib>
 
-#include "../trie/trie.hpp"
+#include "../contig/trie/trie.hpp"
 
 #include "../unittest.h"
 

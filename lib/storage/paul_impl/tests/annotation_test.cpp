@@ -2,7 +2,7 @@
 #include <string>
 #include <cstdlib>
 
-#include "../annotation/annotation.hpp"
+#include "../contig/annotation/annotation.hpp"
 #include "../unittest.h"
 
 typedef unsigned char byte;

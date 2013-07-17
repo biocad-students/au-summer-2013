@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdlib>
 
-#include "../kstat/kstat.hpp"
+#include "../contig/kstat/kstat.hpp"
 #include "../unittest.h"
 
 

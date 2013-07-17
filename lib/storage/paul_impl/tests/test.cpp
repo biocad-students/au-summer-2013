@@ -2,12 +2,12 @@
 #include <string>
 #include <cstdlib>
 
-#include "../annotation/annotation.hpp"
-#include "../trie/trie.hpp"
-#include "../kstat/kstat.hpp"
-#include "../contig.hpp"
+#include "../contig/annotation/annotation.hpp"
+#include "../contig/trie/trie.hpp"
+#include "../contig/kstat/kstat.hpp"
+#include "../contig/contig.hpp"
 
-#include "../algorithm.hpp"
+#include "../contig/algorithm.hpp"
 
 #include "../unittest.h"
 
@@ -40,11 +40,11 @@ void test_search()
     std::string s4 = "ACCCATCGATCTGCGACTACGTTC";
     std::string s5 = "ACTCATCGATCTGCGACTACGAAA";
 
-    my_contig.push_unannotated(s1.begin(), s1.end(), "s1");
-    my_contig.push_unannotated(s2.begin(), s2.end(), "s2");
-    my_contig.push_unannotated(s3.begin(), s3.end(), "s3");
-    my_contig.push_unannotated(s4.begin(), s4.end(), "s4");
-    my_contig.push_unannotated(s5.begin(), s5.end(), "s5");
+    my_contig.push(s1.begin(), s1.end(), "s1");
+    my_contig.push(s2.begin(), s2.end(), "s2");
+    my_contig.push(s3.begin(), s3.end(), "s3");
+    my_contig.push(s4.begin(), s4.end(), "s4");
+    my_contig.push(s5.begin(), s5.end(), "s5");
 
     std::string sp = "GATCTGCGACTACG";
     auto result = contig_search(sp.begin(), sp.end(), my_contig);
@@ -73,9 +73,9 @@ void test_contig2()
     std::string s2 = "ACCCATCGATCTGCGACTACGCGCA";
     std::string s3 = "CGAACGCTCAGCATGCATGCGACTACGCGCA";
 
-    my_contig.push_unannotated(s1.begin(), s1.end(), "s1");
-    my_contig.push_unannotated(s2.begin(), s2.end(), "s2");
-    my_contig.push_unannotated(s3.begin(), s3.end(), "s3");
+    my_contig.push(s1.begin(), s1.end(), "s1");
+    my_contig.push(s2.begin(), s2.end(), "s2");
+    my_contig.push(s3.begin(), s3.end(), "s3");
 
     std::cout << "Labels of nodes in DFS:" << std::endl;
     contig<Alphabet, RegionProp>::iterator iter = my_contig.begin();
@@ -97,7 +97,8 @@ void test_contig()
     contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
     std::string s1 = "ACCCGTCGTGCAGCATGCATGCGACTACGCGCA";
 
-    contig<Alphabet, RegionProp>::const_iterator iter = my_contig.push_unannotated(s1.begin(), s1.end(), "s1");
+    contig<Alphabet, RegionProp>::const_iterator iter =
+            my_contig.push(s1.begin(), s1.end(), "s1");
 
     std::cout << "get labels" << std::endl;
     auto labels = my_contig.getLabels(iter);

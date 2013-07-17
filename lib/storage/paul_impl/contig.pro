@@ -10,11 +10,12 @@ SOURCES += main.cpp \
     tests/test.cpp
 
 HEADERS += \
-    trie/* \
-    annotation/* \
-    kstat/* \
-    unittest.h \
-    contig.hpp \
-    algorithm.hpp
+    contig/trie/* \
+    contig/annotation/* \
+    contig/kstat/* \
+    contig/contig.hpp \
+    contig/algorithm.hpp \
+    unittest.h
 
 QMAKE_CXXFLAGS += -std=c++11
+LIBS += -lz
