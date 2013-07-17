@@ -40,7 +40,7 @@ public:
 	}
 
 	template <class Iterator>
-	std::vector<link_type>* get(Iterator begin, Iterator end)
+	const std::vector<link_type>* get(Iterator begin, Iterator end) const
 	{
 		if (begin > end - m_k)
 		{
@@ -51,12 +51,11 @@ public:
 		{
 			return nullptr;
 		}
-		std::vector<link_type>* result = &m_data[hash_val];
-		return result;
+		return &m_data[hash_val];
 	}
 
 	template <class Iterator>
-	size_t hash(Iterator begin, Iterator end)
+	size_t hash(Iterator begin, Iterator end) const
 	{
 		size_t hash_val = 0;
 		if (begin > end - m_k)

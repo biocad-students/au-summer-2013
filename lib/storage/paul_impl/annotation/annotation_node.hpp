@@ -6,12 +6,14 @@ template <class T, template <class> class Property>
 class annotation_node
 {
 public:
+	typedef Property<T> data_type;
+
 	annotation_node(size_t index, byte symbol)
 		: m_data(Property<T>()), m_trie_index(index), m_symbol(symbol)
 	{
 	}
 
-	Property<T> & operator*()
+	data_type & operator*()
 	{
 		return m_data;
 	}

@@ -8,22 +8,22 @@
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
 
-#include "contig_iterator.hpp"
 
 template <class T, template <class> class Property, class LabelType=std::string>
 class contig
 {
 public:
-	typedef Property<T>                        		data_type;
-	typedef std::vector<byte>				   		alphabet_type;
-	typedef size_t							   		kstart_link_type;
-	typedef annotation<T, Property, LabelType> 		anno_type;
-	typedef typename anno_type::index          		link_type;
-	typedef typename anno_type::record_type    		record_type;
-	typedef kstatistics<kstart_link_type>      		kstat_type;
-	typedef trie<link_type>                    		trie_type;
-	typedef typename trie_type::iterator       		iterator;
-	typedef contig_iterator<T, Property, LabelType> aiterator;
+	typedef Property<T>                        			  data_type;
+	typedef std::vector<byte>				   			  alphabet_type;
+	typedef annotation<T, Property, LabelType> 			  anno_type;
+	typedef typename anno_type::index          			  link_type;
+	typedef typename anno_type::record_type    			  record_type;
+	typedef trie<std::vector<link_type>>				  trie_type;
+	typedef typename trie_type::index_type				  index_type;
+	typedef kstatistics<index_type>		      			  kstat_type;
+
+	typedef typename trie_type::const_iterator      	  const_iterator;
+	typedef typename trie_type::iterator       			  iterator;
 
 	contig(std::string const & name, alphabet_type const & alphabet, size_t k = 7)
 		: m_name(name), m_stat(alphabet, k)
@@ -60,7 +60,7 @@ public:
 			data = new_data;
 
 			// Link trie node and annotation data
-			*trie_iter = m_anno.last();
+			trie_iter->push_back(m_anno.last());
 
 			// Add statistics data and link it with the node
 			m_stat.add(kmer_cache.begin(), kmer_cache.end(), trie_iter.index());
@@ -93,7 +93,7 @@ public:
 			data = new_data;
 
 			// Link trie node and annotation data
-			*trie_iter = m_anno.last();
+			trie_iter->push_back(m_anno.last());
 
 			// Add statistics data and link it with the node
 			m_stat.add(iter, end, trie_iter.index());
@@ -102,14 +102,38 @@ public:
 		return trie_iter - (record_length - 1);
 	}
 
-	Property<T> & getAnnotation(iterator iter)
+	std::vector<data_type> getAnnotations(const_iterator iter)
 	{
-		return m_anno[*iter];
+		std::vector<data_type> result;
+		for (auto i = iter->begin(); i != iter->end(); ++i)
+		{
+			result.push_back(m_anno[*i]);
+		}
+		return result;
 	}
 
-	LabelType getLabel(iterator iter) const
+
+	data_type & getAnnotationByLabel(const_iterator iter, LabelType const & label)
 	{
-		return m_anno.labelOf(*iter);
+		for (auto i = iter->begin(); i != iter->end(); ++i)
+		{
+			if (m_anno.getLabel(*i) == label)
+			{
+				return m_anno[*i];
+			}
+		}
+
+		throw std::range_error("Shit happend!");
+	}
+
+	std::vector<LabelType> getLabels(const_iterator iter) const
+	{
+		std::vector<LabelType> result;
+		for (auto i = iter->begin(); i != iter->end(); ++i)
+		{
+			result.push_back(m_anno.labelOf(*i));
+		}
+		return result;
 	}
 
 	iterator begin()
@@ -122,20 +146,41 @@ public:
 		return m_trie.end();
 	}
 
-	aiterator abegin()
+	const_iterator begin() const
 	{
-		return aiterator(this, begin());
+		return m_trie.begin();
 	}
 
-	aiterator aend()
+	const_iterator end() const
 	{
-		return aiterator(this, end());
+		return m_trie.end();
+	}
+
+	iterator iter(index_type i)
+	{
+		return iterator(&m_trie, i);
+	}
+
+	const_iterator iter(index_type i) const
+	{
+		return const_iterator(&m_trie, i);
 	}
 
 	template <class S>
 	void copyTrie(trie<S> ** t) const
 	{
 		*t = new trie<S>(m_trie);
+	}
+
+	template <class Iterator>
+	const std::vector<index_type>* getNodes(Iterator begin, Iterator end) const
+	{
+		return m_stat.get(begin, end);
+	}
+
+	record_type & getRecord(LabelType const & label)
+	{
+		return m_anno.getRecordByLabel(label);
 	}
 
 private:
