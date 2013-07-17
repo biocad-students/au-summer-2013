@@ -23,7 +23,7 @@ void test_kstat()
     std::string s2 = "TCGTCAGACTGACTGA";
     for (std::string::iterator i = s2.begin(); i != s2.end(); ++i)
     {
-        const std::vector<size_t>* v = my_kstat.get(i, s2.end());
+        const std::set<size_t>* v = my_kstat.get(i, s2.end());
         if (v != nullptr)
         {
             for (auto c : *v)

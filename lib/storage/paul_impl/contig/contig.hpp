@@ -167,7 +167,7 @@ public:
     }
 
     template <class Iterator>
-    const std::vector<index_type>* getNodes(Iterator begin, Iterator end) const
+    const std::set<index_type>* getNodes(Iterator begin, Iterator end) const
     {
         return m_stat.get(begin, end);
     }

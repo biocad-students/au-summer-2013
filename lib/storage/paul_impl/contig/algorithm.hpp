@@ -18,7 +18,7 @@ std::vector<typename contig<T, Property, LabelType>::index_type> contig_search(I
     c.copyTrie(&tmp);
 
     size_t deep = 0;
-    const std::vector<index_type>* nodes = nullptr;
+    const std::set<index_type>* nodes = nullptr;
     for (Iterator iter = begin; iter != end; ++iter)
     {
         nodes = c.getNodes(iter, end);
