@@ -7,19 +7,19 @@
 #include "Kstat\kstat.hpp"
 #include "Trie\trie.hpp"
 
-namespace IGC {
+namespace igc {
 // typedef T - property param
 // typedef Property - annotation stored type
 // typedef Label - record label type
 // typedef Link - index 1D offset type
 template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
-class Storage
+class storage
 {
 public:
 	typedef std::pair<Link, Link> offset_t;
 	typedef typename trie<std::vector<offset_t>, char, Link> trie_t;
 	typedef typename annotation<T, Property, Label, Link> annotation_t;
-	typedef typename kstat<Link> kstat_t;
+	typedef typename Kstat<Link> kstat_t;
 	typedef std::vector<unsigned char> alphabet_t;
 	typedef typename trie_t::iterator iterator;
 	typedef typename trie_t::const_iterator const_iterator;
@@ -49,10 +49,10 @@ public:
 		return m_trie.find(_idx);
 	}
 
-	Storage(alphabet_t _alphabet, size_t _K) : m_kstat(_alphabet, _K) {
+	storage(alphabet_t _alphabet, size_t _K) : m_kstat(_alphabet, _K) {
 	}
 
-	~Storage() {
+	~storage() {
 	}
 
 	template <class Iterator>
@@ -79,9 +79,14 @@ public:
 		}
 	}
 
+	template<typename T, typename Key_type, typename Link>
+	trie<T, Key_type, Link> copyTrie () {
+		trie<T, Key_type, Link> tmp = m_trie;
+		return tmp;
+	}
 
-	template <class Iterator>
-	std::vector<Label> find(Iterator _begin, Iterator _end) {
+	kstat_t get_kstat() {
+		return m_kstat;
 	}
 
 private:

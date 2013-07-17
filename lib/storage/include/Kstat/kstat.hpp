@@ -4,23 +4,23 @@
 #include <algorithm>
 #include "Annotation\annotation.hpp"
 
-namespace IGC {
+namespace igc {
 
 template<class Link = size_t>
-class kstat {
+class Kstat {
 public:
 	typedef std::vector<unsigned char> alphabet_t;
 	typedef std::vector<std::vector<Link>> data_t;
 	typedef std::vector<Link> data_raw_t;
 	typedef std::vector<size_t> cache_t;
 
-	kstat() {
+	Kstat() {
 	}
 
-	~kstat() {
+	~Kstat() {
 	}
 
-	kstat(alphabet_t _alphabet, int _k = 7): m_alphabet(_alphabet), m_k(_k) {
+	Kstat(alphabet_t _alphabet, int _k = 7): m_alphabet(_alphabet), m_k(_k) {
 		m_size = (size_t)pow(double(_alphabet.size()),_k);
 		if(!m_size) {
 			return;

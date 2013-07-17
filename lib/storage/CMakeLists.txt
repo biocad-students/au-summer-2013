@@ -17,8 +17,8 @@ set(CMAKE_BUILD_TYPE DEBUG)
 	
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/common
-	${PROJECT_SOURCE_DIR}../share/zlib-1.2.8
+	${PROJECT_SOURCE_DIR}/Common
+	${PROJECT_SOURCE_DIR}/../share/zlib-1.2.8
 )
 
 SET( SOURCES

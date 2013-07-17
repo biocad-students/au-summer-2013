@@ -3,7 +3,7 @@
 #include <vector>
 #include "Annotation\annotation_record.hpp"
 
-namespace IGC {
+namespace igc {
 // Class annotation:
 // typename T - template parameter of stored type
 // typename Propery<T> - the type used to be stored in each node

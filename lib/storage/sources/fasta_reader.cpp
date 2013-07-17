@@ -7,7 +7,7 @@ bool FastaReader::open(std::string filename) {
 	}
 	is_opened_ = true;
 	seq = kseq_init(fp);
-	is_eof_ = false;
+	is_eof_ = false;	
 	readNext();
 	return true;
 }

@@ -3,12 +3,12 @@
 #include <vector>
 #include "Annotation\annotation_node.hpp"
 
-namespace IGC {
+namespace igc {
 
 template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
 class annotation_record {
 public:
-	typedef annotation_node<T, Property, Link> annotation_node_t;
+	typedef Annotation_node<T, Property, Link> annotation_node_t;
 	typedef std::vector<annotation_node_t> data_t;
 	typedef Property<T> property_t;
 

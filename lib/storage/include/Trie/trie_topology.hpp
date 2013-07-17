@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-namespace IGC {
+namespace igc {
 
 template<typename Key_type, typename Index_type>
 class trie_topology

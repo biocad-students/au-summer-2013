@@ -1,7 +1,7 @@
 #pragma once
 #include "Trie\trie_topology.hpp"
 
-namespace IGC {
+namespace igc {
 // Class trie:
 // typename T - the type we use as a parameter of the container, so the trie stores the elements of type T.
 // typename Key_type - the type we use to branch the tree. In general we could use char, but sometimes
