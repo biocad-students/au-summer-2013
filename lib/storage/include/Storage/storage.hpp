@@ -20,9 +20,10 @@ public:
 	typedef typename trie<std::vector<offset_t>, char, Link> trie_t;
 	typedef typename annotation<T, Property, Label, Link> annotation_t;
 	typedef typename Kstat<Link> kstat_t;
-	typedef std::vector<unsigned char> alphabet_t;
+	typedef std::map<unsigned char, size_t> alphabet_t;
 	typedef typename trie_t::iterator iterator;
 	typedef typename trie_t::const_iterator const_iterator;
+
 public:
 
 	iterator begin() {
@@ -60,21 +61,13 @@ public:
 		Iterator iter = _begin;
 		trie_t::iterator lastTrie = m_trie.root();
 		m_annotation.push_back(_label, std::distance(_begin, _end));	
-			
 		while(iter != _end) {
-			// trie add
 			lastTrie = m_trie.insert(lastTrie, *iter);
-			// kstat add
 			if(_end-7 >= iter) {
 				m_kstat.add(iter, iter+7, lastTrie.index());
 			}
-			// annotation add
 			m_annotation.insert_back(lastTrie.index(), (Prop<char>("")));
-			Link record = m_annotation.size()-1;
-			Link node = m_annotation.record_size(record);
-			offset_t tmp = std::make_pair(record, node);
-			lastTrie->push_back(tmp);
-
+			lastTrie->push_back(std::make_pair(m_annotation.size()-1, m_annotation.record_size(m_annotation.size()-1)));
 			++iter;
 		}
 	}
@@ -87,6 +80,10 @@ public:
 
 	kstat_t get_kstat() {
 		return m_kstat;
+	}
+
+	size_t getK(void) {
+		return m_kstat.getK();
 	}
 
 private:

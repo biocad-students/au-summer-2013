@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <algorithm>
+#include <set>
+#include <map>
 #include "Annotation\annotation.hpp"
 
 namespace igc {
@@ -9,10 +11,10 @@ namespace igc {
 template<class Link = size_t>
 class Kstat {
 public:
-	typedef std::vector<unsigned char> alphabet_t;
-	typedef std::vector<std::vector<Link>> data_t;
-	typedef std::vector<Link> data_raw_t;
+	typedef std::map<unsigned char, size_t> alphabet_t;
 	typedef std::vector<size_t> cache_t;
+	typedef std::set<Link> data_raw_t;
+	typedef std::vector<data_raw_t> data_t;
 
 	Kstat() {
 	}
@@ -36,8 +38,8 @@ public:
 	bool add(Iterator _begin, Iterator _end, Link _link) {
 		if(_begin <= _end - m_k) {
 			size_t hashval = hash(_begin, _begin+m_k);
-			if(hashval > 0 && hashval < m_size) {
-				m_data[hashval].push_back(_link);
+			if(hashval < m_size) {
+				m_data[hashval].insert(_link);
 				return true;
 			}
 		}
@@ -45,28 +47,41 @@ public:
 	}
 	
 	template <class Iterator>
-	data_raw_t* get(Iterator begin, Iterator end) {
-		data_raw_t* result = &m_data[hash(begin, end)];
-		return result;
+	data_raw_t* get(Iterator _begin, Iterator _end) {
+		if(_end-m_k >= _begin) {
+			size_t hashval = hash(_begin, _begin+m_k);
+			if(hashval < m_size) {
+				return &m_data[hashval];
+			}
+		}
+		return nullptr;
 	}
 
 	template <class Iterator>
 	size_t hash(Iterator begin, Iterator end) {
 		Iterator iter = begin;
-		int power = 0;
 		size_t hash_val = 0;
+		size_t PRIME_BASE = m_alphabet.size();
+		size_t idx;
 		while(iter != end) {
-			alphabet_t::iterator idx = std::find(m_alphabet.begin(), m_alphabet.end(), *iter);
-			if(idx == m_alphabet.end()) {
-				return m_size + 1;
+			try {
+				idx = m_alphabet.at(*iter);
 			}
-			hash_val += m_pow_cache[power] * (idx - m_alphabet.begin());
-			power++;
+			catch ( std::out_of_range ) {
+				return -1;
+			}
+
+    		hash_val *= PRIME_BASE; //shift over by one
+    		hash_val += idx; //add the current char
 			++iter;
 		}
 		return hash_val;
 	}
 	
+	size_t getK(void) {
+		return m_k;
+	}
+
 private:
 	alphabet_t m_alphabet;
 	data_t m_data;

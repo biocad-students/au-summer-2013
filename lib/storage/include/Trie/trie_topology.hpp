@@ -16,6 +16,15 @@ protected:
       : index(_index), parent(_parent), cached_key(_cached_key), is_root(_is_root), is_end(_is_end)
     {
     }
+
+	~Node()
+	{
+		for (auto i = child.begin(); i != child.end(); ++i)
+		{
+			delete i->second;
+		}
+	}
+
     Node* get_child_for(Key_type _key)
     {
       if(child.count(_key) == 1)
@@ -42,7 +51,7 @@ public:
 
   ~trie_topology()
   {
-    // delete all nodes
+	  delete m_root;
   }
 
   size_t AddRef() const { return ++m_counter; }
