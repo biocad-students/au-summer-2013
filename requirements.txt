@@ -1,4 +1,5 @@
-#numpy
+parse
+numpy
 #scipy
 #Cython
 matplotlib
