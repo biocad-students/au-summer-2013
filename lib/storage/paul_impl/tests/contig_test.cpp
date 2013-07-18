@@ -7,8 +7,6 @@
 #include "../contig/kstat/kstat.hpp"
 #include "../contig/contig.hpp"
 
-#include "../contig/algorithm.hpp"
-
 #include "../unittest.h"
 
 typedef unsigned char byte;
@@ -47,14 +45,14 @@ void test_search()
     my_contig.push(s5.begin(), s5.end(), "s5");
 
     std::string sp = "GATCTGCGACTACG";
-    auto result = contig_search(sp.begin(), sp.end(), my_contig);
+    auto result = my_contig.find(sp.begin(), sp.end());
     for(auto i : result)
     {
-        contig<Alphabet, RegionProp>::const_iterator iter = my_contig.iter(i);
+        contig<Alphabet, RegionProp>::const_aiterator iter = my_contig.aiter(i);
         for (auto c = sp.begin(); c != sp.end() - 1; )
         {
             std::cout << *c << ": ";
-            for (auto j : my_contig.getLabels(iter))
+            for (auto j : iter.getLabels())
             {
                 std::cout << j << " ";
             }

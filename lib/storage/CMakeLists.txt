@@ -14,10 +14,11 @@ set (CMN_DIR ${PROJECT_SOURCE_DIR}/common)
 	
 # DEBUG|RELEASE|RELWITHDEBINFO|MINSIZEREL
 set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 	
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/Common
+	${PROJECT_SOURCE_DIR}/common
 	${PROJECT_SOURCE_DIR}/../share/zlib-1.2.8
 )
 
@@ -26,29 +27,29 @@ SET( SOURCES
 )
 
 SET( ANNOTATION
-	${HDR_DIR}/annotation/annotation.hpp
-	${HDR_DIR}/annotation/annotation_node.hpp
-	${HDR_DIR}/annotation/annotation_record.hpp
+	${HDR_DIR}/Annotation/annotation.hpp
+	${HDR_DIR}/Annotation/annotation_node.hpp
+	${HDR_DIR}/Annotation/annotation_record.hpp
 )
 
 SET( TRIE
-	${HDR_DIR}/trie/trie.hpp
-	${HDR_DIR}/trie/trie_topology.hpp
+	${HDR_DIR}/Trie/trie.hpp
+	${HDR_DIR}/Trie/trie_topology.hpp
 )
 
 SET( KSTAT
-	${HDR_DIR}/kstat/kstat.hpp
+	${HDR_DIR}/Kstat/kstat.hpp
 )
 
 SET( STORAGE
-	${HDR_DIR}/storage/storage.hpp
+	${HDR_DIR}/Storage/storage.hpp
 )
 
 SET( ALGORITHM
-	${HDR_DIR}/algorithm/algorithm.hpp
+	${HDR_DIR}/Algorithm/algorithm.hpp
 )
 
-set ( COMMON
+SET ( COMMON
 	${CMN_DIR}/fasta_reader.h
 	${CMN_DIR}/kseq.h
 	${CMN_DIR}/read.h

@@ -22,6 +22,17 @@ public:
     {
     }
 
+    trie_iterator(trie_const_iterator<T> t)
+    {
+        this->m_trie = t.m_trie;
+        this->m_current = t.m_current;
+    }
+
+    trie_const_iterator<T> const_iter() const
+    {
+        return trie_const_iterator<T>(this->m_trie, this->m_current);
+    }
+
     trie_iterator next(byte symbol) const
     {
         return trie_iterator(this->m_trie,

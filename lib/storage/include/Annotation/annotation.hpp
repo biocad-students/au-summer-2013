@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Annotation\annotation_record.hpp"
+#include "Annotation/annotation_record.hpp"
 
 namespace igc {
 // Class annotation:

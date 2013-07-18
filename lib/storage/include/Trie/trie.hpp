@@ -1,5 +1,5 @@
 #pragma once
-#include "Trie\trie_topology.hpp"
+#include "Trie/trie_topology.hpp"
 
 namespace igc {
 // Class trie:
