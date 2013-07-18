@@ -6,10 +6,8 @@ import sys
 
 from Bio import SeqIO
 from Bio.SeqUtils.CheckSum import seguid
-from clustering import add_to_cluster
-from plots import plot_cluster_sizes
-from region_finding import find_cdr3
-from separate import split
+from clustering_tool.region_finding import find_cdr3
+from clustering_tool.separate import split
 
 
 def remove_duplicates(fasta):
@@ -113,10 +111,6 @@ def main(args):
         records = peptide_fasta[seq_type]
         cdr3[seq_type] = list(
             find_cdr3(records, config[seq_type]["cdr3regex"]))
-
-    if args.add:
-        clusters = cluster_reading(args.clusters)
-        insertion_results = add_to_cluster(clusters, peptide_fasta)
 
 #        plot_path = plot_cluster_sizes(clusters)
 

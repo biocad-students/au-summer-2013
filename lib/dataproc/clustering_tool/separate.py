@@ -1,6 +1,6 @@
 import re
-import alignment as aln
 from collections import namedtuple, defaultdict
+from clustering_tool import alignment as aln
 
 Pair = namedtuple("Pair", ["forward", "reverse"])
 
