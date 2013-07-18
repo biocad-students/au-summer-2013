@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <seqan/align.h>
 
+#include "../utils/read.h"
 #include "trie/trie.hpp"
 #include "contig.hpp"
 
@@ -61,4 +63,15 @@ std::vector<typename contig<T, Property, LabelType>::index_type> contig_search(I
 
     delete tmp;
     return result;
+}
+
+template <class Iterator, class T, template <class> class Property, class LabelType>
+std::pair<Read, std::vector<Read>> contig_alignment(Iterator begin, Iterator end,
+                                                    contig<T, Property, LabelType> const & c,
+                                                    size_t max_count, double min_simularity)
+{
+    typedef std::vector<std::vector<short>> matrix2d;
+    typedef contig<T, Property, LabelType>  contig_t;
+
+    typename contig_t::const_iterator iter = c.begin();
 }

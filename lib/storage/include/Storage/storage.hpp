@@ -3,9 +3,9 @@
 
 #include <map>
 #include <vector>
-#include "Annotation\annotation.hpp"
-#include "Kstat\kstat.hpp"
-#include "Trie\trie.hpp"
+#include "Annotation/annotation.hpp"
+#include "Kstat/kstat.hpp"
+#include "Trie/trie.hpp"
 
 namespace igc {
 // typedef T - property param

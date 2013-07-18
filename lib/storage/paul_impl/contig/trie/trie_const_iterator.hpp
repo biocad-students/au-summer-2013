@@ -102,14 +102,24 @@ public:
         return !(*this == iter);
     }
 
-    byte symbol()
+    byte symbol() const
     {
         return m_trie->get(m_current)->symbol();
     }
 
-    size_t index()
+    size_t index() const
     {
         return m_current;
+    }
+
+    bool leaf() const
+    {
+        return m_trie->get(m_current)->getChildren()->size() == 0;
+    }
+
+    bool fork() const
+    {
+        return m_trie->get(m_current)->getChildren()->size() > 1;
     }
 
 protected:

@@ -6,3 +6,5 @@ void test_anno();
 void test_contig();
 void test_contig2();
 void test_search();
+void test_fasta();
+void test_fasta_push();

@@ -5,15 +5,17 @@
 #include <ctime>
 
 // memory leaks detection
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
+#ifdef __WIN32
+    #define _CRTDBG_MAP_ALLOC
+    #include <stdlib.h>
+    #include <crtdbg.h>
+#endif
 // end
 #include "fasta_reader.h"
-#include "Storage\storage.hpp"
-#include "Kstat\kstat.hpp"
-#include "Annotation\annotation.hpp"
-#include "Algorithm\algorithm.hpp"
+#include "Storage/storage.hpp"
+#include "Kstat/kstat.hpp"
+#include "Annotation/annotation.hpp"
+#include "Algorithm/algorithm.hpp"
 
 template <class T>
 struct Prop {

@@ -8,11 +8,16 @@
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
 
+#include "contig_const_iterator.hpp"
+#include "contig_iterator.hpp"
 
 template <class T, template <class> class Property, class LabelType=std::string>
 class contig
 {
 public:
+    friend class contig_const_iterator<T, Property, LabelType>;
+    friend class contig_iterator<T, Property, LabelType>;
+
     typedef Property<T>                        			  data_type;
     typedef std::vector<byte>				   			  alphabet_type;
     typedef annotation<T, Property, LabelType> 			  anno_type;
@@ -24,6 +29,9 @@ public:
 
     typedef typename trie_type::const_iterator      	  const_iterator;
     typedef typename trie_type::iterator       			  iterator;
+
+    typedef contig_const_iterator<T, Property, LabelType> const_aiterator;
+    typedef contig_iterator<T, Property, LabelType>       aiterator;
 
     contig(std::string const & name, alphabet_type const & alphabet, size_t k = 7)
         : m_name(name), m_stat(alphabet, k)
@@ -106,7 +114,6 @@ public:
         return result;
     }
 
-
     data_type & getAnnotationByLabel(const_iterator iter, LabelType const & label)
     {
         for (auto i = iter->begin(); i != iter->end(); ++i)
@@ -130,6 +137,7 @@ public:
         return result;
     }
 
+    // Trie iterators
     iterator begin()
     {
         return m_trie.begin();
@@ -160,21 +168,107 @@ public:
         return const_iterator(&m_trie, i);
     }
 
+    // Annotation iterators
+    aiterator abegin()
+    {
+        return aiterator(this, begin());
+    }
+
+    const_aiterator abegin() const
+    {
+        return const_aiterator(this, begin());
+    }
+
+    aiterator aend()
+    {
+        return aiterator(this, end());
+    }
+
+    const_aiterator aend() const
+    {
+        return const_aiterator(this, end());
+    }
+
+    aiterator aiter(index_type i)
+    {
+        return aiterator(this, i);
+    }
+
+    const_aiterator aiter(index_type i) const
+    {
+        return const_aiterator(this, i);
+    }
+
     template <class S>
     void copyTrie(trie<S> ** t) const
     {
         *t = new trie<S>(m_trie);
     }
 
-    template <class Iterator>
-    const std::set<index_type>* getNodes(Iterator begin, Iterator end) const
-    {
-        return m_stat.get(begin, end);
-    }
-
     record_type & getRecord(LabelType const & label)
     {
         return m_anno.getRecordByLabel(label);
+    }
+
+    size_t size()
+    {
+        return m_trie.size();
+    }
+
+// API Methods
+    template <class Iterator>
+    std::vector<index_type> find(Iterator begin, Iterator end)
+    {
+        typedef typename trie<bool>::iterator tb_iterator;
+
+        std::vector<index_type> result;
+        trie<bool>* tmp = nullptr;
+        copyTrie(&tmp);
+
+        size_t deep = 0;
+        const std::set<index_type>* nodes = nullptr;
+        for (Iterator iter = begin; iter != end; ++iter)
+        {
+            nodes = m_stat.get(iter, end);
+            if (nodes == nullptr)
+            {
+                nodes = m_stat.get(iter-1, end);
+                break;
+            }
+            for (auto niter = nodes->begin(); niter != nodes->end(); ++niter)
+            {
+                tb_iterator t(tmp, *niter);
+                *t = true;
+            }
+            deep++;
+        }
+
+        if (nodes == nullptr)
+        {
+            return result;
+        }
+
+        for (auto niter = nodes->begin(); niter != nodes->end(); ++niter)
+        {
+            bool breakflag = false;
+            tb_iterator t(tmp, *niter);
+            for (size_t i = deep-1; i != 0; --i)
+            {
+                --t;
+                if (t == tmp->end() || !*t)
+                {
+                    breakflag = true;
+                    break;
+                }
+            }
+            if (!breakflag)
+            {
+                result.push_back(t.index());
+            }
+        }
+
+        delete tmp;
+        return result;
     }
 
 private:

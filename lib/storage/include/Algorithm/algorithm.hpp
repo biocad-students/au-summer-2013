@@ -1,5 +1,5 @@
 ﻿#include <set>
-#include "Storage\storage.hpp"
+#include "Storage/storage.hpp"
 
 namespace igc {
 
@@ -21,7 +21,7 @@ std::set<Link> find (Iterator _begin, Iterator _end, storage<T, Property, Label,
 	// окраска дерева
 	for(size_t i = 0; i < dist - 7; ++i, ++_begin) {
 		result_t *similar = my_kstat.get(_begin, _begin+7);
-		result_t::iterator similar_iter = similar->begin();
+		typename result_t::iterator similar_iter = similar->begin();
 		while(similar_iter != similar->end()) {
 			iterator iter = my_color_trie.find(*similar_iter);
 			*iter = true;
@@ -31,7 +31,7 @@ std::set<Link> find (Iterator _begin, Iterator _end, storage<T, Property, Label,
 
 	// поиск по окрашенному дереву
 	result_t *similar = my_kstat.get(_begin, _begin+7);
-	result_t::iterator similar_iter = similar->begin();
+	typename result_t::iterator similar_iter = similar->begin();
 	while(similar_iter != similar->end()) {
 		const_iterator iter = my_color_trie.find(*similar_iter);
 		bool found = true;

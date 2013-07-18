@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 #include <algorithm>
 #include <set>
 #include <map>
-#include "Annotation\annotation.hpp"
+#include "Annotation/annotation.hpp"
 
 namespace igc {
 
@@ -34,7 +35,7 @@ public:
 		}
 	}
 
-	template <class Iterator, class Link>
+	template <class Iterator>
 	bool add(Iterator _begin, Iterator _end, Link _link) {
 		if(_begin <= _end - m_k) {
 			size_t hashval = hash(_begin, _begin+m_k);

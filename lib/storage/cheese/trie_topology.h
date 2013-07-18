@@ -109,7 +109,7 @@ public:
 
     const_iterator operator++(int)
     {
-      _My_type_iter _Tmp = *this;
+      auto _Tmp = *this;
       ++*this;
       return _Tmp;
     }
@@ -140,7 +140,7 @@ public:
 
     const_iterator operator--(int)
     {
-      _My_type_iter _Tmp = *this;
+      auto _Tmp = *this;
       --*this;
       return _Tmp;
     }
