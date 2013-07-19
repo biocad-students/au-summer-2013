@@ -94,15 +94,50 @@ void contig_unittest (void) {
 	my_contig.pushSequence(str3.begin(), str3.end(), Lab("New label 3"));
 }
 
-void find_unittest (void) {
-	std::cout << "start find unittest" << std::endl;
-	clock_t t1 = clock();
-	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
-	typedef my_storage_t::iterator iterator;
-	std::map<unsigned char, size_t> alphabet_;
+//void find_unittest (void) {
+//	std::cout << "start find unittest" << std::endl;
+//	clock_t t1 = clock();
+//	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
+//	typedef my_storage_t::iterator iterator;
+//	std::map<unsigned char, size_t> alphabet_;
+//
+//	int K_ = 7;
+//	my_storage_t my_storage(alphabet_, K_);
+//	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH_corrected.fasta");
+//	Read tmp;
+//	std::string::iterator iter;
+//	std::string::iterator end;
+//	while(!FR.is_eof()) {
+//		FR >> tmp;
+//		iter = tmp.seq.begin();
+//		end = tmp.seq.end();
+//		my_storage.pushSequence(iter, end, Lab(tmp.name));
+//	}
+//	std::cout << "readed VH.fasta" << std::endl;
+//	std::string needle("TTCCAGGGCAGAGTCA");
+//	std::set<size_t> find_result = igc::find(needle.begin(), needle.end(), my_storage);
+//	std::set<size_t>::iterator find_iter = find_result.begin();
+//	while(find_iter != find_result.end()) {
+//		std::cout << *find_iter << " ";
+//		++find_iter;
+//	}
+//	clock_t t2 = clock();
+//	std::cout << (double) (t2-t1) / CLOCKS_PER_SEC <<"end find unittest" << std::endl;
+//}
 
+void find_unittest2 (void) {
+	clock_t t0 = clock();
+	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
+	//typedef my_storage_t::iterator iterator;
+
+	std::map<unsigned char, size_t> alphabet_;
+	alphabet_.insert(std::make_pair<char, int>('A', 0));
+	alphabet_.insert(std::make_pair<char, int>('C', 1));
+	alphabet_.insert(std::make_pair<char, int>('G', 2));
+	alphabet_.insert(std::make_pair<char, int>('T', 3));
 	int K_ = 7;
 	my_storage_t my_storage(alphabet_, K_);
+
 	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH_corrected.fasta");
 	Read tmp;
 	std::string::iterator iter;
@@ -112,23 +147,29 @@ void find_unittest (void) {
 		iter = tmp.seq.begin();
 		end = tmp.seq.end();
 		my_storage.pushSequence(iter, end, Lab(tmp.name));
+		static int counter = 0;
+		if(++counter == 10000) break;
 	}
-	std::cout << "readed VH.fasta" << std::endl;
-	std::string needle("TTCCAGGGCAGAGTCA");
-	std::set<size_t> find_result = igc::find(needle.begin(), needle.end(), my_storage);
-	std::set<size_t>::iterator find_iter = find_result.begin();
-	while(find_iter != find_result.end()) {
-		std::cout << *find_iter << " ";
-		++find_iter;
+	std::cout << "Loaded" << std::endl;
+
+	//std::string needle("TTCCAGGGCAGAGTCACCATGA");
+	std::string needle("AAGTGCAGCTGGTGCAGTCTGGGGGAGGCTTGGTGCAGC");
+	my_storage_t::iterator it = my_storage.find(needle.begin(), needle.end());
+	for(; it.valid(); ++it)
+	{
+		std::vector<Lab> labels = it.get_labels();
+		for(int i=0; i < labels.size(); ++i)
+			std::cout << labels[i].m_name << std::endl;
+		std::cout << std::endl;
 	}
-	clock_t t2 = clock();
-	std::cout << (double) (t2-t1) / CLOCKS_PER_SEC <<"end find unittest" << std::endl;
+
 }
 
 int main()
 {
-	find_unittest();
+	find_unittest2();
+/*	find_unittest();
 	contig_unittest();
 	annotation_unittest();
-	kstat_unittest();
+	kstat_unittest();*/
 }
