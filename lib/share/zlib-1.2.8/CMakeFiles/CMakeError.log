@@ -1,0 +1,131 @@
+Determining size of off64_t failed with the following output:
+Change Dir: E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MICROS~2.0\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec128201653
+
+Microsoft (R) Visual Studio Version 10.0.30319.1.
+Copyright (C) Microsoft Corp. All rights reserved.
+1>------ Build started: Project: cmTryCompileExec128201653, Configuration: Debug Win32 ------
+1>Build started 16.07.2013 21:13:55.
+1>PrepareForBuild:
+1>  Creating directory "E:\BioCad\au-summer-2013\lib\share\zlib-1.2.8\CMakeFiles\CMakeTmp\Debug\".
+1>InitializeBuildStatus:
+1>  Creating "cmTryCompileExec128201653.dir\Debug\cmTryCompileExec128201653.unsuccessfulbuild" because "AlwaysCreate" was specified.
+1>ClCompile:
+1>  Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 16.00.30319.01 for 80x86
+1>  Copyright (C) Microsoft Corporation.  All rights reserved.
+1>  
+1>  cl /c /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _LARGEFILE64_SOURCE=1 /D HAVE_SYS_TYPES_H /D HAVE_STDINT_H /D HAVE_STDDEF_H /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec128201653.dir\Debug\\" /Fd"E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec128201653.pdb" /Gd /TC /analyze- /errorReport:prompt ..\CheckTypeSize\OFF64_T.c
+1>  
+1>  OFF64_T.c
+1>..\CheckTypeSize\OFF64_T.c(19): error C2065: 'off64_t' : undeclared identifier
+1>..\CheckTypeSize\OFF64_T.c(20): error C2065: 'off64_t' : undeclared identifier
+1>..\CheckTypeSize\OFF64_T.c(21): error C2065: 'off64_t' : undeclared identifier
+1>..\CheckTypeSize\OFF64_T.c(22): error C2065: 'off64_t' : undeclared identifier
+1>..\CheckTypeSize\OFF64_T.c(23): error C2065: 'off64_t' : undeclared identifier
+1>
+1>Build FAILED.
+1>
+1>Time Elapsed 00:00:00.07
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+
+E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CheckTypeSize/OFF64_T.c:
+#include <sys/types.h>
+#include <stdint.h>
+#include <stddef.h>
+
+
+#undef KEY
+#if defined(__i386)
+# define KEY '_','_','i','3','8','6'
+#elif defined(__x86_64)
+# define KEY '_','_','x','8','6','_','6','4'
+#elif defined(__ppc__)
+# define KEY '_','_','p','p','c','_','_'
+#elif defined(__ppc64__)
+# define KEY '_','_','p','p','c','6','4','_','_'
+#endif
+
+#define SIZE (sizeof(off64_t))
+char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+  ('0' + ((SIZE / 10000)%10)),
+  ('0' + ((SIZE / 1000)%10)),
+  ('0' + ((SIZE / 100)%10)),
+  ('0' + ((SIZE / 10)%10)),
+  ('0' +  (SIZE    % 10)),
+  ']',
+#ifdef KEY
+  ' ','k','e','y','[', KEY, ']',
+#endif
+  '\0'};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_size[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the function fseeko exists failed with the following output:
+Change Dir: E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MICROS~2.0\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec3047510848
+
+Microsoft (R) Visual Studio Version 10.0.30319.1.
+Copyright (C) Microsoft Corp. All rights reserved.
+1>------ Build started: Project: cmTryCompileExec3047510848, Configuration: Debug Win32 ------
+1>Build started 16.07.2013 21:13:57.
+1>PrepareForBuild:
+1>  Creating directory "E:\BioCad\au-summer-2013\lib\share\zlib-1.2.8\CMakeFiles\CMakeTmp\Debug\".
+1>InitializeBuildStatus:
+1>  Creating "cmTryCompileExec3047510848.dir\Debug\cmTryCompileExec3047510848.unsuccessfulbuild" because "AlwaysCreate" was specified.
+1>ClCompile:
+1>  Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 16.00.30319.01 for 80x86
+1>  Copyright (C) Microsoft Corporation.  All rights reserved.
+1>  
+1>  cl /c /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=fseeko /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec3047510848.dir\Debug\\" /Fd"E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3047510848.pdb" /Gd /TC /analyze- /errorReport:prompt "C:\Program Files (x86)\CMake 2.8\share\cmake-2.8\Modules\CheckFunctionExists.c"
+1>  
+1>  CheckFunctionExists.c
+1>CheckFunctionExists.obj : error LNK2019: unresolved external symbol _fseeko referenced in function _main
+1>E:\BioCad\au-summer-2013\lib\share\zlib-1.2.8\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3047510848.exe : fatal error LNK1120: 1 unresolved externals
+1>
+1>Build FAILED.
+1>
+1>Time Elapsed 00:00:00.22
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+
+
+Determining if the include file unistd.h exists failed with the following output:
+Change Dir: E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MICROS~2.0\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec542848334
+
+Microsoft (R) Visual Studio Version 10.0.30319.1.
+Copyright (C) Microsoft Corp. All rights reserved.
+1>------ Build started: Project: cmTryCompileExec542848334, Configuration: Debug Win32 ------
+1>Build started 16.07.2013 21:13:58.
+1>PrepareForBuild:
+1>  Creating directory "E:\BioCad\au-summer-2013\lib\share\zlib-1.2.8\CMakeFiles\CMakeTmp\Debug\".
+1>InitializeBuildStatus:
+1>  Creating "cmTryCompileExec542848334.dir\Debug\cmTryCompileExec542848334.unsuccessfulbuild" because "AlwaysCreate" was specified.
+1>ClCompile:
+1>  Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 16.00.30319.01 for 80x86
+1>  Copyright (C) Microsoft Corporation.  All rights reserved.
+1>  
+1>  cl /c /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec542848334.dir\Debug\\" /Fd"E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec542848334.pdb" /Gd /TC /analyze- /errorReport:prompt CheckIncludeFile.c
+1>  
+1>  CheckIncludeFile.c
+1>CheckIncludeFile.c(1): fatal error C1083: Cannot open include file: 'unistd.h': No such file or directory
+1>
+1>Build FAILED.
+1>
+1>Time Elapsed 00:00:00.06
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+
+

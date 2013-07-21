@@ -27,26 +27,27 @@ SET( SOURCES
 )
 
 SET( ANNOTATION
-	${HDR_DIR}/Annotation/annotation.hpp
-	${HDR_DIR}/Annotation/annotation_node.hpp
-	${HDR_DIR}/Annotation/annotation_record.hpp
+	${HDR_DIR}/annotation/annotation.hpp
+	${HDR_DIR}/annotation/annotation_node.hpp
+	${HDR_DIR}/annotation/annotation_record.hpp
 )
 
 SET( TRIE
-	${HDR_DIR}/Trie/trie.hpp
-	${HDR_DIR}/Trie/trie_topology.hpp
+	${HDR_DIR}/trie/trie.hpp
+	${HDR_DIR}/trie/trie_topology.hpp
+	${HDR_DIR}/trie/trie_node.hpp
 )
 
 SET( KSTAT
-	${HDR_DIR}/Kstat/kstat.hpp
+	${HDR_DIR}/kstat/kstat.hpp
 )
 
 SET( STORAGE
-	${HDR_DIR}/Storage/storage.hpp
+	${HDR_DIR}/storage/storage.hpp
 )
 
 SET( ALGORITHM
-	${HDR_DIR}/Algorithm/algorithm.hpp
+	${HDR_DIR}/algorithm/algorithm.hpp
 )
 
 SET ( COMMON
