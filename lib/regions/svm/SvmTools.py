@@ -40,14 +40,16 @@ def filter_predicted_result(result):
     return [int(i) for i in result]
 
 
-def get_line_prediction_rank(regions, prediction):
+def get_line_prediction_rank(line):
     success = 0
-    for i, prediction in enumerate(prediction):
-        if get_region_number(regions, i) == prediction:
+    for i, prediction in enumerate(line[1]):
+        if get_region_number(line[0], i) == prediction:
             success += 1
-    return 1.0 * success / len(prediction)
+    return 1.0 * success / len(line[1])
 
 
 def get_dataset_prediction_rank(dataset, prediction):
+    if not dataset.is_marked:
+        return []
     lines = zip([dataset.data[i][1] for i in xrange(len(dataset.data))], [p[1] for p in prediction])
-    return [get_line_prediction_rank(line[0], line[1]) for line in lines]
+    return [get_line_prediction_rank(line) for line in lines]
