@@ -9,8 +9,14 @@
 
 void test_kstat()
 {
-    std::vector<byte> alpha {'A', 'C', 'G', 'T', 'N'};
-    size_t k = 7;
+        std::vector<byte> alpha;
+		alpha.push_back('A');
+		alpha.push_back('C');
+		alpha.push_back('G');
+		alpha.push_back('T');
+		alpha.push_back('N');
+
+		size_t k = 7;
 
     kstatistics<size_t> my_kstat(alpha, k);
 

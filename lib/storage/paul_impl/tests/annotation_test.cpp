@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <vector>
+
 
 #include "../contig/annotation/annotation.hpp"
 #include "../unittest.h"
@@ -11,8 +13,14 @@ struct Alphabet
 {
     static std::vector<byte> getAlphabet()
     {
-        return std::vector<byte> {'A', 'C', 'G', 'T', 'N'};
-    }
+        std::vector<byte> alphabet;
+		alphabet.push_back('A');
+		alphabet.push_back('C');
+		alphabet.push_back('G');
+		alphabet.push_back('T');
+		alphabet.push_back('N');
+		return alphabet;
+	}
 };
 
 template <class T>

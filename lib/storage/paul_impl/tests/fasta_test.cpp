@@ -16,10 +16,16 @@ typedef unsigned char byte;
 
 struct Alphabet
 {
-    static std::vector<byte> getAlphabet()
+static std::vector<byte> getAlphabet()
     {
-        return std::vector<byte> {'A', 'C', 'G', 'T'};
-    }
+        std::vector<byte> alphabet;
+		alphabet.push_back('A');
+		alphabet.push_back('C');
+		alphabet.push_back('G');
+		alphabet.push_back('T');
+		alphabet.push_back('N');
+		return alphabet;
+}	
 };
 
 template <class T>
@@ -58,7 +64,7 @@ void test_fasta()
     std::pair<Read, size_t> p;
     size_t real_length = 0;
     contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
-    p = import_data("/home/mactep/Data/NGS-llama/out2/VH/VH_corrected.fasta", my_contig);
+    p = import_data("C:/Users/Aspart/Biocad/au-summer-2013/data/germline/human/VH.fasta", my_contig);
     real_length += p.second;
 //    p = import_data("/home/mactep/Data/NGS-llama/out2/VL/VL.fasta", my_contig);
 //    real_length += p.second;
