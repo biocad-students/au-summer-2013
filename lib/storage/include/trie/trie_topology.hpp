@@ -276,7 +276,10 @@ public:
 protected:
   Node* create_node(Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
   {
-    return new Node(m_counter++, _parent, _cached_key, _is_root, _is_end);
+    if(_is_root)
+        return new Node(m_counter++, _parent, _cached_key, _is_root, _is_end);
+    m_indexed.push_back(new Node(m_counter++, _parent, _cached_key, _is_root, _is_end));
+    return m_indexed.back();
   }
 
   void make_DFS()
