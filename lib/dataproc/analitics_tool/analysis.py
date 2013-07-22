@@ -1,19 +1,21 @@
 import argparse
-from collections import defaultdict
 import difflib
+import itertools
 import logging
 import os
+import pprint
 import sys
-import itertools
+import textwrap
+from collections import defaultdict
 
+import numpy as np
+import pylab
 from Bio import AlignIO, SeqIO, Phylo
 from Bio.Align import AlignInfo, MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
+from Bio.Alphabet import IUPAC
 from Bio.SeqUtils.CheckSum import seguid
-from matplotlib import pyplot
-import pylab
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
-import numpy as np
 
 
 def remove_duplicates(fasta):
@@ -21,7 +23,7 @@ def remove_duplicates(fasta):
     for record in fasta:
         check_sum = seguid(record.seq)
         if check_sum in check_sums:
-            # print ("Ignoring record {0}".format(record.id))
+            logging.info("Ignoring record {0}".format(record.id))
             continue
         check_sums.add(check_sum)
         yield SeqIO.SeqRecord(id="ID=" + record.id,
@@ -35,26 +37,31 @@ def distance(record1, record2):
 
 
 def main(args):
-    logging.basicConfig(filename='example.log', level=logging.DEBUG)
+    FORMAT = "%(asctime)-15s %(clientip)s %(user)-8s %(message)s"
+    logging.basicConfig(filename="analysis.log", level=logging.DEBUG,
+                        format=FORMAT)
 
     parser = argparse.ArgumentParser(description="Sequence analysis after "
                                                  "processing")
-    parser.add_argument("-i", metavar="fasta_file",
-                        help="path to fasta file")
-    parser.add_argument("-o", metavar="out_dir",
-                        help="directory for results files")
+    parser.add_argument("out_dir",
+                        help="directory for result files")
+    parser.add_argument("fasta_file",
+                        help="path to fasta file with peptide sequences")
 
     args = parser.parse_args(args)
-    raw_fasta_path = args.i
-    out_dir_path = args.o
+    raw_fasta_path = args.fasta_file
+    out_dir_path = args.out_dir
 
     if not os.path.exists(out_dir_path):
+        logging.info("Making directory {0}".format(out_dir_path))
         os.makedirs(out_dir_path)
 
     deduplicated_fasta = remove_duplicates(
         SeqIO.parse(raw_fasta_path, "fasta"))
     base = os.path.basename(raw_fasta_path)
     fasta_path = os.path.join(out_dir_path, base)
+
+    logging.info("Writing FASTA in {0}".format(fasta_path))
     SeqIO.write(deduplicated_fasta, fasta_path, "fasta")
 
     # Multiple sequence alignment
@@ -71,7 +78,7 @@ def main(args):
     with open(os.path.join(out_dir_path, "alignment.txt"), "w") as fout:
         fout.write(
             "\n".join(
-                [str(record.seq) for record in alignment_dict.itervalues()]))
+                str(record.seq) for record in alignment_dict.itervalues()))
 
     # alignment tree drawing
     tree_path = fasta_path.replace(".fasta", ".dnd")
@@ -134,19 +141,28 @@ def main(args):
         summary_align = AlignInfo.SummaryInfo(MultipleSeqAlignment(cluster))
         consensus = summary_align.dumb_consensus()
         pssm = summary_align.pos_specific_score_matrix(consensus,
-                                                       chars_to_ignore=['X'])
-        frequencies = dict((key, len(list(group))) for key, group in
-                           itertools.groupby(consensus))
+                                                       chars_to_ignore=['-'])
+        frequencies = dict.fromkeys(IUPAC.protein.letters, 0)
+        frequencies.update(
+            (key, len(list(group)))
+            for key, group in itertools.groupby(sorted(consensus)))
+        frequencies.pop("X")
 
         meta_file.write("""Cluster ID: {0}
 Cluster size: {1}
-Consensus: {2}
+Consensus:
+{2}
+
 PSSM:
 {3}
-Frequencies in consensus: {4}
+Frequencies in consensus:
+{4}
 
-""".format(cluster_id, len(cluster), consensus, pssm, frequencies))
 
+""".format(cluster_id, len(cluster), textwrap.fill(str(consensus)), pssm,
+           pprint.pformat(frequencies)))
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    args = sys.argv
+    logging.info(sys.argv)
+    main(args[1:])
