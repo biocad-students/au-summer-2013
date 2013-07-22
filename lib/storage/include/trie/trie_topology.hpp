@@ -7,6 +7,9 @@
 template<typename Key_type, typename Index_type>
 class trie_topology
 {
+private:
+	typedef trie_topology<Key_type, Index_type> _My_type;
+
 protected:
   struct Node
   {
@@ -51,6 +54,9 @@ public:
 
   class const_iterator
   {
+	private:
+		typedef const_iterator _My_type_iter;
+		friend _My_type;
     friend trie_topology;
   public:
     const_iterator(Node* _node) : m_node(_node), m_DFS(NULL), m_dfs_index(0) {}
@@ -168,6 +174,9 @@ public:
 
   class iterator : public const_iterator
   {
+	public:
+		typedef iterator _My_type_iter;
+		typedef const_iterator _Mybase_iter;
   public:
     iterator(Node* _node) : const_iterator(_node) {}
     iterator(std::vector<Node*>* _dfs) : const_iterator(_dfs) {}
@@ -298,7 +307,7 @@ protected:
     if(_node != m_root)
 		    m_DFS.push_back(_node);
 
-    std::map<Key_type, Node*>::iterator i = _node->child.begin();
+    typename std::map<Key_type, Node*>::iterator i = _node->child.begin();
     for(; i != _node->child.end(); ++i)
     {
       dfs(i->second);
