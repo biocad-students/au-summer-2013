@@ -63,15 +63,15 @@ public:
 		Iterator iter = begin;
 		size_t hash_val = 0;
 		size_t PRIME_BASE = m_alphabet.size();
-		size_t idx;
+		size_t idx = -1;
 		while(iter != end) {
-			try {
-				idx = m_alphabet.at(*iter);
-			}
-			catch ( std::out_of_range ) {
-				return -1;
-			}
-
+			//try {
+			//	idx = m_alphabet.at(*iter);
+			//}
+			//catch ( std::out_of_range ) {
+			//	return -1;
+			//}
+			idx = *iter % PRIME_BASE;
     		hash_val *= PRIME_BASE; //shift over by one
     		hash_val += idx; //add the current char
 			++iter;

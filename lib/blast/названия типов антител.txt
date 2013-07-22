@@ -1,0 +1,17 @@
+нзвания для отбора
+
+  immunoglobulin  imm
+  
+  Ig
+  
+  VH
+  
+  -? receptor
+  
+ключевые слова лдя типов натител
+  heavy
+  light
+  variable (V region)
+  precursor 
+  kappa 
+  lambda

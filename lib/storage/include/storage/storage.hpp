@@ -208,12 +208,13 @@ public:
 		trie_t::iterator lastTrie = m_trie.root();
 		m_annotation.push_back(_label, std::distance(_begin, _end));	
 
+		Prop<char> tmpprp = Prop<char>("");
 		while(iter != _end) {
 			lastTrie = m_trie.insert(lastTrie, *iter);
 			if(_end-7 >= iter) {
 				m_kstat.add(iter, iter+7, lastTrie.index());
 			}
-			m_annotation.insert_back(lastTrie.index(), (Prop<char>("")));
+			m_annotation.insert_back(lastTrie.index(), tmpprp);
 			lastTrie->push_back(std::make_pair(m_annotation.size()-1, m_annotation.record_size(m_annotation.size()-1)));
 
 			++iter;
@@ -233,10 +234,6 @@ public:
 	size_t getK(void) {
 		return m_kstat.getK();
 	}
-
-
-
-
 
 	template <class Iterator>
 	iterator find(Iterator _begin, Iterator _end) {

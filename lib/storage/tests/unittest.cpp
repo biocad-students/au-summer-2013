@@ -4,6 +4,11 @@
 #include <fstream>
 #include <ctime>
 
+clock_t g_begin;
+#define PERFOMANCE_INIT() g_begin = clock();
+#define PERFOMANCE_TIME(label) std::cout << label << " " << (double)(clock() - g_begin)/CLOCKS_PER_SEC << " at line " << __LINE__ << std::endl;
+//#define PERFOMANCE_TIME() std::cout << (double)(clock() - g_begin)/CLOCKS_PER_SEC << " at line " << __LINE__ << std::endl;
+
 // memory leaks detection
 #ifdef __WIN32
     #define _CRTDBG_MAP_ALLOC
@@ -12,10 +17,10 @@
 #endif
 // end
 #include "fasta_reader.h"
-#include "Storage/storage.hpp"
-#include "Kstat/kstat.hpp"
-#include "Annotation/annotation.hpp"
-#include "Algorithm/algorithm.hpp"
+#include "storage/storage.hpp"
+#include "kstat/kstat.hpp"
+#include "annotation/annotation.hpp"
+#include "algorithm/algorithm.hpp"
 
 template <class T>
 struct Prop {
@@ -53,7 +58,6 @@ void annotation_unittest(void ) {
 }
 
 void kstat_unittest(void) {
-	clock_t t0 = clock();
 	igc::annotation<char, Prop, Lab, size_t> annot_;
 	std::map<unsigned char, size_t> alphabet_;
 	fill_alphabet(&alphabet_);
@@ -74,8 +78,6 @@ void kstat_unittest(void) {
 				break;
 		}
 	}
-	clock_t t1 = clock();
-	std::cout << "time_kstat_unittest: " << (double)(t1 - t0) / CLOCKS_PER_SEC << std::endl;
 	std::string tst = "AGCCTGG";
 	std::set<size_t>* result = kstat_.get(tst.begin(), tst.end());
 	std::cout << &result[150] << std::endl;
@@ -126,7 +128,7 @@ void contig_unittest (void) {
 //}
 
 void find_unittest2 (void) {
-	clock_t t0 = clock();
+	PERFOMANCE_TIME("Init find unittest");
 	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
 	//typedef my_storage_t::iterator iterator;
 
@@ -137,8 +139,8 @@ void find_unittest2 (void) {
 	alphabet_.insert(std::make_pair<char, int>('T', 3));
 	int K_ = 7;
 	my_storage_t my_storage(alphabet_, K_);
-
-	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH_corrected.fasta");
+	PERFOMANCE_TIME("Reading file");
+	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
 	Read tmp;
 	std::string::iterator iter;
 	std::string::iterator end;
@@ -147,14 +149,12 @@ void find_unittest2 (void) {
 		iter = tmp.seq.begin();
 		end = tmp.seq.end();
 		my_storage.pushSequence(iter, end, Lab(tmp.name));
-		static int counter = 0;
-		if(++counter == 10000) break;
 	}
-	std::cout << "Loaded" << std::endl;
-
-	//std::string needle("TTCCAGGGCAGAGTCACCATGA");
+	PERFOMANCE_TIME("End reading file");
+	PERFOMANCE_TIME("Find processing");
 	std::string needle("AAGTGCAGCTGGTGCAGTCTGGGGGAGGCTTGGTGCAGC");
 	my_storage_t::iterator it = my_storage.find(needle.begin(), needle.end());
+	PERFOMANCE_TIME("End finding");
 	for(; it.valid(); ++it)
 	{
 		std::vector<Lab> labels = it.get_labels();
@@ -162,11 +162,12 @@ void find_unittest2 (void) {
 			std::cout << labels[i].m_name << std::endl;
 		std::cout << std::endl;
 	}
-
+	PERFOMANCE_TIME("End test");
 }
 
 int main()
 {
+	PERFOMANCE_INIT();
 	find_unittest2();
 /*	find_unittest();
 	contig_unittest();
