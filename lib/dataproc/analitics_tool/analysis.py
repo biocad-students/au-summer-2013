@@ -1,4 +1,5 @@
 import argparse
+from collections import defaultdict
 import difflib
 import logging
 import os
@@ -6,11 +7,11 @@ import sys
 import itertools
 
 from Bio import AlignIO, SeqIO, Phylo
+from Bio.Align import AlignInfo, MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
 from Bio.SeqUtils.CheckSum import seguid
 import pylab
-from scipy.cluster.hierarchy import linkage, leaders, to_tree, dendrogram, fcluster
-from scipy.spatial.distance import squareform
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import numpy as np
 
 
@@ -19,7 +20,7 @@ def remove_duplicates(fasta):
     for record in fasta:
         check_sum = seguid(record.seq)
         if check_sum in check_sums:
-            print ("Ignoring record {0}".format(record.id))
+            # print ("Ignoring record {0}".format(record.id))
             continue
         check_sums.add(check_sum)
         yield SeqIO.SeqRecord(id="ID=" + record.id,
@@ -48,7 +49,6 @@ def main(args):
 
     if not os.path.exists(out_dir_path):
         os.makedirs(out_dir_path)
-    print out_dir_path
 
     deduplicated_fasta = remove_duplicates(
         SeqIO.parse(raw_fasta_path, "fasta"))
@@ -114,6 +114,38 @@ def main(args):
     # Display and save figure
     dendogram_path = os.path.join(out_dir_path, "dendogram.png")
     fig.savefig(dendogram_path)
+
+    fasta_clusters = defaultdict(list)
+    for i, cluster in enumerate(clusters):
+        fasta_id = ids[i]
+        fasta_clusters[cluster].append(alignment_dict[fasta_id])
+
+    # Saving information about clusters
+    clusters_dir_path = os.path.join(out_dir_path, "clusters")
+    if not os.path.exists(clusters_dir_path):
+        os.makedirs(clusters_dir_path)
+    clusters_meta_path = os.path.join(clusters_dir_path, "clusters_meta.txt")
+    meta_file = open(clusters_meta_path, "w")
+    for cluster_id, cluster in fasta_clusters.iteritems():
+        cluster_path = os.path.join(clusters_dir_path,
+                                    "cluster_{0}.fasta".format(cluster_id))
+        SeqIO.write(cluster, cluster_path, "fasta")
+        summary_align = AlignInfo.SummaryInfo(MultipleSeqAlignment(cluster))
+        consensus = summary_align.dumb_consensus()
+        pssm = summary_align.pos_specific_score_matrix(consensus,
+                                                          chars_to_ignore=['X'])
+        frequencies = [(key, len(list(group))) for key, group in
+                       itertools.groupby(consensus)]
+
+        meta_file.write("""Cluster ID: {0}
+Cluster size: {1}
+Consensus: {2}
+PSSM:
+{3}
+Frequencies in consensus: {4}
+
+""".format(cluster_id, len(cluster), consensus, pssm, repr(frequencies)))
+
 
 if __name__ == "__main__":
         main(sys.argv[1:])
