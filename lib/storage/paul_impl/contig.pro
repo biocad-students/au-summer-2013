@@ -21,7 +21,15 @@ HEADERS += \
     utils/kseq.h \
     utils/fasta_reader.h \
     contig/contig_const_iterator.hpp \
-    contig/contig_iterator.hpp
+    contig/contig_iterator.hpp \
+    contig/alicont/alicont.hpp \
+    contig/alicont/alicont_line.hpp
 
-QMAKE_CXXFLAGS += -std=c++11 -fopenmp -Wall
-LIBS += -lz
+#QMAKE_CC = icc
+#QMAKE_CXX = icpc
+
+#QMAKE_CC = clang
+#QMAKE_CXX = clang++
+
+QMAKE_CXXFLAGS += -std=c++11 -Wall -o parallel
+LIBS += -lz -lirc

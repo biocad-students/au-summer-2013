@@ -104,7 +104,7 @@ public:
         return trie_iter - (record_length - 1);
     }
 
-    std::vector<data_type> getAnnotations(const_iterator iter)
+    std::vector<data_type> getAnnotations(const_iterator iter) const
     {
         std::vector<data_type> result;
         for (auto i = iter->begin(); i != iter->end(); ++i)
@@ -112,19 +112,6 @@ public:
             result.push_back(m_anno[*i]);
         }
         return result;
-    }
-
-    data_type & getAnnotationByLabel(const_iterator iter, LabelType const & label)
-    {
-        for (auto i = iter->begin(); i != iter->end(); ++i)
-        {
-            if (m_anno.getLabel(*i) == label)
-            {
-                return m_anno[*i];
-            }
-        }
-
-        throw std::range_error("Shit happend!");
     }
 
     std::vector<LabelType> getLabels(const_iterator iter) const
@@ -270,6 +257,13 @@ public:
         delete tmp;
         return result;
     }
+
+//    template <class Iterator>
+//    std::pair<record_type<data_type>, std::vector<record_type<data_type>>>
+//    align(Iterator begin, Iterator end)
+//    {
+
+//    }
 
 private:
     std::string m_name;

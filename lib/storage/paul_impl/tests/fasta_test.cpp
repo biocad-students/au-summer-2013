@@ -32,11 +32,10 @@ struct RegionProp
     }
 };
 
-void test_fasta()
+std::pair<Read, size_t> import_data(std::string const & path,
+                                    contig<Alphabet, RegionProp> & my_contig)
 {
-    time_t c = clock();
-    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
-    FastaReader fr("/home/mactep/Data/NGS-llama/out2/VH/VH_corrected.fasta");
+    FastaReader fr(path);
     Read tmp_read;
     std::cout << "Import started" << std::endl;
     size_t count = 0;
@@ -50,9 +49,25 @@ void test_fasta()
     }
     std::cout << "Import ended (" << count << ")" << std::endl;
 
+    return std::make_pair(tmp_read, real_length);
+}
+
+void test_fasta()
+{
+    time_t c = clock();
+    std::pair<Read, size_t> p;
+    size_t real_length = 0;
+    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    p = import_data("/home/mactep/Data/NGS-llama/out2/VH/VH_corrected.fasta", my_contig);
+    real_length += p.second;
+//    p = import_data("/home/mactep/Data/NGS-llama/out2/VL/VL.fasta", my_contig);
+//    real_length += p.second;
+//    p = import_data("/home/mactep/Data/NGS-llama/out2/VK/VK.fasta", my_contig);
+//    real_length += p.second;
+
     std::cout << "FOUND: "
-              << my_contig.find(tmp_read.seq.begin() + 12,
-                                tmp_read.seq.begin() + 22).size()
+              << my_contig.find(p.first.seq.begin() + 12,
+                                p.first.seq.begin() + 22).size()
               << std::endl;
     c = clock() - c;
     std::cout << "Compression: " << (double)my_contig.size() / real_length << std::endl;

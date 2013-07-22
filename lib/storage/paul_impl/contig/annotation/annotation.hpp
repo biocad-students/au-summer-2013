@@ -51,7 +51,7 @@ public:
         return m_data[i.record].second[i.letter];
     }
 
-    data_type & operator[](index i) const
+    const data_type & operator[](index i) const
     {
         return m_data[i.record].second[i.letter];
     }

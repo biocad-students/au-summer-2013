@@ -25,12 +25,12 @@ public:
 
     data_type & operator[](size_t i)
     {
-        return *m_data[i];
+        return *(m_data[i]);
     }
 
-    data_type & operator[](size_t i) const
+    const data_type & operator[](size_t i) const
     {
-        return *m_data[i];
+        return *(m_data[i]);
     }
 
     byte symbolOf(size_t i) const
