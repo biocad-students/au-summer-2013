@@ -35,7 +35,6 @@ SET( ANNOTATION
 SET( TRIE
 	${HDR_DIR}/trie/trie.hpp
 	${HDR_DIR}/trie/trie_topology.hpp
-	${HDR_DIR}/trie/trie_node.hpp
 )
 
 SET( KSTAT
@@ -58,7 +57,6 @@ SET ( COMMON
 
 SET ( TESTS
 	${TST_DIR}/unittest.cpp
-	${TST_DIR}/insert_find_unittest.cpp
 	)
 	
 SET ( REQUIRED_LIBRARIES
