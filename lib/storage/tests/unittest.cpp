@@ -140,7 +140,7 @@ void find_unittest2 (void) {
 	int K_ = 7;
 	my_storage_t my_storage(alphabet_, K_);
 	PERFOMANCE_TIME("Reading file");
-	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH.fasta");
+	FastaReader FR("..\\..\\..\\data\\germline\\human\\VH_corrected.fasta");
 	Read tmp;
 	std::string::iterator iter;
 	std::string::iterator end;
@@ -158,8 +158,9 @@ void find_unittest2 (void) {
 	for(; it.valid(); ++it)
 	{
 		std::vector<Lab> labels = it.get_labels();
-		for(int i=0; i < labels.size(); ++i)
-			std::cout << labels[i].m_name << std::endl;
+		//for(int i=0; i < labels.size(); ++i)
+		//	std::cout << labels[i].m_name << std::endl;
+		std::cout << labels.size() << std::endl;
 		std::cout << std::endl;
 	}
 	PERFOMANCE_TIME("End test");
