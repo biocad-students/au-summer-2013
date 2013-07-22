@@ -60,6 +60,11 @@ public:
 			return m_topology_iter.index();
 		}
 
+		Index_type depth()
+		{
+			return m_topology_iter.depth();
+		}
+
 		_My_type_iter& operator=(const _My_type_iter& _right)
 		{
 			m_topology_iter = _right.m_topology_iter;

@@ -10,8 +10,8 @@ class trie_topology
 protected:
   struct Node
   {
-    Node(Index_type _index, Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
-      : index(_index), parent(_parent), cached_key(_cached_key), is_root(_is_root), is_end(_is_end)
+    Node(Index_type _index, Index_type _depth, Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
+      : index(_index), depth(_depth), parent(_parent), cached_key(_cached_key), is_root(_is_root), is_end(_is_end)
     {
     }
     Node* get_child_for(Key_type _key)
@@ -24,6 +24,7 @@ protected:
     }
 
     Index_type index;
+    Index_type depth;
     std::map<Key_type, Node*> child;
     Node *parent;
     bool is_root;
@@ -154,6 +155,11 @@ public:
       return m_node->index;
     }
 
+    Index_type depth() const
+    {
+      return m_node->depth;
+    }
+
   private:
     Node* m_node;
     std::vector<Node*> *m_DFS;
@@ -277,8 +283,8 @@ protected:
   Node* create_node(Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
   {
     if(_is_root)
-        return new Node(m_counter++, _parent, _cached_key, _is_root, _is_end);
-    m_indexed.push_back(new Node(m_counter++, _parent, _cached_key, _is_root, _is_end));
+        return new Node(m_counter++, 0, _parent, _cached_key, _is_root, _is_end);
+    m_indexed.push_back(new Node(m_counter++, _parent->depth + 1, _parent, _cached_key, _is_root, _is_end));
     return m_indexed.back();
   }
 
