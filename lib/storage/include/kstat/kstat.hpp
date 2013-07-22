@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <set>
 #include <map>
-#include "Annotation/annotation.hpp"
+#include "annotation/annotation.hpp"
 
 namespace igc {
 
