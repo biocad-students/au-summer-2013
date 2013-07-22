@@ -10,6 +10,7 @@ from Bio import AlignIO, SeqIO, Phylo
 from Bio.Align import AlignInfo, MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
 from Bio.SeqUtils.CheckSum import seguid
+from matplotlib import pyplot
 import pylab
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import numpy as np
@@ -133,9 +134,9 @@ def main(args):
         summary_align = AlignInfo.SummaryInfo(MultipleSeqAlignment(cluster))
         consensus = summary_align.dumb_consensus()
         pssm = summary_align.pos_specific_score_matrix(consensus,
-                                                          chars_to_ignore=['X'])
-        frequencies = [(key, len(list(group))) for key, group in
-                       itertools.groupby(consensus)]
+                                                       chars_to_ignore=['X'])
+        frequencies = dict((key, len(list(group))) for key, group in
+                           itertools.groupby(consensus))
 
         meta_file.write("""Cluster ID: {0}
 Cluster size: {1}
@@ -144,8 +145,8 @@ PSSM:
 {3}
 Frequencies in consensus: {4}
 
-""".format(cluster_id, len(cluster), consensus, pssm, repr(frequencies)))
+""".format(cluster_id, len(cluster), consensus, pssm, frequencies))
 
 
 if __name__ == "__main__":
-        main(sys.argv[1:])
+    main(sys.argv[1:])
