@@ -243,10 +243,9 @@ public:
     {
       make_DFS();
     }
-    for(const_iterator i=begin(); i != end(); ++i)
+    if(index < m_indexed.size())
     {
-      if(i->index == index)
-        return i;
+      return iterator(m_indexed[index]);
     }
     return end();
   }
@@ -257,10 +256,9 @@ public:
     {
       make_DFS();
     }
-    for(iterator i=begin(); i != end(); ++i)
+    if(index < m_indexed.size())
     {
-      if(i->index == index)
-        return i;
+      return iterator(m_indexed[index]);
     }
     return end();
   }
@@ -302,5 +300,6 @@ private:
   mutable size_t m_counter;
   Node *m_root;
   Index_type m_nodeCounter;
+  std::vector<Node*> m_indexed;
   std::vector<Node*> m_DFS;
 };
