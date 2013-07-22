@@ -1,0 +1,5 @@
+biopython>=1.61
+matplotlib>=1.2
+pygraphviz>=1.1
+scipy>=0.12
+numpy>=1.7
