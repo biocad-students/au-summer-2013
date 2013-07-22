@@ -7,11 +7,14 @@
 template<typename Key_type, typename Index_type>
 class trie_topology
 {
+private:
+	typedef trie_topology<Key_type, Index_type> _My_type;
+
 protected:
   struct Node
   {
-    Node(Index_type _index, Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
-      : index(_index), parent(_parent), cached_key(_cached_key), is_root(_is_root), is_end(_is_end)
+    Node(Index_type _index, Index_type _depth, Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
+      : index(_index), depth(_depth), parent(_parent), cached_key(_cached_key), is_root(_is_root), is_end(_is_end)
     {
     }
     Node* get_child_for(Key_type _key)
@@ -24,6 +27,7 @@ protected:
     }
 
     Index_type index;
+    Index_type depth;
     std::map<Key_type, Node*> child;
     Node *parent;
     bool is_root;
@@ -50,6 +54,9 @@ public:
 
   class const_iterator
   {
+	private:
+		typedef const_iterator _My_type_iter;
+		friend _My_type;
     friend trie_topology;
   public:
     const_iterator(Node* _node) : m_node(_node), m_DFS(NULL), m_dfs_index(0) {}
@@ -154,6 +161,11 @@ public:
       return m_node->index;
     }
 
+    Index_type depth() const
+    {
+      return m_node->depth;
+    }
+
   private:
     Node* m_node;
     std::vector<Node*> *m_DFS;
@@ -162,6 +174,9 @@ public:
 
   class iterator : public const_iterator
   {
+	public:
+		typedef iterator _My_type_iter;
+		typedef const_iterator _Mybase_iter;
   public:
     iterator(Node* _node) : const_iterator(_node) {}
     iterator(std::vector<Node*>* _dfs) : const_iterator(_dfs) {}
@@ -277,8 +292,8 @@ protected:
   Node* create_node(Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
   {
     if(_is_root)
-        return new Node(m_counter++, _parent, _cached_key, _is_root, _is_end);
-    m_indexed.push_back(new Node(m_counter++, _parent, _cached_key, _is_root, _is_end));
+        return new Node(m_counter++, 0, _parent, _cached_key, _is_root, _is_end);
+    m_indexed.push_back(new Node(m_counter++, _parent->depth + 1, _parent, _cached_key, _is_root, _is_end));
     return m_indexed.back();
   }
 
@@ -292,7 +307,7 @@ protected:
     if(_node != m_root)
 		    m_DFS.push_back(_node);
 
-    std::map<Key_type, Node*>::iterator i = _node->child.begin();
+    typename std::map<Key_type, Node*>::iterator i = _node->child.begin();
     for(; i != _node->child.end(); ++i)
     {
       dfs(i->second);

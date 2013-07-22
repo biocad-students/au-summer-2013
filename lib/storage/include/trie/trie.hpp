@@ -22,10 +22,10 @@ private:
 	typedef trie_topology<Key_type, Index_type> _My_topology_type;
 	typedef typename trie_topology<Key_type, Index_type>::iterator _My_topology_iter_type;
 	typedef typename trie_topology<Key_type, Index_type>::const_iterator _My_topology_const_iter_type;
-	typedef typename T* _Tptr;
-	typedef typename const T* _Ctptr;
-	typedef typename T& _Reft;
-	typedef typename const T& const_reference;
+	typedef T* _Tptr;
+	typedef const T* _Ctptr;
+	typedef T& _Reft;
+	typedef const T& const_reference;
 
 public:
 // The iterators of trie actually are wrappers of trie_topology::iterators
@@ -58,6 +58,11 @@ public:
 		Index_type index()
 		{
 			return m_topology_iter.index();
+		}
+
+		Index_type depth()
+		{
+			return m_topology_iter.depth();
 		}
 
 		_My_type_iter& operator=(const _My_type_iter& _right)
