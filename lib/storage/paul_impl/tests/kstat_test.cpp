@@ -6,10 +6,14 @@
 #include "../contig/kstat/kstat.hpp"
 #include "../unittest.h"
 
-
 void test_kstat()
 {
-    std::vector<byte> alpha {'A', 'C', 'G', 'T', 'N'};
+    std::vector<byte> alpha;
+    alpha.push_back('A');
+    alpha.push_back('C');
+    alpha.push_back('G');
+    alpha.push_back('T');
+
     size_t k = 7;
 
     kstatistics<size_t> my_kstat(alpha, k);

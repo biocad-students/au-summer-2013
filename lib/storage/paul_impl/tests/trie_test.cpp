@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <vector>
 
 #include "../contig/trie/trie.hpp"
 

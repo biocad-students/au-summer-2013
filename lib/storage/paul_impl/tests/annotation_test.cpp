@@ -1,30 +1,10 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <vector>
 
 #include "../contig/annotation/annotation.hpp"
 #include "../unittest.h"
-
-typedef unsigned char byte;
-
-struct Alphabet
-{
-    static std::vector<byte> getAlphabet()
-    {
-        return std::vector<byte> {'A', 'C', 'G', 'T', 'N'};
-    }
-};
-
-template <class T>
-struct RegionProp
-{
-    size_t region_id;
-
-    RegionProp(size_t id = 0) : region_id(id)
-    {
-    }
-};
-
 
 void test_anno()
 {

@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 #include "../contig/annotation/annotation.hpp"
 #include "../contig/trie/trie.hpp"
@@ -11,26 +12,6 @@
 #include "../utils/fasta_reader.h"
 
 #include "../unittest.h"
-
-typedef unsigned char byte;
-
-struct Alphabet
-{
-    static std::vector<byte> getAlphabet()
-    {
-        return std::vector<byte> {'A', 'C', 'G', 'T'};
-    }
-};
-
-template <class T>
-struct RegionProp
-{
-    size_t region_id;
-
-    RegionProp(size_t id = 0) : region_id(id)
-    {
-    }
-};
 
 std::pair<Read, size_t> import_data(std::string const & path,
                                     contig<Alphabet, RegionProp> & my_contig)
