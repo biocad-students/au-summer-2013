@@ -1,6 +1,0 @@
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/ALL_BUILD.dir
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/ZERO_CHECK.dir
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/example.dir
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/minigzip.dir
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/zlib.dir
-E:/BioCad/au-summer-2013/lib/share/zlib-1.2.8/CMakeFiles/zlibstatic.dir

@@ -1,6 +1,7 @@
 import csv
 from itertools import chain
 from os import path
+from random import shuffle
 
 from Bio import SeqIO
 from sklearn import svm
@@ -16,17 +17,21 @@ class Regions(object):
         self.radius = radius
         self.classifier = svm.SVC(kernel='rbf') if dump is None else joblib.load(dump)
 
-    def learn_on_file(self, kabatPath, fastaPath):
+    def learn_on_file(self, kabatPath, fastaPath, count):
         self.load_kabat(kabatPath)
         with open(fastaPath, "rU") as handle:
             learn_dataset, learn_results = ([], [])
-            for i, record in enumerate(SeqIO.parse(handle, "fasta")):
+            i = 0
+            for record in SeqIO.parse(handle, "fasta"):
                 if not record.id in self.regions:
                     continue
+                i += 1
                 keys = self.create_dataset(record.seq)
                 results = self.markup_dataset(keys, self.regions[record.id])
                 learn_dataset.extend(keys)
                 learn_results.extend(results)
+                if i > count:
+                    break
             self.classifier.fit(np.asarray(learn_dataset, float), np.asarray(learn_results, float))
 
     def dump(self, filename):
@@ -70,24 +75,43 @@ class Regions(object):
         self.symbol_vectors['N'] = [1] * len(alphabet)
         return self.symbol_vectors
 
-
-if __name__ == "__main__":
+def test_parallel(radius, count):
     alphabet = "ACGT"
-    radius = 60
-    dump_filename = "classifierVH.dmp"
+    regions = Regions(alphabet, radius)
+    regions.learn_on_file(path.abspath(r"..\..\data\nomenclature\human\VJL_combinations.kabat"),
+                          path.abspath(r"..\..\data\germline\human\VJL_shuffle.fasta"), count)
+    return regions
 
-    # regions = Regions(alphabet, radius)
-    # regions.learn_on_file(path.abspath(r"..\..\data\nomenclature\human\VJL_combinations.kabat"),
-    #                       path.abspath(r"..\..\data\germline\human\VJL_combinations.fasta"))
-    # print regions.predict("CAGTCTGTGCTGACTCAGCCACCCTCGGTGTCTGAAGCCCCCAGGCAGAGGGTCACCATCTCCTGTTCTGGAAGCAGCTCCAACATCGGAAATAATGCTGTAAACTGGTACCAGCAGCTCCCAGGAAAGGCTCCCAAACTCCTCATCTATTATGATGATCTGCTGCCCTCAGGGGTCTCTGACCGATTCTCTGGCTCCAAGTCTGGCACCTCAGCCTCCCTGGCCATCAGTGGGCTCCAGTCTGAGGATGAGGCTGATTATTACTGTGCAGCATGGGATGACAGCCTGAATGGTCCTGCTGTGTTCGGAGGAGGCACCCAGCTGACCGTCCTCG")
-    # regions.dump(dump_filename)
 
-    result = []
-    regions = Regions(alphabet, radius, dump_filename)
-    print "-" * 50
-    with open(path.abspath("VH_corrected.fasta"), "rU") as handle:
-        for i, record in enumerate(SeqIO.parse(handle, "fasta")):
-            result.append(regions.predict(record.seq))
-            if i > 10:
-                break
-    #print regions.predict("CAGTCTGTGCTGACTCAGCCACCCTCGGTGTCTGAAGCCCCCAGGCAGAGGGTCACCATCTCCTGTTCTGGAAGCAGCTCCAACATCGGAAATAATGCTGTAAACTGGTACCAGCAGCTCCCAGGAAAGGCTCCCAAACTCCTCATCTATTATGATGATCTGCTGCCCTCAGGGGTCTCTGACCGATTCTCTGGCTCCAAGTCTGGCACCTCAGCCTCCCTGGCCATCAGTGGGCTCCAGTCTGAGGATGAGGCTGATTATTACTGTGCAGCATGGGATGACAGCCTGAATGGTCCTGCTGTGTTCGGAGGAGGCACCCAGCTGACCGTCCTCG")
+def test():
+    count = 300
+    t_list = list(range(1000))
+    shuffle(t_list)
+    for radius in xrange(13, 60, 2):
+        s = test_parallel(radius, count)
+
+#
+# if __name__ == "__main__":
+#     alphabet = "ACGT"
+#     radius = 60
+#     dump_filename = "classifierVH.dmp"
+#
+#     # regions = Regions(alphabet, radius)
+#     # regions.learn_on_file(path.abspath(r"..\..\data\nomenclature\human\VJL_combinations.kabat"),
+#     #                       path.abspath(r"..\..\data\germline\human\VJL_combinations.fasta"))
+#     # print regions.predict("CAGTCTGTGCTGACTCAGCCACCCTCGGTGTCTGAAGCCCCCAGGCAGAGGGTCACCATCTCCTGTTCTGGAAGCAGCTCCAACATCGGAAATAATGCTGTAAACTGGTACCAGCAGCTCCCAGGAAAGGCTCCCAAACTCCTCATCTATTATGATGATCTGCTGCCCTCAGGGGTCTCTGACCGATTCTCTGGCTCCAAGTCTGGCACCTCAGCCTCCCTGGCCATCAGTGGGCTCCAGTCTGAGGATGAGGCTGATTATTACTGTGCAGCATGGGATGACAGCCTGAATGGTCCTGCTGTGTTCGGAGGAGGCACCCAGCTGACCGTCCTCG")
+#     # regions.dump(dump_filename)
+#
+#     result = []
+#     regions = Regions(alphabet, radius, dump_filename)
+#     print "-" * 50
+#     with open(path.abspath("VH_corrected.fasta"), "rU") as handle:
+#         for i, record in enumerate(SeqIO.parse(handle, "fasta")):
+#             result.append((str(record.seq), regions.predict(record.seq)))
+#             if i > 50:
+#                 break
+#     #print regions.predict("CAGTCTGTGCTGACTCAGCCACCCTCGGTGTCTGAAGCCCCCAGGCAGAGGGTCACCATCTCCTGTTCTGGAAGCAGCTCCAACATCGGAAATAATGCTGTAAACTGGTACCAGCAGCTCCCAGGAAAGGCTCCCAAACTCCTCATCTATTATGATGATCTGCTGCCCTCAGGGGTCTCTGACCGATTCTCTGGCTCCAAGTCTGGCACCTCAGCCTCCCTGGCCATCAGTGGGCTCCAGTCTGAGGATGAGGCTGATTATTACTGTGCAGCATGGGATGACAGCCTGAATGGTCCTGCTGTGTTCGGAGGAGGCACCCAGCTGACCGTCCTCG")
+#     for i in result:
+#         print i[0]
+#         print "".join(str(int(j)) for j in i[1])
+#         print "\n"
