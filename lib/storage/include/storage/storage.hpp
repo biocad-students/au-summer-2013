@@ -208,7 +208,7 @@ public:
 		typename trie_t::iterator lastTrie = m_trie.root();
 		m_annotation.push_back(_label, std::distance(_begin, _end));	
 
-		Prop<char> tmpprp = Prop<char>("");
+		Property<char> tmpprp = Property<char>("");
 		while(iter != _end) {
 			lastTrie = m_trie.insert(lastTrie, *iter);
 			if(_end-7 >= iter) {
