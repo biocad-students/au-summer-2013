@@ -1,4 +1,8 @@
+import random
 from itertools import chain
+
+from Bio import SeqIO
+from sklearn.externals import joblib
 
 
 def init_symbol_vectors(alphabet):
@@ -40,16 +44,30 @@ def filter_predicted_result(result):
     return [int(i) for i in result]
 
 
-def get_line_prediction_rank(line):
-    success = 0
-    for i, prediction in enumerate(line[1]):
-        if get_region_number(line[0], i) == prediction:
-            success += 1
-    return 1.0 * success / len(line[1])
+def get_line_prediction_rank(regions, prediction):
+    success = sum(get_region_number(regions, i) == predicted
+                  for i, predicted in enumerate(prediction))
+    return 1.0 * success / len(prediction)
 
 
 def get_dataset_prediction_rank(dataset, prediction):
-    if not dataset.is_marked:
+    if not dataset.is_marked():
         return []
-    lines = zip([dataset.data[i][1] for i in xrange(len(dataset.data))], [p[1] for p in prediction])
-    return [get_line_prediction_rank(line) for line in lines]
+    lines = zip([dataset.markup[i] for i in xrange(len(dataset.markup))], [p[1] for p in prediction])
+    return [get_line_prediction_rank(*line) for line in lines]
+
+
+def get_raw_data(fasta_filename, is_random):
+    with open(fasta_filename, "rU") as handle:
+        raw_data = list(SeqIO.parse(handle, "fasta"))
+        if is_random:
+            random.shuffle(raw_data)
+    return raw_data
+
+
+def dump_svm_classifier(classifier, dump_filename):
+    joblib.dump(classifier, dump_filename, compress=9)
+
+
+def load_svm_classifier(dump_filename):
+    return joblib.load(dump_filename)
