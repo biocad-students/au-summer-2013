@@ -33,3 +33,4 @@ out_dir/clusters contains
 * .fasta files with one cluster per file
 * clusters_meta.txt with some meta information about clusters: cluster ID, size,
 consensus, PSSM, letter frequencies in consensus
+* .png files for letter frequencies in consensus, one cluster per figure

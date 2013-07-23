@@ -9,6 +9,7 @@ import textwrap
 from collections import defaultdict
 
 import numpy as np
+import matplotlib.pyplot as plt
 import pylab
 from Bio import AlignIO, SeqIO, Phylo
 from Bio.Align import AlignInfo, MultipleSeqAlignment
@@ -161,6 +162,21 @@ Frequencies in consensus:
 
 """.format(cluster_id, len(cluster), textwrap.fill(str(consensus)), pssm,
            pprint.pformat(frequencies)))
+
+        fig = pylab.figure()
+        pos = np.arange(len(IUPAC.protein.letters))
+        width = .5     # gives histogram aspect to the bar diagram
+
+        ax = plt.axes()
+        ax.set_xticks(pos + (width / 2))
+        ax.set_xticklabels(IUPAC.protein.letters)
+
+        plt.bar(pos,
+                [frequencies[letter] for letter in IUPAC.protein.letters],
+                width, color='r')
+        frequencies_path = os.path.join(
+            clusters_dir_path, "frequencies_{0}.png".format(cluster_id))
+        fig.savefig(frequencies_path)
 
 if __name__ == "__main__":
     args = sys.argv
