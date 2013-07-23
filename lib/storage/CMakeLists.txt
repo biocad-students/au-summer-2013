@@ -59,9 +59,15 @@ SET ( TESTS
 	${TST_DIR}/unittest.cpp
 	)
 	
+IF(WIN32)
 SET ( REQUIRED_LIBRARIES
 	zlib
 )
+ELSEIF(UNIX)
+SET ( REQUIRED_LIBRARIES
+	z
+)
+ENDIF(WIN32)
 
 source_group ("Annotation Files" FILES ${ANNOTATION})
 source_group ("Trie Files" FILES ${TRIE})
