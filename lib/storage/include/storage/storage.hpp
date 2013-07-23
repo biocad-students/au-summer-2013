@@ -18,9 +18,9 @@ class storage
 public:
 	typedef storage<T, Property, Label, Link> _My_type;
 	typedef std::pair<Link, Link> offset_t;
-	typedef typename trie<std::vector<offset_t>, char, Link> trie_t;
-	typedef typename annotation<T, Property, Label, Link> annotation_t;
-	typedef typename Kstat<Link> kstat_t;
+	typedef trie<std::vector<offset_t>, char, Link> trie_t;
+	typedef annotation<T, Property, Label, Link> annotation_t;
+	typedef Kstat<Link> kstat_t;
 	typedef std::map<unsigned char, size_t> alphabet_t;
 
 	class const_iterator : public std::iterator<std::bidirectional_iterator_tag, T, std::ptrdiff_t, const T*, const T&>
@@ -221,15 +221,15 @@ public:
 		}
 	}
 
-	template<typename T, typename Key_type, typename Link>
-	trie<T, Key_type, Link> copyTrie () {
-		trie<T, Key_type, Link> tmp = m_trie;
-		return tmp;
-	}
+	//template<typename Y, typename Key_type, typename Link>
+	//trie<Y, Key_type, Link> copyTrie () {
+	//	trie<T, Key_type, Link> tmp = m_trie;
+	//	return tmp;
+	//}
 
-	kstat_t get_kstat() {
-		return m_kstat;
-	}
+	//kstat_t get_kstat() {
+	//	return m_kstat;
+	//}
 
 	size_t getK(void) {
 		return m_kstat.getK();

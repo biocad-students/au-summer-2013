@@ -231,7 +231,7 @@ public:
   const_iterator begin() const
   {
     if(m_DFS.empty())
-        make_DFS()
+        make_DFS();
     return const_iterator(m_DFS);
   }
 
