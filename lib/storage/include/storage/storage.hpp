@@ -52,7 +52,7 @@ public:
 		std::vector<Label> get_labels()
 		{
 			std::vector<Label> result;
-			trie_t::iterator it = m_storage.m_trie.find(m_data[m_index]);
+			typename trie_t::iterator it = m_storage.m_trie.find(m_data[m_index]);
 			for(int i=0; i<(*it).size(); ++i)
 			{
 				int top = (*it)[i].first;
@@ -136,7 +136,7 @@ public:
 
 		T& operator*() const
 		{	// return designated value
-			return ((Node&)**(const_iterator *)this);
+			return ((T&)**(const_iterator *)this);
 		}
 
 		T* operator->() const
@@ -205,7 +205,7 @@ public:
 	template <class Iterator>
 	void pushSequence(Iterator _begin, Iterator _end, Label _label) {
 		Iterator iter = _begin;
-		trie_t::iterator lastTrie = m_trie.root();
+		typename trie_t::iterator lastTrie = m_trie.root();
 		m_annotation.push_back(_label, std::distance(_begin, _end));	
 
 		Prop<char> tmpprp = Prop<char>("");
@@ -248,9 +248,9 @@ public:
 			std::set<Link> *similar = m_kstat.get(_begin, _begin + 7);
 			if(similar == NULL)
 				continue;
-			std::set<Link>::iterator similar_iter = (*similar).begin();
+			typename std::set<Link>::iterator similar_iter = (*similar).begin();
 			while(similar_iter != similar->end()) {
-				trie<char, char, Link>::iterator iter = my_color_trie.find(*similar_iter);
+				typename trie<char, char, Link>::iterator iter = my_color_trie.find(*similar_iter);
 				*iter = true;
 				++similar_iter;
 			}
@@ -259,8 +259,8 @@ public:
 		typename std::set<Link>::iterator similar_iter = similar->begin();
 		for(;similar_iter != similar->end(); ++similar_iter)
 		{
-			trie<char, char, Link>::const_iterator iter = my_color_trie.find(*similar_iter);
-			trie<char, char, Link>::const_iterator last_iter = iter;
+			typename trie<char, char, Link>::const_iterator iter = my_color_trie.find(*similar_iter);
+			typename trie<char, char, Link>::const_iterator last_iter = iter;
 			bool found = true;
 			for(int c = dist - 7; c > 0; --c)
 			{

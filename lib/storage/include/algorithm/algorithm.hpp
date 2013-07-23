@@ -3,6 +3,7 @@
 
 namespace igc {
 
+#if 0
 template<class Iterator, class T, template <class> class Property, class Label, class Link>
 std::set<Link> find (Iterator _begin, Iterator _end, storage<T, Property, Label, Link> & storage) {	
 	typedef typename std::set<Link> result_t;
@@ -49,4 +50,5 @@ std::set<Link> find (Iterator _begin, Iterator _end, storage<T, Property, Label,
 	}
 	return result;
 }
+#endif
 }
