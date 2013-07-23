@@ -45,7 +45,7 @@ public:
 		{
 		}
 
-		const_iterator(_My_topology_const_iter_type &_topology_iter, const _My_data_type *_data)
+		const_iterator(const _My_topology_const_iter_type &_topology_iter, const _My_data_type *_data)
 			: m_topology_iter(_topology_iter), m_data(_data)
 		{
 		}
@@ -137,12 +137,12 @@ public:
 		{
 		}
 
-		iterator(_My_topology_iter_type &_topology_iter, _My_data_type *_data)
-			: const_iterator(_topology_iter, _data)
-		{
-		}
+		//iterator(const _My_topology_iter_type &_topology_iter, _My_data_type *_data)
+		//	: const_iterator(_topology_iter, _data)
+		//{
+		//}
 
-		iterator(_My_topology_const_iter_type &_topology_iter, _My_data_type *_data)
+		iterator(const _My_topology_const_iter_type &_topology_iter, _My_data_type *_data)
 			: const_iterator(_topology_iter, _data)
 		{
 		}
