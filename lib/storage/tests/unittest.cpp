@@ -48,7 +48,7 @@ void fill_alphabet(std::vector<unsigned char>* _alphabet) {
 void annotation_unittest(std::string _path) {
 	PERFOMANCE_INIT();
 	PERFOMANCE_TIME("Begin annotation_unittest");
-	igc::annotation<char, Prop, Lab, size_t> annot_;
+	igc::annotation<char, Prop, Lab> annot_;
 
 	FastaReader FR(_path);
 	Read tmp;
@@ -70,11 +70,11 @@ void annotation_unittest(std::string _path) {
 void kstat_unittest(std::string _path) {
 	PERFOMANCE_INIT();
 	PERFOMANCE_TIME("Begin kstat_unittest");
-	igc::annotation<char, Prop, Lab, size_t> annot_;
+	igc::annotation<char, Prop, Lab> annot_;
 	std::vector<unsigned char> alphabet_;
 	fill_alphabet(&alphabet_);
 	int K_ = 7;
-	igc::Kstat<size_t> kstat_(alphabet_, K_);
+	igc::Kstat kstat_(alphabet_, K_);
 
 	FastaReader FR(_path);
 	Read tmp;
@@ -115,7 +115,7 @@ void storage_load_unittest (std::string _path, igc::storage<char, Prop, Lab>& _s
 void find_unittest (std::string _path, igc::storage<char, Prop, Lab>& _storage) {
 	PERFOMANCE_INIT();
 	PERFOMANCE_TIME("Begin find_unittest");
-	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
+	typedef igc::storage<char, Prop, Lab> my_storage_t;
 
 	std::string needle("AAGTGCAGCTGGTGCAGTCTGGGGGAGGCTTGGTGCAGC");
 	my_storage_t::iterator it = _storage.find(needle.begin(), needle.end());
@@ -130,7 +130,7 @@ void align_unittest(std::string _path, igc::storage<char, Prop, Lab>& _storage)
 {
 	PERFOMANCE_INIT();
 	PERFOMANCE_TIME("Begin align_unittest");
-	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
+	typedef igc::storage<char, Prop, Lab> my_storage_t;
 	std::string alstr = "ACGTATAC";
 	_storage.align(alstr.begin(), alstr.end());
 	PERFOMANCE_TIME("End align_unittest");

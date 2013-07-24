@@ -9,12 +9,11 @@
 
 namespace igc {
 
-template<class Link = size_t>
 class Kstat {
 public:
 	typedef std::vector<unsigned char> alphabet_t;
 	typedef std::vector<size_t> cache_t;
-	typedef std::set<Link> data_raw_t;
+	typedef std::set<size_t> data_raw_t;
 	typedef std::vector<data_raw_t> data_t;
 
 	Kstat() {
@@ -36,7 +35,7 @@ public:
 	}
 
 	template <class Iterator>
-	bool add(Iterator _begin, Iterator _end, Link _link) {
+	bool add(Iterator _begin, Iterator _end, size_t _link) {
 		if(_begin <= _end - m_k) {
 			size_t hashval = hash(_begin, _begin+m_k);
 			if(hashval < m_size) {

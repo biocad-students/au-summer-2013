@@ -9,12 +9,12 @@ namespace igc {
 // typename Propery<T> - the type used to be stored in each node
 // typename Label - the type used to be stored in each record
 // typename Link - TODO: add description
-template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
+template <class T, template <class> class Property, class Label = std::string>
 class annotation {
 public:
-	typedef annotation_record<T, Property, Label, Link> annotation_record_t;
+	typedef annotation_record<T, Property, Label> annotation_record_t;
 	typedef typename annotation_record_t::property_t property_t;
-	typedef std::pair<Link, Link> offset_t;
+	typedef std::pair<size_t, size_t> offset_t;
 	typedef std::vector<annotation_record_t> data_t;
 	
 	annotation () {

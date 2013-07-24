@@ -4,7 +4,7 @@
 
 namespace igc {
 
-template <class T, template <class> class Property, class Link = size_t>
+template <class T, template <class> class Property>
 class Annotation_node {
 public:
 	typedef Property<T> property_t;
@@ -22,6 +22,6 @@ public:
 
 private:
 	property_t m_internal;
-	Link m_trie_node_idx;
+	size_t m_trie_node_idx;
 };
 }

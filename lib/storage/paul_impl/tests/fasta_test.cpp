@@ -39,7 +39,7 @@ void test_fasta()
     std::pair<Read, size_t> p;
     size_t real_length = 0;
     contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
-    p = import_data("/home/mactep/Data/NGS-llama/out2/VH/VH_corrected.fasta", my_contig);
+    p = import_data("../../../data/germline/human/VH_corrected.fasta", my_contig);
     real_length += p.second;
 //    p = import_data("/home/mactep/Data/NGS-llama/out2/VL/VL.fasta", my_contig);
 //    real_length += p.second;

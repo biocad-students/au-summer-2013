@@ -12,16 +12,15 @@ namespace igc {
 // typedef T - property param
 // typedef Property - annotation stored type
 // typedef Label - record label type
-// typedef Link - index 1D offset type
-template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
+template <class T, template <class> class Property, class Label = std::string>
 class storage
 {
 public:
-	typedef storage<T, Property, Label, Link> _My_type;
-	typedef annotation<T, Property, Label, Link> annotation_t;
+	typedef storage<T, Property, Label> _My_type;
+	typedef annotation<T, Property, Label> annotation_t;
 	typedef typename annotation_t::offset_t offset_t;
 	typedef trie<std::vector<offset_t>> trie_t;
-	typedef Kstat<Link> kstat_t;
+	typedef Kstat kstat_t;
 	typedef typename kstat_t::alphabet_t alphabet_t;
 	typedef std::vector<std::vector<int>> matrix_t;
 
@@ -205,29 +204,29 @@ public:
 	iterator find(Iterator _begin, Iterator _end) {
 		std::vector<int> result;
 
-		trie<char, char, Link> my_color_trie(m_trie);
+		trie<char, char> my_color_trie(m_trie);
 		std::fill(my_color_trie.begin(), my_color_trie.end(), false);
 
 		size_t dist = std::distance(_begin, _end);
 		size_t k = m_kstat.getK();
 		for(size_t i = 0; i < dist - k; ++i, ++_begin)
 		{
-			std::set<Link> *similar = m_kstat.get(_begin, _begin + k);
+			std::set<size_t> *similar = m_kstat.get(_begin, _begin + k);
 			if(similar == NULL)
 				continue;
-			typename std::set<Link>::iterator similar_iter = (*similar).begin();
+			typename std::set<size_t>::iterator similar_iter = (*similar).begin();
 			while(similar_iter != similar->end()) {
-				typename trie<char, char, Link>::iterator iter = my_color_trie.find(*similar_iter);
+				typename trie<char, char>::iterator iter = my_color_trie.find(*similar_iter);
 				*iter = true;
 				++similar_iter;
 			}
 		}
-		std::set<Link> *similar = m_kstat.get(_begin, _begin + k);
-		typename std::set<Link>::iterator similar_iter = similar->begin();
+		std::set<size_t> *similar = m_kstat.get(_begin, _begin + k);
+		typename std::set<size_t>::iterator similar_iter = similar->begin();
 		for(;similar_iter != similar->end(); ++similar_iter)
 		{
-			typename trie<char, char, Link>::const_iterator iter = my_color_trie.find(*similar_iter);
-			typename trie<char, char, Link>::const_iterator last_iter = iter;
+			typename trie<char>::const_iterator iter = my_color_trie.find(*similar_iter);
+			typename trie<char>::const_iterator last_iter = iter;
 			bool found = true;
 			for(int c = dist - k; c > 0; --c)
 			{
@@ -248,14 +247,13 @@ public:
 	}
 
 	template <class Iterator>
-	void align(Iterator _begin, Iterator _end)
+	void align(Iterator _begin, Iterator _end, size_t _count = 1)
 	{ 
 		trie<matrix_t> align_trie = m_trie;
-		typename trie<matrix_t>::iterator iter = align_trie.begin();
+		trie<matrix_t>::iterator iter = align_trie.begin();
 		// TODO (Roman): fill align matrix_t using DFS
 		// проверить листья на score
-		// выбрать N с максимальным score
-
+		// выбрать _count с максимальным score
 	}
 
 private:

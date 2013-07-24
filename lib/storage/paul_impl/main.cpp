@@ -11,14 +11,14 @@ void test()
 {
     time_t s = clock();
 
-    test_trie();
-    test_anno();
-    test_kstat();
-    test_contig();
-    test_contig2();
-    test_search();
+    //test_trie();
+    //test_anno();
+    //test_kstat();
+    //test_contig();
+    //test_contig2();
+    //test_search();
     test_fasta();
-    test_fasta_push();
+    //test_fasta_push();
 
     s = clock() - s;
     std::cout << "Test time: " << (double) s / CLOCKS_PER_SEC << std::endl;
