@@ -8,7 +8,6 @@
 
 #include "../unittest.h"
 
-
 void test_alicont()
 {
     score_matrix m("/home/mactep/BLOSUM62.txt");
@@ -49,6 +48,17 @@ void test_contig_alicont()
     my_contig.push(s4.begin(), s4.end(), "s4");
 
     std::string query = "GCGTTG";
+    score_matrix m("/home/mactep/BLOSUM62.txt");
+    auto r = my_contig.align(query.begin(), query.end(), -5, m, 2);
+    std::cout << std::endl;
+}
+
+void test_contig_alicont2()
+{
+    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    import_data("/home/mactep/DEV/au-summer-2013/data/germline/human/VH.fasta", my_contig);
+    std::string query = "GACATCCAGATGACCCAGTCTCCATCCTCACTGTCTGCATCTGTAGGAGACAGAGTCACCATCACTTGTCGGGCGAGTCAGGGCATTAGCAATTATTTAGCCTGGTTTCAGCAGAAACCAGGGAAAGCCCCTAAGTCCCTGATCTATGCTGCATCCAGTTTGCAAAGTGGGGTCCCATCAAAGTTCAGCGGCAGTGGATCTGGGACAGATTTCACTCTCACCATCAGCAGCCTGCAGCCTGAAGATTTTGCAACTTATTACTGCCAACAGTATAATAGTTACCCTCC";
+
     score_matrix m("/home/mactep/BLOSUM62.txt");
     auto r = my_contig.align(query.begin(), query.end(), -5, m, 2);
     std::cout << std::endl;

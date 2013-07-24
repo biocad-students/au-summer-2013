@@ -286,9 +286,10 @@ public:
                                              ++i)
         {
             target.push_back(i.symbol());
-            if (i.prev().fork() && i.prev().index() != index_stack.top())
+            if (!index_stack.empty() && i.prev().fork() &&
+                    i.prev().index() != index_stack.top())
             {
-                while (index_stack.top() != i.prev().index())
+                while (!index_stack.empty() && index_stack.top() != i.prev().index())
                 {
                     index_stack.pop();
                     ali.pop();
