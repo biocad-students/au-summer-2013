@@ -5,10 +5,10 @@
 
 namespace igc {
 
-template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
+template <class T, template <class> class Property, class Label = std::string>
 class annotation_record {
 public:
-	typedef Annotation_node<T, Property, Link> annotation_node_t;
+	typedef Annotation_node<T, Property> annotation_node_t;
 	typedef std::vector<annotation_node_t> data_t;
 	typedef typename annotation_node_t::property_t property_t;
 

@@ -1,6 +1,7 @@
 import re
 from collections import namedtuple, defaultdict
-from clustering_tool import alignment as aln
+
+import alignment as aln
 
 Pair = namedtuple("Pair", ["forward", "reverse"])
 
@@ -94,7 +95,9 @@ def split(config, fasta):
     vhh = re.compile(config["VHH"]["regex"])
     for record in splited_fasta["VH"]:
         seq = record.seq
-        if vhh.search(str(seq.translate())):
+        if vhh.search(str(seq.translate())) or \
+                vhh.search(str(seq[1:].translate())) or \
+                vhh.search(str(seq[2:].translate())):
             splited_fasta["VHH"].append(record)
             splited_fasta["VH"].remove(record)
 

@@ -10,7 +10,6 @@ from collections import defaultdict
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pylab
 from Bio import AlignIO, SeqIO, Phylo
 from Bio.Align import AlignInfo, MultipleSeqAlignment
 from Bio.Align.Applications import ClustalwCommandline
@@ -88,7 +87,7 @@ def main(args):
 
     # with labels
     Phylo.draw_graphviz(tree, label_func=lambda x: x.name.replace("ID=", ""))
-    pylab.savefig(os.path.join(out_dir_path,
+    plt.savefig(os.path.join(out_dir_path,
                                "figure_with_labels.pdf"))  # need pygraphviz, pylab
 
     # Clustering
@@ -99,7 +98,7 @@ def main(args):
             distance(alignment_dict[ids[i]], alignment_dict[ids[j]])
 
     # Compute and plot dendrogram
-    fig = pylab.figure()
+    fig = plt.figure()
     axdendro = fig.add_axes([0.09, 0.1, 0.2, 0.8])
     Y = linkage(distance_matrix, method="centroid")
     cutoff = 0.5 * max(Y[:, 2])
@@ -118,7 +117,7 @@ def main(args):
 
     # Plot colorbar
     axcolor = fig.add_axes([0.91, 0.1, 0.02, 0.8])
-    pylab.colorbar(im, cax=axcolor)
+    plt.colorbar(im, cax=axcolor)
 
     # Display and save figure
     dendogram_path = os.path.join(out_dir_path, "dendogram.png")
@@ -163,7 +162,7 @@ Frequencies in consensus:
 """.format(cluster_id, len(cluster), textwrap.fill(str(consensus)), pssm,
            pprint.pformat(frequencies)))
 
-        fig = pylab.figure()
+        fig = plt.figure()
         pos = np.arange(len(IUPAC.protein.letters))
         width = .5     # gives histogram aspect to the bar diagram
 

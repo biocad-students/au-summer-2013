@@ -3,6 +3,10 @@ cmake_minimum_required (VERSION 2.6)
 project(IG_Storage)
 
 set (APP_NAME IG_Storage)
+
+set(CMAKE_CURRENT_BINARY_DIR "../bin")
+
+set(CMAKE_INSTALL_PREFIX "./")
 	
 set (SRC_DIR ${PROJECT_SOURCE_DIR}/sources)
 	
