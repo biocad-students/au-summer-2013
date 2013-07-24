@@ -28,7 +28,6 @@ include_directories(
 
 SET( SOURCES
 	${SRC_DIR}/fasta_reader.cpp
-	${SRC_DIR}/scorematrix.cpp
 )
 
 SET( ANNOTATION
