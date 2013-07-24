@@ -5,12 +5,14 @@
 #include <ctime>
 
 clock_t g_begin;
+#ifndef CLOCKS_PER_SEC
+#define CLOCKS_PER_SEC 1000
+#endif
 #define PERFOMANCE_INIT() g_begin = clock();
 #define PERFOMANCE_TIME(label) std::cout << label << " " << (double)(clock() - g_begin)/CLOCKS_PER_SEC << " at line " << __LINE__ << std::endl;
-//#define PERFOMANCE_TIME() std::cout << (double)(clock() - g_begin)/CLOCKS_PER_SEC << " at line " << __LINE__ << std::endl;
 
 // memory leaks detection
-#ifdef __WIN32
+#ifdef WIN32
     #define _CRTDBG_MAP_ALLOC
     #include <stdlib.h>
     #include <crtdbg.h>
@@ -21,6 +23,7 @@ clock_t g_begin;
 #include "kstat/kstat.hpp"
 #include "annotation/annotation.hpp"
 #include "algorithm/algorithm.hpp"
+#include "scorematrix.h"
 
 template <class T>
 struct Prop {
@@ -35,11 +38,11 @@ struct Lab {
 	Lab(std::string _name) : m_name(_name) {}
 };
 
-void fill_alphabet(std::map<unsigned char, size_t>* _alphabet) {
-	_alphabet->insert(std::make_pair('A', 0));
-	_alphabet->insert(std::make_pair('C', 1));
-	_alphabet->insert(std::make_pair('G', 2));
-	_alphabet->insert(std::make_pair('T', 3));
+void fill_alphabet(std::vector<unsigned char>* _alphabet) {
+	_alphabet->push_back('A');
+	_alphabet->push_back('C');
+	_alphabet->push_back('G');
+	_alphabet->push_back('T');
 }
 
 void annotation_unittest(void ) {
@@ -59,7 +62,7 @@ void annotation_unittest(void ) {
 
 void kstat_unittest(void) {
 	igc::annotation<char, Prop, Lab, size_t> annot_;
-	std::map<unsigned char, size_t> alphabet_;
+	std::vector<unsigned char> alphabet_;
 	fill_alphabet(&alphabet_);
 	int K_ = 7;
 	igc::Kstat<size_t> kstat_(alphabet_, K_);
@@ -84,7 +87,7 @@ void kstat_unittest(void) {
 }
 
 void contig_unittest (void) {
-	std::map<unsigned char, size_t> alphabet_;
+	std::vector<unsigned char> alphabet_;
 	fill_alphabet(&alphabet_);
 	int K_ = 7;
 	igc::storage<char, Prop, Lab> my_contig(alphabet_, K_);
@@ -132,11 +135,8 @@ void find_unittest2 (void) {
 	typedef igc::storage<char, Prop, Lab, size_t> my_storage_t;
 	//typedef my_storage_t::iterator iterator;
 
-	std::map<unsigned char, size_t> alphabet_;
-	alphabet_.insert(std::make_pair<char, int>('A', 0));
-	alphabet_.insert(std::make_pair<char, int>('C', 1));
-	alphabet_.insert(std::make_pair<char, int>('G', 2));
-	alphabet_.insert(std::make_pair<char, int>('T', 3));
+	std::vector<unsigned char> alphabet_;
+	fill_alphabet(&alphabet_);
 	int K_ = 7;
 	my_storage_t my_storage(alphabet_, K_);
 	PERFOMANCE_TIME("Reading file");
@@ -170,8 +170,14 @@ int main()
 {
 	PERFOMANCE_INIT();
 	find_unittest2();
-/*	find_unittest();
-	contig_unittest();
-	annotation_unittest();
-	kstat_unittest();*/
+	//find_unittest();
+	//contig_unittest();
+	//annotation_unittest();
+	//kstat_unittest();
+	std::string BLOSUM62 = "../../../data/BLOSUM62.txt";
+	matrix m(BLOSUM62);
+	int a = m('A', 'A');
+	int b = m('A', 'C');
+	int c = m('C', 'G');
+	int d = m('A', 'T');
 }

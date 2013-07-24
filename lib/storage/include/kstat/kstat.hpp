@@ -12,7 +12,7 @@ namespace igc {
 template<class Link = size_t>
 class Kstat {
 public:
-	typedef std::map<unsigned char, size_t> alphabet_t;
+	typedef std::vector<unsigned char> alphabet_t;
 	typedef std::vector<size_t> cache_t;
 	typedef std::set<Link> data_raw_t;
 	typedef std::vector<data_raw_t> data_t;
@@ -59,21 +59,17 @@ public:
 	}
 
 	template <class Iterator>
-	size_t hash(Iterator begin, Iterator end) {
-		Iterator iter = begin;
+	size_t hash(Iterator _begin, Iterator _end) {
+		Iterator iter = _begin;
 		size_t hash_val = 0;
 		size_t PRIME_BASE = m_alphabet.size();
-		size_t idx = -1;
-		while(iter != end) {
-			//try {
-			//	idx = m_alphabet.at(*iter);
-			//}
-			//catch ( std::out_of_range ) {
-			//	return -1;
-			//}
-			idx = *iter % PRIME_BASE;
+		alphabet_t::iterator idx;
+		alphabet_t::iterator begin = m_alphabet.begin();
+		alphabet_t::iterator end = m_alphabet.end();
+		while(iter != _end) {
+			idx = std::find(begin, end, (*iter));
     		hash_val *= PRIME_BASE; //shift over by one
-    		hash_val += idx; //add the current char
+    		hash_val += idx - begin; //add the current char
 			++iter;
 		}
 		return hash_val;

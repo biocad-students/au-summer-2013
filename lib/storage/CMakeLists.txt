@@ -24,6 +24,7 @@ include_directories(
 
 SET( SOURCES
 	${SRC_DIR}/fasta_reader.cpp
+	${SRC_DIR}/scorematrix.cpp
 )
 
 SET( ANNOTATION
@@ -53,6 +54,7 @@ SET ( COMMON
 	${CMN_DIR}/fasta_reader.h
 	${CMN_DIR}/kseq.h
 	${CMN_DIR}/read.h
+	${CMN_DIR}/scorematrix.h
 	)
 
 SET ( TESTS
@@ -84,7 +86,6 @@ add_executable (${APP_NAME}
 	${TRIE}
 	${KSTAT}
 	${STORAGE}
-	${ALGORITHM}
 	${COMMON}
 	${TESTS}
 	)

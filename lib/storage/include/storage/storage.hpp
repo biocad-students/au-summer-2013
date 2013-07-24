@@ -21,7 +21,7 @@ public:
 	typedef trie<std::vector<offset_t>, char, Link> trie_t;
 	typedef annotation<T, Property, Label, Link> annotation_t;
 	typedef Kstat<Link> kstat_t;
-	typedef std::map<unsigned char, size_t> alphabet_t;
+	typedef std::vector<unsigned char> alphabet_t;
 
 	class const_iterator : public std::iterator<std::bidirectional_iterator_tag, T, std::ptrdiff_t, const T*, const T&>
 	{
@@ -121,10 +121,6 @@ public:
 		std::vector<int> m_data;
 		int m_index;
 	};
-
-
-
-
 
 	class iterator : public const_iterator
 	{
@@ -279,8 +275,6 @@ public:
 
 		return iterator(*this, result);
 	}
-
-
 
 private:
 	annotation_t m_annotation;
