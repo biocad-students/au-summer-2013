@@ -1,68 +1,111 @@
 #pragma once
 
 #include <vector>
-#include <stack>
+#include <string>
+#include <map>
 
-#include "alicont_line.hpp"
+#include "score_matrix.hpp"
 
+#include "alialgo.hpp"
+#include "alimatrix.hpp"
 
-template <class T>
-struct matrix2d
-{
-    typedef std::vector<std::vector<T>> type;
-};
-
-// For T - alphabet != returns 0             : for a == b
-//                             mismatch(a,b) : for a != b
-template <class T>
 class alicont
 {
 public:
-    typedef typename std::pair<matrix2d<int>::type*, path_value> trace_value;
+    typedef std::pair<std::string, simple_matrix2i*> pair_data;
 
-
-    template <class Iterator>
-    alicont(Iterator begin, Iterator end, int gap_open, int gap_ext)
-        : m_data(), m_gap_open(gap_open), m_gap_ext(gap_ext)
+    alicont(std::string const & line, int gap, score_matrix const & matrix)
+        : m_seqs(), m_data(), m_line(line), m_gap(gap), m_matrix(matrix)
     {
-        while(begin != end)
+    }
+
+    alicont(std::string const & line, int gap, score_matrix && matrix)
+        : m_seqs(), m_data(), m_line(line), m_gap(gap), m_matrix(std::move(matrix))
+    {
+    }
+
+    // To use it with good perfomance use std::move
+    simple_matrix2i score(std::string const & seq)
+    {
+        return needleman_wunsch(m_line, seq, m_gap, m_matrix, top().second);
+    }
+
+    // std::move for first argument here would be a good idea too
+    void push(std::string const & seq, simple_matrix2i * matrix)
+    {
+        m_seqs.push_back(seq);
+        m_data.push_back(matrix);
+    }
+
+    inline pair_data pop()
+    {
+        if (!m_seqs.size())
         {
-            m_line.push_back(*begin++);
+            return std::make_pair(std::string(), nullptr);
         }
+        pair_data result = std::make_pair(m_seqs.back(), m_data.back());
+        m_seqs.pop_back();
+        m_data.pop_back();
+        return result;
     }
 
-    template <class Iterator>
-    alicont_line* add(Iterator begin, Iterator end)
+    inline pair_data top()
     {
-        return alignment(begin, end);
+        if (!m_seqs.size())
+        {
+            return std::make_pair(std::string(), nullptr);
+        }
+        pair_data result = std::make_pair(m_seqs.back(), m_data.back());
+        return result;
     }
 
-    void pop()
+    alignment_result alignment()
     {
-        m_data.pop();
+        return traceback(m_line, target(), alimatrix(&m_data), m_gap, m_matrix);
+    }
+
+    inline int score()
+    {
+        simple_matrix2i* top = m_data.back();
+        size_t i = top->size() - 1;
+        size_t j = (*top)[i].size() - 1;
+
+        return (*top)[i][j];
+    }
+
+    std::string target()
+    {
+        std::string s;
+        for (std::vector<std::string>::iterator i = m_seqs.begin();
+                                                i != m_seqs.end();
+                                                ++i)
+        {
+            s += *i;
+        }
+
+        return s;
+    }
+
+    void clear()
+    {
+        m_seqs.clear();
+        m_data.clear();
+    }
+
+    const std::string & query() const
+    {
+        return m_line;
+    }
+
+    void print() const
+    {
+        alimatrix(&m_data).print();
     }
 
 private:
-    template <class Iterator>
-    alicont_line* alignment(Iterator begin, Iterator end)
-    {
-        size_t m = m_line.size();
-        size_t n = std::distance(begin, end);
-
-        matrix2d<int>::type e(n + 1, std::vector<int>(m + 1));
-        matrix2d<int>::type f(n + 1, std::vector<int>(m + 1));
-        matrix2d<int>::type v(n + 1, std::vector<int>(m + 1));
-
-        matrix2d<trace_value>::type eb(n + 1, std::vector<trace_value>(m + 1));
-        matrix2d<trace_value>::type fb(n + 1, std::vector<trace_value>(m + 1));
-        matrix2d<trace_value>::type vb(n + 1, std::vector<trace_value>(m + 1));
-
-        return nullptr;
-    }
-
-private:
-    std::stack<alicont_line> m_data;
-    std::vector<T>           m_line;
-    int                      m_gap_open;
-    int                      m_gap_ext;
+    std::vector<std::string>      m_seqs;
+    std::vector<simple_matrix2i*> m_data;
+    std::string                   m_line;
+    int                           m_gap;
+    score_matrix                  m_matrix;
 };

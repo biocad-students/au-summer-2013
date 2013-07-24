@@ -21,6 +21,7 @@ template <class T>
 struct RegionProp
 {
     size_t region_id;
+    std::string name;
 
     RegionProp(size_t id = 0) : region_id(id)
     {
@@ -35,3 +36,5 @@ void test_contig2();
 void test_search();
 void test_fasta();
 void test_fasta_push();
+void test_alicont();
+void test_contig_alicont();

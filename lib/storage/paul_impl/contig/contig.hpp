@@ -3,10 +3,12 @@
 #include <deque>
 #include <vector>
 #include <string>
+#include <stack>
 
 #include "trie/trie.hpp"
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
+#include "alicont/alicont.hpp"
 
 #include "contig_const_iterator.hpp"
 #include "contig_iterator.hpp"
@@ -32,6 +34,9 @@ public:
 
     typedef contig_const_iterator<T, Property, LabelType> const_aiterator;
     typedef contig_iterator<T, Property, LabelType>       aiterator;
+
+    typedef std::pair<record_type,
+                      std::vector<record_type>>           alignment_type;
 
     contig(std::string const & name, alphabet_type const & alphabet, size_t k = 7)
         : m_name(name), m_stat(alphabet, k)
@@ -258,12 +263,106 @@ public:
         return result;
     }
 
-//    template <class Iterator>
-//    std::pair<record_type<data_type>, std::vector<record_type<data_type>>>
-//    align(Iterator begin, Iterator end)
-//    {
+    template <class Iterator>
+    std::vector<alignment_result> align(Iterator begin, Iterator end,
+                                        int gap, score_matrix const & matrix,
+                                        size_t count)
+    {
+        typedef std::pair<std::string, simple_matrix2i> node_cache_type;
+        typedef std::pair<std::string, simple_matrix2i*> stack_cache_type;
+        typedef trie<node_cache_type>::iterator cmp_t;
 
-//    }
+        std::vector<alignment_result> results;
+        std::string query(begin, end);
+        alicont ali(query, gap, matrix);
+        trie<node_cache_type>* tmp;
+        copyTrie(&tmp);
+
+        std::string target;
+        std::stack<size_t> index_stack;
+        std::vector<trie<node_cache_type>::iterator> leafs;
+        for (trie<node_cache_type>::iterator i = tmp->begin() + 1;
+                                             i != tmp->end();
+                                             ++i)
+        {
+            target.push_back(i.symbol());
+            if (i.prev().fork() && i.prev().index() != index_stack.top())
+            {
+                while (index_stack.top() != i.prev().index())
+                {
+                    index_stack.pop();
+                    ali.pop();
+                }
+            }
+            if (i.leaf())
+            {
+                leafs.push_back(i);
+                *i = std::make_pair(target, ali.score(target));
+                ali.push(target, &(i->second));
+                index_stack.push(i.index());
+                target.clear();
+            }
+            else if (i.fork())
+            {
+                *i = std::make_pair(target, ali.score(target));
+                ali.push(target, &(i->second));
+                index_stack.push(i.index());
+                target.clear();
+            }
+        }
+
+//        for(auto i : leafs)
+//        {
+//            for (auto j : *i)
+//            {
+//                for (auto k : j)
+//                {
+//                    std::cout << std::setw(3) << k << " ";
+//                }
+//                std::cout << std::endl;
+//            }
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::endl;
+
+        std::sort(leafs.begin(), leafs.end(), [](cmp_t a, cmp_t b)
+            {return a->second.back().back() > b->second.back().back();});
+        size_t current_count = 0;
+        for (std::vector<trie<node_cache_type>::iterator>::iterator i = leafs.begin();
+                                                                   i != leafs.end();
+                                                                   ++i, ++current_count)
+        {
+            if (current_count == count)
+            {
+                break;
+            }
+            ali.clear();
+
+            std::stack<stack_cache_type> st;
+            trie<node_cache_type>::iterator iter = *i;
+
+            while (iter != tmp->begin())
+            {
+                if (iter->second.size() != 0)
+                {
+                    st.push(std::make_pair(iter->first, &(iter->second)));
+                }
+                --iter;
+            }
+
+            while (st.size() != 0)
+            {
+                stack_cache_type t = st.top();
+                st.pop();
+                ali.push(t.first, t.second);
+            }
+
+            results.push_back(ali.alignment());
+        }
+
+        delete tmp;
+        return results;
+    }
 
 private:
     std::string m_name;

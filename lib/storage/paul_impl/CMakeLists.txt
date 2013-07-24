@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 
-project(IG_Storage)
+project(contig)
 
 set (APP_NAME IG_Storage)
 
@@ -11,7 +11,7 @@ set (TST_DIR ${PROJECT_SOURCE_DIR}/tests)
 set (CMN_DIR ${PROJECT_SOURCE_DIR}/utils)
 	
 # DEBUG|RELEASE|RELWITHDEBINFO|MINSIZEREL
-set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_BUILD_TYPE DEBUG|RELEASE)
 IF(UNIX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 ELSEIF(WIN32)

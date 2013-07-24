@@ -41,7 +41,7 @@ public:
 
     trie_iterator prev() const
     {
-        return trie_iterator(this, this->m_trie->prev(this->m_current));
+        return trie_iterator(this->m_trie, this->m_trie->prev(this->m_current));
     }
 
     trie_iterator & operator++()
@@ -74,6 +74,7 @@ public:
 
     trie_iterator operator+(size_t i) const
     {
+        this->m_trie->createDfsCache();
         size_t new_current = this->m_current;
         for (size_t k = 0; k < i; ++k)
         {

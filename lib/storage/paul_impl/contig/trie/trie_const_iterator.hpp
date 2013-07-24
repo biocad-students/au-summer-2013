@@ -62,6 +62,7 @@ public:
 
     trie_const_iterator operator+(size_t i) const
     {
+        m_trie->createDfsCache();
         size_t new_current = m_current;
         for (size_t k = 0; k < i; ++k)
         {
