@@ -11,7 +11,7 @@ set (TST_DIR ${PROJECT_SOURCE_DIR}/tests)
 set (CMN_DIR ${PROJECT_SOURCE_DIR}/utils)
 	
 # DEBUG|RELEASE|RELWITHDEBINFO|MINSIZEREL
-set(CMAKE_BUILD_TYPE DEBUG|RELEASE)
+set(CMAKE_BUILD_TYPE RELEASE)
 IF(UNIX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 ELSEIF(WIN32)
@@ -61,12 +61,21 @@ SET( STORAGE
 	${HDR_DIR}/contig_const_iterator.hpp
 )
 
+SET( ALIGN
+	${HDR_DIR}/alicont/alialgo.hpp
+	${HDR_DIR}/alicont/alicont.hpp
+	${HDR_DIR}/alicont/alicont_line.hpp
+	${HDR_DIR}/alicont/alimatrix.hpp
+	${HDR_DIR}/alicont/score_matrix.hpp
+)
+
 SET ( TESTS
 	${TST_DIR}/annotation_test.cpp
 	${TST_DIR}/contig_test.cpp
 	${TST_DIR}/fasta_test.cpp
 	${TST_DIR}/kstat_test.cpp
 	${TST_DIR}/trie_test.cpp
+	${TST_DIR}/alicont_test.cpp
 	)
 
 IF(UNIX)
@@ -86,6 +95,7 @@ source_group ("Storage Files" FILES ${STORAGE})
 source_group ("Source Files" FILES ${SOURCES})
 source_group ("Common Files" FILES ${COMMON})
 source_group ("Test Files" FILES ${TESTS})
+source_group ("Align Files" FILES ${ALIGN})
 
 add_executable (${APP_NAME}
 	${SOURCES}
@@ -96,6 +106,7 @@ add_executable (${APP_NAME}
 	${ALGORITHM}
 	${COMMON}
 	${TESTS}
+	${ALIGN}
 	)
 
 target_link_libraries(${APP_NAME} 
