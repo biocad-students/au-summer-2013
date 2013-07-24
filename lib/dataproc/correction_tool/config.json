@@ -1,0 +1,58 @@
+{
+    "VH": {
+        "sampleName": "VH",
+        "forwardMid": "ATAGATAGAC",
+        "reverseMid": "ATATAGTCGC",
+        "forwardPrimer": "GCCTACGGCAGCCGCTGGATTGTTATTAC",
+        "reversePrimer": "CACAGACGGGCCTTTTGTAGAC",
+        "cdr3Start": "Y[YH]C",
+        "cdr3End": "WG[KQR]",
+        "cdr3regex1": "Y[YH]C[A-Z*]*WG[KQR]",
+        "cdr3regex": "Y[A-Z*]*[KQR]",
+        "cdr3Threshold": 2,
+        "sequenceThreshold": 4
+    },
+
+    "VHH": {
+        "regex": "[FYI][A-Z*]{4,15}ER[A-Z*]?[GSAF]",
+        "sampleName": "VH",
+        "forwardMid": "ATAGATAGAC",
+        "reverseMid": "ATATAGTCGC",
+        "forwardPrimer": "GCCTACGGCAGCCGCTGGATTGTTATTAC",
+        "reversePrimer": "CACAGACGGGCCTTTTGTAGAC",
+        "cdr3Start": "Y[YH]C",
+        "cdr3End": "WG[KQR]",
+        "cdr3regex1": "Y[YH]C[A-Z*]*WG[KQR]",
+        "cdr3regex": "Y[A-Z*]*[KQR]",
+        "cdr3Threshold": 2,
+        "sequenceThreshold": 4
+    },
+
+    "VL": {
+        "sampleName": "VL",
+        "forwardMid": "ATCTACTGAC",
+        "reverseMid": "CACGTAGATC",
+        "forwardPrimer": "GCTGCTGCTGGTCTGCTGCTCCTCGCTG",
+        "reversePrimer": "GGCGGGAAAATAAAAACAGACGG",
+        "cdr3Start": "Y[YH]C",
+        "cdr3End": "GT[KQ]",
+        "cdr3regex1": "Y[YH]C[A-Z*]*GT[KQ]",
+        "cdr3regex": "Y[A-Z*]*[WKQ]",
+        "cdr3Threshold": 2,
+        "sequenceThreshold": 4
+    },
+
+    "VK": {
+        "sampleName": "VK",
+        "forwardMid": "CACGTGTCGC",
+        "reverseMid": "CATACTCTAC",
+        "forwardPrimer": "GCTGCTGCTGGTCTGCTGCTCCTCGCTG",
+        "reversePrimer": "GGCGGGAAAATAAAAACAGACGG",
+        "cdr3Start": "YYC",
+        "cdr3End": "GT[KQ]",
+        "cdr3regex1": "Y[YH]C[A-Z*]*GT[KQ]",
+        "cdr3regex": "Y[A-Z*]*[WKQ]",
+        "cdr3Threshold": 2,
+        "sequenceThreshold": 4
+    }
+}
