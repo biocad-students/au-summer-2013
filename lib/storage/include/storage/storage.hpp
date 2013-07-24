@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 // IGC - ImmunoGlobulin Container
 
 #include <map>
@@ -6,6 +6,7 @@
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
 #include "trie/trie.hpp"
+#include "scorematrix.h"
 
 namespace igc {
 // typedef T - property param
@@ -19,9 +20,10 @@ public:
 	typedef storage<T, Property, Label, Link> _My_type;
 	typedef annotation<T, Property, Label, Link> annotation_t;
 	typedef typename annotation_t::offset_t offset_t;
-	typedef trie<std::vector<offset_t>, char, Link> trie_t;
+	typedef trie<std::vector<offset_t>> trie_t;
 	typedef Kstat<Link> kstat_t;
 	typedef typename kstat_t::alphabet_t alphabet_t;
+	typedef std::vector<std::vector<int>> matrix_t;
 
 	class const_iterator : public std::iterator<std::bidirectional_iterator_tag, T, std::ptrdiff_t, const T*, const T&>
 	{
@@ -179,16 +181,16 @@ public:
 		Iterator iter = _begin;
 		typename trie_t::iterator lastTrie = m_trie.root();
 		m_annotation.push_back(_label, std::distance(_begin, _end));	
-
+		size_t k = m_kstat.getK();
 		Property<char> tmpprp = Property<char>("");
 		while(iter != _end) {
 			lastTrie = m_trie.insert(lastTrie, *iter);
-			if(_end-7 >= iter) {
-				m_kstat.add(iter, iter+7, lastTrie.index());
-			}
-			m_annotation.insert_back(lastTrie.index(), tmpprp);
-			lastTrie->push_back(std::make_pair(m_annotation.size()-1, m_annotation.record_size(m_annotation.size()-1)));
 
+			m_annotation.insert_back(lastTrie.index(), tmpprp);
+
+			lastTrie->push_back(std::make_pair(m_annotation.size()-1, m_annotation.record_size(m_annotation.size()-1)));
+			m_kstat.add(iter, _end, lastTrie.index());
+			
 			++iter;
 		}
 	}
@@ -243,6 +245,17 @@ public:
 		}
 
 		return iterator(*this, result);
+	}
+
+	template <class Iterator>
+	void align(Iterator _begin, Iterator _end)
+	{ 
+		trie<matrix_t> align_trie = m_trie;
+		typename trie<matrix_t>::iterator iter = align_trie.begin();
+		// TODO (Roman): fill align matrix_t using DFS
+		// проверить листья на score
+		// выбрать N с максимальным score
+
 	}
 
 private:
