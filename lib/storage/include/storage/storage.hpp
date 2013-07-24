@@ -17,11 +17,11 @@ class storage
 {
 public:
 	typedef storage<T, Property, Label, Link> _My_type;
-	typedef std::pair<Link, Link> offset_t;
-	typedef trie<std::vector<offset_t>, char, Link> trie_t;
 	typedef annotation<T, Property, Label, Link> annotation_t;
+	typedef typename annotation_t::offset_t offset_t;
+	typedef trie<std::vector<offset_t>, char, Link> trie_t;
 	typedef Kstat<Link> kstat_t;
-	typedef std::vector<unsigned char> alphabet_t;
+	typedef typename kstat_t::alphabet_t alphabet_t;
 
 	class const_iterator : public std::iterator<std::bidirectional_iterator_tag, T, std::ptrdiff_t, const T*, const T&>
 	{
@@ -168,30 +168,6 @@ public:
 	};
 
 public:
-	iterator begin() {
-		return m_trie.begin();
-	}
-
-	const_iterator begin () const {
-		return m_trie.begin();
-	}
-
-	iterator end() {
-		return m_trie.end();
-	}
-
-	const_iterator end () const {
-		return m_trie.end();
-	}
-
-	iterator find(size_t _idx) {
-		return m_trie.find(_idx);
-	}
-
-	const_iterator find(size_t _idx) const {
-		return m_trie.find(_idx);
-	}
-
 	storage(alphabet_t _alphabet, size_t _K) : m_kstat(_alphabet, _K) {
 	}
 
@@ -223,14 +199,6 @@ public:
 	//	return tmp;
 	//}
 
-	//kstat_t get_kstat() {
-	//	return m_kstat;
-	//}
-
-	size_t getK(void) {
-		return m_kstat.getK();
-	}
-
 	template <class Iterator>
 	iterator find(Iterator _begin, Iterator _end) {
 		std::vector<int> result;
@@ -239,9 +207,10 @@ public:
 		std::fill(my_color_trie.begin(), my_color_trie.end(), false);
 
 		size_t dist = std::distance(_begin, _end);
-		for(size_t i = 0; i < dist - 7; ++i, ++_begin)
+		size_t k = m_kstat.getK();
+		for(size_t i = 0; i < dist - k; ++i, ++_begin)
 		{
-			std::set<Link> *similar = m_kstat.get(_begin, _begin + 7);
+			std::set<Link> *similar = m_kstat.get(_begin, _begin + k);
 			if(similar == NULL)
 				continue;
 			typename std::set<Link>::iterator similar_iter = (*similar).begin();
@@ -251,14 +220,14 @@ public:
 				++similar_iter;
 			}
 		}
-		std::set<Link> *similar = m_kstat.get(_begin, _begin + 7);
+		std::set<Link> *similar = m_kstat.get(_begin, _begin + k);
 		typename std::set<Link>::iterator similar_iter = similar->begin();
 		for(;similar_iter != similar->end(); ++similar_iter)
 		{
 			typename trie<char, char, Link>::const_iterator iter = my_color_trie.find(*similar_iter);
 			typename trie<char, char, Link>::const_iterator last_iter = iter;
 			bool found = true;
-			for(int c = dist - 7; c > 0; --c)
+			for(int c = dist - k; c > 0; --c)
 			{
 				--iter;
 				if(iter == my_color_trie.root() || !*iter)

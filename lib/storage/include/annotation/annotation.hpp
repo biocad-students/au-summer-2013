@@ -12,9 +12,9 @@ namespace igc {
 template <class T, template <class> class Property, class Label = std::string, class Link = size_t>
 class annotation {
 public:
-	typedef Property<T> property_t;
-	typedef std::pair<Link, Link> offset_t;
 	typedef annotation_record<T, Property, Label, Link> annotation_record_t;
+	typedef typename annotation_record_t::property_t property_t;
+	typedef std::pair<Link, Link> offset_t;
 	typedef std::vector<annotation_record_t> data_t;
 	
 	annotation () {

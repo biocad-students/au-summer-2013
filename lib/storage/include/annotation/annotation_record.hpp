@@ -10,7 +10,7 @@ class annotation_record {
 public:
 	typedef Annotation_node<T, Property, Link> annotation_node_t;
 	typedef std::vector<annotation_node_t> data_t;
-	typedef Property<T> property_t;
+	typedef typename annotation_node_t::property_t property_t;
 
 	annotation_record(Label _label) : m_label(_label) {
 	}
