@@ -1,5 +1,4 @@
-#ifndef READ_H_
-#define READ_H_
+#pragma once
 
 #include <string>
 
@@ -11,6 +10,3 @@ public:
 
 	std::string name, seq, qual;
 };
-
-
-#endif /* READ_H_ */

@@ -20,9 +20,6 @@ ELSEIF(WIN32)
 ENDIF(UNIX)
 	
 include_directories(
-	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/common/include
-	#{PROJECT_SOURCE_DIR}/tests/include
 	${PROJECT_SOURCE_DIR}/../share/zlib-1.2.8
 )
 
@@ -87,14 +84,15 @@ source_group ("Common Files" FILES ${COMMON_SOURCES} ${COMMON_INCLUDE})
 source_group ("Test Files" FILES ${TEST_SOURCES} ${TEST_INCLUDE})
 
 add_executable (${APP_NAME}
-	${TEST_SOURCES}
-	${TEST_INCLUDE}
 	${ANNOTATION}
 	${TRIE}
 	${KSTAT}
 	${STORAGE}
 	${COMMON_SOURCES}
 	${COMMON_INCLUDE}
+	${TEST_SOURCES}
+	${TEST_INCLUDE}
+	
 	main.cpp
 	)
 

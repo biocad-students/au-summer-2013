@@ -4,8 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include <set>
-#include <map>
-#include "annotation/annotation.hpp"
+#include "../annotation/annotation.hpp"
 
 namespace igc {
 

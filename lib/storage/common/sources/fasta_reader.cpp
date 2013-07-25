@@ -1,4 +1,4 @@
-#include "fasta_reader.h"
+#include "../include/fasta_reader.h"
 
 bool FastaReader::open(std::string filename) {
 	fp = gzopen(filename.c_str(), "r");

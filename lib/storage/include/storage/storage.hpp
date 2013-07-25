@@ -1,12 +1,11 @@
 ﻿#pragma once
 // IGC - ImmunoGlobulin Container
 
-#include <map>
 #include <vector>
-#include "annotation/annotation.hpp"
-#include "kstat/kstat.hpp"
-#include "trie/trie.hpp"
-#include "scorematrix.h"
+#include "../../common/include/scorematrix.h"
+#include "../annotation/annotation.hpp"
+#include "../kstat/kstat.hpp"
+#include "../trie/trie.hpp"
 
 namespace igc {
 // typedef T - property param
