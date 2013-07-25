@@ -20,7 +20,12 @@ void align_unittest(void )
 		end = tmp.seq.end();
 		my_storage.pushSequence(iter, end, Lab(tmp.name));
 	}
-	std::string alstr = "ACGTATAC";
-	my_storage.align(alstr.begin(), alstr.end());
+	std::string alstr = "TCGCGCCCAGCCGGCCATGGCGAGGTGCAGCTGGATGCAGTCTGGGGGGGTACTCTGAGACGCTCTTGTGCAGCATCTGGATTCACCTTCCGTAGCTCTGTTATGAGCTGAGTCCGACAGGCTCCAGGGAAGGGTTTCTGGAGTGGGTGACACTCCAGTATTTGGCGTGAACGAGTCTCACATACTATGCAGAGTCCGTGAAGAGATTCTCCATCTCCACAGACAAAACATTCTGTATCTGCAAATGAACAGCCTGAAGCCTGAAGACACGGCCGTGTATTACTGTGCTGCAGATCAATGCGGTAGTAGCTGCCGCCGGTATCTCGCAGTTTGGGGCCAGGGCACCCTGGTCACCGTCTCTTCAGGCTCGAGTGC";
+	std::vector<std::string> result = my_storage.align(alstr.begin(), alstr.end(), 15);
+	for(int i = 0; i != result.size(); ++i)
+	{
+		std::cout << result[i] << std::endl;
+	}
+
 	PERFOMANCE_TIME("End align_unittest");
 }

@@ -246,13 +246,118 @@ public:
 	}
 
 	template <class Iterator>
-	void align(Iterator _begin, Iterator _end, size_t _count = 1)
-	{ 
-		trie<matrix_t> align_trie = m_trie;
-		trie<matrix_t>::iterator iter = align_trie.begin();
-		// TODO (Roman): fill align matrix_t using DFS
-		// проверить листья на score
-		// выбрать _count с максимальным score
+	std::vector<std::string> align(Iterator _begin, Iterator _end, size_t _n = 1)
+	{
+		std::vector<std::string> result;
+		std::vector<std::pair<size_t, std::string> > results_with_scores;
+
+		size_t distance = std::distance(_begin, _end);
+
+		struct Cell
+		{
+			size_t score;
+			char backtrace;
+		};
+		trie<std::vector<Cell> > align_trie(m_trie);
+
+		(*align_trie.root()).resize(distance + 1);
+		(*align_trie.root())[0].score = 0;
+		(*align_trie.root())[0].backtrace = ' ';
+		for(int i=1; i <= distance; ++i)
+		{
+			(*align_trie.root())[i].score = i;
+			(*align_trie.root())[i].backtrace = '|';
+		}
+
+		bool need_to_cleanup = false;
+		typename trie<std::vector<Cell> >::iterator iter = align_trie.begin();
+		for(; iter != align_trie.end(); ++iter)
+		{
+			if(need_to_cleanup)
+			{
+				typename trie<std::vector<Cell> >::iterator iter_back = iter;
+				while(--iter_back != iter.parent())
+				{
+					(*iter_back).swap(std::vector<Cell>());
+				}
+				need_to_cleanup = false;
+			}
+
+			(*iter).resize(distance + 1);
+			(*iter)[0].score = (*iter.parent())[0].score + 1;
+			(*iter)[0].backtrace = '-';
+			Iterator str_iter = _begin;
+			for(size_t i = 1; str_iter != _end; ++str_iter, ++i)
+			{
+				size_t best_score = (*iter.parent())[i].score + 1;
+				char backtrace = '-';
+
+				size_t score = (*iter)[i - 1].score + 1;
+				if(score < best_score)
+				{
+					best_score = score;
+					backtrace = '|';
+				}
+
+				score = (*iter.parent())[i - 1].score + (*str_iter == iter.key()? 0: 1);
+				if(score < best_score)
+				{
+					best_score = score;
+					backtrace = (*str_iter == iter.key()? *str_iter: '*');
+				}
+
+
+				(*iter)[i].score = best_score;
+				(*iter)[i].backtrace = backtrace;
+			}
+			if(iter.is_leaf())
+			{
+				std::string s;
+
+				typename trie<std::vector<Cell> >::iterator iter1 = iter;
+				for(size_t i = distance; iter1 != align_trie.root() && i != 0; )
+				{
+					s.push_back((*iter1)[i].backtrace);
+					switch((*iter1)[i].backtrace)
+					{
+					case '-':
+						iter1 = iter1.parent();
+						break;
+					case '|':
+						--i;
+						break;
+					default:
+						--i;
+						iter1 = iter1.parent();
+					}
+				}
+
+				std::reverse(s.begin(), s.end());
+				results_with_scores.push_back(std::make_pair((*iter)[distance].score,s));
+				need_to_cleanup = true;
+			}
+		}
+
+		struct LocalNamespace
+		{
+			static bool CompareScores (const std::pair<size_t, std::string>& i, const std::pair<size_t, std::string>& j) { return (i.first<j.first); }
+		};
+
+		if(results_with_scores.size() > _n)
+		{
+			std::partial_sort(results_with_scores.begin(), results_with_scores.begin() + _n, results_with_scores.end(), LocalNamespace::CompareScores);
+		}
+		else
+		{
+			std::sort(results_with_scores.begin(), results_with_scores.end(), LocalNamespace::CompareScores);
+		}
+
+		for(int i = 0; i < _n; ++i)
+		{
+			result.push_back(results_with_scores[i].second);
+		}
+
+		return result;
 	}
 
 private:

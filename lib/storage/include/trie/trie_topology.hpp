@@ -37,14 +37,17 @@ protected:
 
 public:
   trie_topology()
-    : m_counter(-1)
+    : m_counter(0)
   {
     m_root = create_node(NULL, ' ', true, false);
   }
 
   ~trie_topology()
   {
-    // delete all nodes
+    for(std::vector<Node*>::iterator iter = m_indexed.begin(); iter != m_indexed.end(); ++iter)
+    {
+      delete *iter;
+    }
   }
 
   size_t AddRef() const { return ++m_counter; }
@@ -60,12 +63,17 @@ public:
     friend trie_topology;
   public:
     const_iterator(Node* _node) : m_node(_node), m_DFS(NULL), m_dfs_index(0) {}
-    const_iterator(std::vector<Node*>* _dfs)
-      : m_node(NULL), m_DFS(_dfs), m_dfs_index(0)
+    const_iterator(std::vector<Node*>* _dfs, size_t _dfs_index = 0)
+      : m_node(NULL), m_DFS(_dfs), m_dfs_index(_dfs_index)
     {
       if(!m_DFS->empty())
-          m_node = m_DFS->front();
+          m_node = (*m_DFS)[m_dfs_index];
     }
+    //const_iterator(std::vector<Node*>* _dfs, size_t _dfs_index)
+    //  : m_node(NULL), m_DFS(_dfs), m_dfs_index(_dfs_index)
+    //{
+    //  m_node = (*m_DFS)[_dfs_index];
+    //}
     const_iterator(const const_iterator &_right) 
       : m_node(_right.m_node), m_DFS(_right.m_DFS), m_dfs_index(_right.m_dfs_index)
     {
@@ -124,7 +132,7 @@ public:
     {
       if(m_DFS != NULL)
       {
-        do
+/*        do
         {
           if(m_dfs_index == 0)
           {
@@ -133,7 +141,8 @@ public:
           }
           --m_dfs_index;
         }
-        while((*m_DFS)[m_dfs_index] != m_node->parent);
+        while((*m_DFS)[m_dfs_index] != m_node->parent);*/
+        --m_dfs_index;
 
         m_node = (*m_DFS)[m_dfs_index];
       }
@@ -151,6 +160,11 @@ public:
       return _Tmp;
     }
 
+    const_iterator parent() const
+    {
+      return const_iterator(m_node->parent);
+    }
+
     Key_type key() const
     {
       return m_node->cached_key;
@@ -166,6 +180,11 @@ public:
       return m_node->depth;
     }
 
+    bool is_leaf() const
+    {
+      return m_node->child.empty();
+    }
+
   private:
     Node* m_node;
     std::vector<Node*> *m_DFS;
@@ -179,7 +198,7 @@ public:
 		typedef const_iterator _Mybase_iter;
   public:
     iterator(Node* _node) : const_iterator(_node) {}
-    iterator(std::vector<Node*>* _dfs) : const_iterator(_dfs) {}
+    iterator(std::vector<Node*>* _dfs, size_t _dfs_index = 0) : const_iterator(_dfs, _dfs_index) {}
 
     Node& operator*() const
 		{	// return designated value
@@ -216,6 +235,12 @@ public:
 			--*this;
 			return (_Tmp);
 		}
+
+		const_iterator parent() const
+		{
+			return const_iterator(m_node->parent);
+		}
+
   };
 
   const_iterator root() const
@@ -232,14 +257,14 @@ public:
   {
     if(m_DFS.empty())
         make_DFS();
-    return const_iterator(m_DFS);
+    return const_iterator(m_DFS, 1);
   }
 
   iterator begin()
   {
     if(m_DFS.empty())
         make_DFS();
-    return iterator(&m_DFS);
+    return iterator(&m_DFS, 1);
   }
 
   const_iterator end() const
@@ -292,8 +317,10 @@ protected:
   Node* create_node(Node *_parent, Key_type _cached_key, bool _is_root, bool _is_end)
   {
     if(_is_root)
-        return new Node(m_counter++, 0, _parent, _cached_key, _is_root, _is_end);
-    m_indexed.push_back(new Node(m_counter++, _parent->depth + 1, _parent, _cached_key, _is_root, _is_end));
+        m_indexed.push_back(new Node(m_counter++, 0, _parent, _cached_key, _is_root, _is_end));
+    //    return new Node(m_counter++, 0, _parent, _cached_key, _is_root, _is_end);
+    else
+        m_indexed.push_back(new Node(m_counter++, _parent->depth + 1, _parent, _cached_key, _is_root, _is_end));
     return m_indexed.back();
   }
 
@@ -304,7 +331,7 @@ protected:
 
 	void dfs(Node *_node)
 	{
-    if(_node != m_root)
+    //if(_node != m_root)
 		    m_DFS.push_back(_node);
 
     typename std::map<Key_type, Node*>::iterator i = _node->child.begin();

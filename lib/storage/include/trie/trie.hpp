@@ -118,6 +118,16 @@ public:
 			return _Tmp;
 		}
 
+		_My_type_iter parent() const
+		{
+			return _My_type_iter(m_topology_iter.prev(), m_data);
+		}
+
+		bool is_leaf() const
+		{
+			return m_topology_iter.is_leaf();
+		}
+
 	private:
 		_My_topology_const_iter_type m_topology_iter;
 // TODO: replace the type with _My_data_type&
@@ -142,7 +152,7 @@ public:
 		//{
 		//}
 
-		iterator(const _My_topology_const_iter_type &_topology_iter, _My_data_type *_data)
+		iterator(const _My_topology_const_iter_type &_topology_iter, const _My_data_type *_data)
 			: const_iterator(_topology_iter, _data)
 		{
 		}
@@ -182,16 +192,22 @@ public:
 			--*this;
 			return _Tmp;
 		}
+
+		_My_type_iter parent() const
+		{
+			return _My_type_iter(m_topology_iter.parent(), m_data);
+		}
 	};
 
 	trie()
 	{
 		m_topology_instance = new trie_topology<Key_type, Index_type>();
 		m_topology = m_topology_instance;
+		m_data.resize(1); // for root
 	}
 
 	template<typename Y>
-	trie(const trie<Y, Key_type, Index_type> &_prototype)
+	explicit trie(const trie<Y, Key_type, Index_type> &_prototype)
 		: m_topology(_prototype.m_topology)
 	{
 		m_data.resize(_prototype.size());
@@ -286,6 +302,11 @@ public:
 		return iterator(topology_iter, &m_data);
 	}
 
+	void swap(_My_type& _right)
+	{
+		assert(m_topology_instance == _right.m_topology_instance);
+		m_data.swap(_right.m_data);
+	}
 
 // NOTE: These data members are public due to the bug in my compiler. Should be protected later
 //protected:
