@@ -10,7 +10,7 @@
 
 void test_alicont()
 {
-    score_matrix m("../../../../data/BLOSUM62.txt");
+    score_matrix m("/home/mactep/BLOSUM62.txt");
     alicont a("MEANLY", -5, std::move(m));
     simple_matrix2i m1 = std::move(a.score("PLEA"));
     a.push("PLEA", &m1);
@@ -50,16 +50,29 @@ void test_contig_alicont()
     std::string query = "GCGTTG";
     score_matrix m("/home/mactep/BLOSUM62.txt");
     auto r = my_contig.align(query.begin(), query.end(), -5, m, 2);
+    for (auto i : r)
+    {
+        std::cout << i.score << std::endl << i.first
+                             << std::endl << i.second
+                             << std::endl << std::endl;
+    }
     std::cout << std::endl;
 }
 
 void test_contig_alicont2()
 {
     contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
-    import_data("../../../../data/germline/human/VH.fasta", my_contig);
-    std::string query = "GACATCCAGATGACCCAGTCTCCATCCTCACTGTCTGCATCTGTAGGAGACAGAGTCACCATCACTTGTCGGGCGAGTCAGGGCATTAGCAATTATTTAGCCTGGTTTCAGCAGAAACCAGGGAAAGCCCCTAAGTCCCTGATCTATGCTGCATCCAGTTTGCAAAGTGGGGTCCCATCAAAGTTCAGCGGCAGTGGATCTGGGACAGATTTCACTCTCACCATCAGCAGCCTGCAGCCTGAAGATTTTGCAACTTATTACTGCCAACAGTATAATAGTTACCCTCC";
+    //import_data("/home/mactep/DEV/au-summer-2013/data/germline/human/VH.fasta", my_contig);
+    import_data("/home/mactep/Data/NGS-llama/VH_corrected.fasta", my_contig);
+    std::string query = "CAGGTTCAGCTGGTGCAGTCTGGGGCTGAGGTGAAGAAGCCTGGGGCCTCAGTGAAGGTTTCCTGCAAGGCTTCTGGATACACCTTCACTAGCTATGCTATGCATTGGGTGCGCCAGGCCCCCGGACAAAGGCTTGAGTGGATGGGATGGAGCAACGCTGGCAATGGTAACACAAAATATTCACAGGAGTTCCAGGGCAGAGTCACCATTACCAGGGACACATCCGCGAGCACAGCCTACATGGAGCTGAGCAGCCTGAGATCTGAGGACATGGCTGTGTATTACTGTGCGAGAGA";
 
-    score_matrix m("../../../../data/BLOSUM62.txt");
-    auto r = my_contig.align(query.begin(), query.end(), -5, m, 2);
+    score_matrix m("/home/mactep/BLOSUM62.txt");
+    auto r = my_contig.align(query.begin(), query.end(), -5, m, 10);
+    for (auto i : r)
+    {
+        std::cout << i.score << std::endl << i.first
+                             << std::endl << i.second
+                             << std::endl << std::endl;
+    }
     std::cout << std::endl;
 }

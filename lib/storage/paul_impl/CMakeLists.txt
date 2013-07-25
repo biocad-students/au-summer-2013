@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 
 project(contig)
 
-set (APP_NAME IG_Storage)
+set (APP_NAME contig)
 
 set (HDR_DIR ${PROJECT_SOURCE_DIR}/contig)
 	
