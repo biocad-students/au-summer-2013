@@ -10,11 +10,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CURRENT_BINARY_DIR "../bin")
 set(CMAKE_INSTALL_PREFIX "./")
 
-add_subdirectory(tests)
+#add_subdirectory(tests)
 add_subdirectory(utils)
 add_subdirectory(model)
 add_subdirectory(misc)
-add_subdirectory(gtest-1.6.0)
+#add_subdirectory(gtest-1.6.0)
 
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/opt/local/include)
