@@ -46,7 +46,7 @@ FILE( GLOB KSTAT
 	${HDR_DIR}/kstat/*.hpp
 )
 
-FILE( GLOB contig
+FILE( GLOB STORAGE
 	${HDR_DIR}/*.hpp
 )
 
