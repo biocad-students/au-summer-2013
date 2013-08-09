@@ -2,6 +2,8 @@
 
 typedef unsigned char byte;
 
+namespace igc {
+
 template <class T, template <class> class Property>
 class annotation_node
 {
@@ -38,3 +40,4 @@ private:
     size_t      m_trie_index;
     byte        m_symbol;
 };
+}

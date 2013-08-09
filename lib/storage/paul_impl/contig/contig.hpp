@@ -8,10 +8,12 @@
 #include "trie/trie.hpp"
 #include "annotation/annotation.hpp"
 #include "kstat/kstat.hpp"
-#include "alicont/alicont.hpp"
+#include "aligner/container.hpp"
 
 #include "contig_const_iterator.hpp"
 #include "contig_iterator.hpp"
+
+namespace igc {
 
 template <class T, template <class> class Property, class LabelType=std::string>
 class contig
@@ -224,7 +226,6 @@ public:
             nodes = m_stat.get(iter, end);
             if (nodes == nullptr)
             {
-                nodes = m_stat.get(iter-1, end);
                 break;
             }
             for (auto niter = nodes->begin(); niter != nodes->end(); ++niter)
@@ -371,3 +372,4 @@ private:
     anno_type   m_anno;
     kstat_type  m_stat;
 };
+}

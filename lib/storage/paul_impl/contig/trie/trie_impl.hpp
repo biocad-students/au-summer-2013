@@ -1,6 +1,7 @@
 #pragma once
 
 #include "trie_node.hpp"
+namespace igc {
 
 class trie_impl
 {
@@ -43,3 +44,4 @@ private:
 	size_t     m_counter;
 	trie_node* m_root;
 };
+}

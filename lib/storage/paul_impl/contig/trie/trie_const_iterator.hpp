@@ -4,6 +4,7 @@
 
 #include "trie.hpp"
 
+namespace igc {
 template <class> class trie;
 
 template <class T>
@@ -127,3 +128,4 @@ protected:
     trie<T>*  m_trie;
     size_t    m_current;
 };
+}

@@ -5,6 +5,8 @@
 
 #include "trie_node.hpp"
 
+namespace igc {
+
 template <class T>
 class trie_cont
 {
@@ -25,15 +27,11 @@ public:
         }
     }
 
+	// TODO(Pavel): create const operator[] version
     T & operator[](size_t i)
     {
         return m_data[i].second;
     }
-
-//    T & operator[](size_t i) const
-//    {
-//        return m_data[i].second;
-//    }
 
     trie_node* nodeOf(size_t i) const
     {
@@ -54,3 +52,4 @@ public:
 private:
     std::vector<std::pair<trie_node*, T>> m_data;
 };
+}

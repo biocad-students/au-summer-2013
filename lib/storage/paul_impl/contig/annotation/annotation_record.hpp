@@ -4,6 +4,7 @@
 #include <map>
 
 #include "annotation_node.hpp"
+namespace igc {
 
 template <class T, template <class> class Property>
 class annotation_record
@@ -51,3 +52,4 @@ public:
 private:
     std::vector<value_type> m_data;
 };
+}

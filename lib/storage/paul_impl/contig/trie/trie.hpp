@@ -11,6 +11,8 @@
 #include "trie_const_iterator.hpp"
 #include "trie_iterator.hpp"
 
+
+namespace igc {
 class trie_impl;
 
 template <class T>
@@ -150,3 +152,4 @@ private:
     std::vector<size_t>  m_dfs_cache;
     bool                 m_pure;
 };
+}

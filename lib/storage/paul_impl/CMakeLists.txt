@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 
-project(contig)
+project(IG_Container)
 
-set (APP_NAME contig)
+set (APP_NAME IG_Container)
 
 set (HDR_DIR ${PROJECT_SOURCE_DIR}/contig)
 	
@@ -24,58 +24,38 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/../../share/zlib-1.2.8
 )
 
-SET( SOURCES
-	${CMN_DIR}/fasta_reader.cpp
-	main.cpp
+FILE( GLOB SOURCES
+	${CMN_DIR}/*.cpp
+	*.cpp
 )
 
-SET ( COMMON
-	${CMN_DIR}/fasta_reader.h
-	${CMN_DIR}/kseq.h
-	${CMN_DIR}/read.h
-	unittest.h
+FILE( GLOB COMMON
+	${CMN_DIR}/*.h
+	*.h
 	)
 
-SET( ANNOTATION
-	${HDR_DIR}/annotation/annotation.hpp
-	${HDR_DIR}/annotation/annotation_node.hpp
-	${HDR_DIR}/annotation/annotation_record.hpp
+FILE( GLOB ANNOTATION
+	${HDR_DIR}/annotation/*.hpp
 )
 
-SET( TRIE
-	${HDR_DIR}/trie/trie_node.hpp
-	${HDR_DIR}/trie/trie_impl.hpp
-	${HDR_DIR}/trie/trie.hpp
-	${HDR_DIR}/trie/trie_const_iterator.hpp
-	${HDR_DIR}/trie/trie_iterator.hpp
-	${HDR_DIR}/trie/trie_cont.hpp
+FILE( GLOB TRIE
+	${HDR_DIR}/trie/*.hpp
 )
 
-SET( KSTAT
-	${HDR_DIR}/kstat/kstat.hpp
+FILE( GLOB KSTAT
+	${HDR_DIR}/kstat/*.hpp
 )
 
-SET( STORAGE
-	${HDR_DIR}/contig.hpp
-	${HDR_DIR}/contig_iterator.hpp
-	${HDR_DIR}/contig_const_iterator.hpp
+FILE( GLOB contig
+	${HDR_DIR}/*.hpp
 )
 
-SET( ALIGN
-	${HDR_DIR}/alicont/alialgo.hpp
-	${HDR_DIR}/alicont/alicont.hpp
-	${HDR_DIR}/alicont/alicont_line.hpp
-	${HDR_DIR}/alicont/alimatrix.hpp
-	${HDR_DIR}/alicont/score_matrix.hpp
+FILE( GLOB ALIGN
+	${HDR_DIR}/aligner/*.hpp
 )
 
-SET ( TESTS
-	${TST_DIR}/annotation_test.cpp
-	${TST_DIR}/contig_test.cpp
-	${TST_DIR}/fasta_test.cpp
-	${TST_DIR}/kstat_test.cpp
-	${TST_DIR}/trie_test.cpp
-	${TST_DIR}/alicont_test.cpp
+FILE( GLOB TESTS
+	${TST_DIR}/*.cpp
 	)
 
 IF(UNIX)

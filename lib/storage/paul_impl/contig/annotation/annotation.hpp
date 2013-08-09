@@ -7,6 +7,8 @@
 #include "annotation_node.hpp"
 #include "annotation_record.hpp"
 
+namespace igc {
+
 template <class T, template <class> class Property, class LabelType = std::string>
 class annotation
 {
@@ -91,3 +93,4 @@ public:
 private:
     std::vector<value_type> m_data;
 };
+}

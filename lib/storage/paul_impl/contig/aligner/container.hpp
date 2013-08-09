@@ -6,8 +6,8 @@
 
 #include "score_matrix.hpp"
 
-#include "alialgo.hpp"
-#include "alimatrix.hpp"
+#include "algorithm.hpp"
+#include "matrix.hpp"
 
 class alicont
 {

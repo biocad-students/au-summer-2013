@@ -14,7 +14,7 @@
 #include "../unittest.h"
 
 std::pair<Read, size_t> import_data(std::string const & path,
-                                    contig<Alphabet, RegionProp> & my_contig)
+                                    igc::contig<Alphabet, RegionProp> & my_contig)
 {
     FastaReader fr(path);
     Read tmp_read;
@@ -38,7 +38,7 @@ void test_fasta()
     time_t c = clock();
     std::pair<Read, size_t> p;
     size_t real_length = 0;
-    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    igc::contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
     p = import_data("../../../../data/germline/human/VH.fasta", my_contig);
     real_length += p.second;
 //    p = import_data("/home/mactep/Data/NGS-llama/out2/VL/VL.fasta", my_contig);
@@ -57,7 +57,7 @@ void test_fasta()
 
 void test_fasta_push()
 {
-    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    igc::contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
     FastaReader fr("/home/mactep/Data/NGS-llama/out2/VH/VH_corrected.fasta");
     Read tmp_read;
     std::vector<Read> tmp_vec;

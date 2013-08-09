@@ -16,7 +16,7 @@ void test_kstat()
 
     size_t k = 7;
 
-    kstatistics<size_t> my_kstat(alpha, k);
+    igc::kstatistics<size_t> my_kstat(alpha, k);
 
     std::string s1 = "ACGTCGATCGTCAGACTGACTGACTAGCTAGCATCTAGCTACGATCGATCGACT";
     for (std::string::iterator i = s1.begin(); i != s1.end(); ++i)

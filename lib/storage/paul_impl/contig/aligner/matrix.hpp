@@ -5,7 +5,7 @@
 #include <vector>
 #include <exception>
 
-#include "alialgo.hpp"
+#include "algorithm.hpp"
 
 // TODO: implement iterators for this container to
 //       enable begin-end and c++11 syntax

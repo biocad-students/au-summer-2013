@@ -6,6 +6,8 @@
 
 typedef unsigned char byte;
 
+namespace igc {
+
 template<class T>
 class kstatistics {
 public:
@@ -27,7 +29,7 @@ public:
     template <class Iterator>
     bool add(Iterator begin, Iterator end, link_type link)
     {
-        if (begin > end - m_k)
+        if (std::distance(begin, end) < m_k)
         {
             return false;
         }
@@ -43,7 +45,7 @@ public:
     template <class Iterator>
     const std::set<link_type>* get(Iterator begin, Iterator end) const
     {
-        if (begin > end - m_k)
+		if (std::distance(begin, end) < m_k)
         {
             return nullptr;
         }
@@ -59,7 +61,7 @@ public:
     size_t hash(Iterator begin, Iterator end) const
     {
         size_t hash_val = 0;
-        if (begin > end - m_k)
+        if (std::distance(begin, end) < m_k)
         {
             return -1;
         }
@@ -85,3 +87,4 @@ private:
     std::vector<size_t>              m_pow_cache;
     int                              m_k;
 };
+}

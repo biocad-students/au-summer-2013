@@ -8,8 +8,8 @@
 
 void test_anno()
 {
-    annotation<Alphabet, RegionProp> my_anno;
-    annotation<Alphabet, RegionProp>::record_type & record = my_anno.add("Seq1");
+    igc::annotation<Alphabet, RegionProp> my_anno;
+    igc::annotation<Alphabet, RegionProp>::record_type & record = my_anno.add("Seq1");
 
     std::string s1 = "ACGCGACAGCACGAGAGAGGAGAGCA";
     size_t i = 0;

@@ -2,6 +2,8 @@
 
 #include <map>
 
+namespace igc {
+
 typedef unsigned char byte;
 
 class trie_node
@@ -73,3 +75,4 @@ private:
     byte       m_symbol;
     index_type m_id;
 };
+}

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "../contig/contig.hpp"
-#include "../contig/alicont/alicont.hpp"
+#include "../contig/aligner/container.hpp"
 
 #include "../unittest.h"
 
@@ -36,7 +36,7 @@ void test_alicont()
 
 void test_contig_alicont()
 {
-    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    igc::contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
     std::string s1 = "ACGTAG";
     std::string s2 = "ACGTCGT";
     std::string s3 = "ACAAT";
@@ -61,7 +61,7 @@ void test_contig_alicont()
 
 void test_contig_alicont2()
 {
-    contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
+    igc::contig<Alphabet, RegionProp> my_contig("CONTIG-TEST", Alphabet::getAlphabet());
     //import_data("/home/mactep/DEV/au-summer-2013/data/germline/human/VH.fasta", my_contig);
     import_data("/home/mactep/Data/NGS-llama/VH_corrected.fasta", my_contig);
     std::string query = "CAGGTTCAGCTGGTGCAGTCTGGGGCTGAGGTGAAGAAGCCTGGGGCCTCAGTGAAGGTTTCCTGCAAGGCTTCTGGATACACCTTCACTAGCTATGCTATGCATTGGGTGCGCCAGGCCCCCGGACAAAGGCTTGAGTGGATGGGATGGAGCAACGCTGGCAATGGTAACACAAAATATTCACAGGAGTTCCAGGGCAGAGTCACCATTACCAGGGACACATCCGCGAGCACAGCCTACATGGAGCTGAGCAGCCTGAGATCTGAGGACATGGCTGTGTATTACTGTGCGAGAGA";

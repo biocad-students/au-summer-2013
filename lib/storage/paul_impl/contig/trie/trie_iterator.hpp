@@ -5,6 +5,7 @@
 #include "trie.hpp"
 #include "trie_const_iterator.hpp"
 
+namespace igc{
 template <class> class trie;
 
 template <class T>
@@ -115,3 +116,4 @@ public:
         return !(*this == iter);
     }
 };
+}
