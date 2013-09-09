@@ -7,12 +7,6 @@
 #include <fstream>
 #include <ctime>
 
-#include "../../common/include/fasta_reader.h"
-#include "../../common/include/scorematrix.h"
-#include "../../include/storage/storage.hpp"
-#include "../../include/kstat/kstat.hpp"
-#include "../../include/annotation/annotation.hpp"
-
 extern clock_t g_begin;
 
 #ifndef CLOCKS_PER_SEC
@@ -35,11 +29,9 @@ struct Lab {
 	Lab(std::string _name) : m_name(_name) {}
 };
 
-extern void fill_alphabet(std::vector<unsigned char>* _alphabet);
 
-void kstat_unittest(void);
-void storage_unittest(void);
-void annotation_unittest(void);
-void matrix_unittest(void);
-void find_unittest(void);
-void align_unittest(void);
+void run_trie_topology_unittests(void);
+void run_trie_unittests(void);
+void run_kstat_unittests(void);
+void run_annotation_unittests(void);
+void run_storage_unittests(void);
